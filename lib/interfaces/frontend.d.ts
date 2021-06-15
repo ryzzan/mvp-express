@@ -50,6 +50,7 @@ export interface FormElement {
         required?: boolean;
         name: string;
         placeholder: string;
+        defaultValue?: string;
     };
     select?: {
         id: string;
@@ -57,6 +58,7 @@ export interface FormElement {
         required?: boolean;
         name: string;
         placeholder: string;
+        defaultValue?: string;
         options: {
             type: OptionType;
             url?: string;

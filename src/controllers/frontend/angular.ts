@@ -53,7 +53,7 @@ export class CodeToAngular {
 
                 codeForm += `<mat-form-field>`;
                 codeForm += `<mat-label>${input.label}</mat-label>`;
-                codeForm += `<input matInput type="${input.type}" formControlName="${input.name}" id="${input.id}" placeholder="${input.placeholder}" ${input.required ? 'required' : ''} ngModel autocomplete="new-password">`;
+                codeForm += `<input matInput type="${input.type}" formControlName="${input.name}" id="${input.id}" placeholder="${input.placeholder}" ${input.required ? 'required' : ''} autocomplete="new-password">`;
                 codeForm += `</mat-form-field>`;
             }
 
@@ -61,7 +61,7 @@ export class CodeToAngular {
             if (element.select) {
                 let select = element.select;
 
-                codeForm += `<mat-form-field>`;
+                codeForm += `<mat-form-field formControlName="${select.name}">`;
                 codeForm += `<mat-label>${select.label}</mat-label>`;
                 codeForm += `<mat-select><mat-option *ngFor="let ${select.name}Item of ${select.name}SelectObject" [value]="${select.name}Item.value">{{${select.name}Item.valueView}}</mat-option></mat-select>`;
                 codeForm += `</mat-form-field>`;
@@ -124,24 +124,7 @@ export class CodeToAngular {
 
                 // Create code: form group
                 codeForm += `${formIdAsPropertyName}Form = new FormGroup({`;
-                array.forEach(
-                    (element: FormElement) => {
-                        let typeEmail = (element.input?.type === 'email') ? true : false,
-                            typeText = (element.input?.type === 'text') ? true : false,
-                            typePassword = (element.input?.type === 'password') ? true : false,
-                            typeDate = (element.input?.type === 'date') ? true : false,
-                            required = (element.input?.required) ? true : false;
-                            
-                        if (typeText || typePassword || typeEmail || typeDate) {
-                            codeForm += `'${element.input?.name}': new FormControl(${element.input?.defaultValue ? `'${element.input?.defaultValue}'` : null}, [${required ? 'Validators.required,' : ''} ${typeEmail ? 'Validators.email,' : ''}]), `;
-                        }
-
-                        // Create code: select
-                        if (element.select?.options?.object) {
-                            
-                        }
-                    }
-                );
+                codeForm += this.setFormDirectiveElement(array, formIdAsPropertyName);
                 codeForm += `});`;
                 
                 // Create code: submit
@@ -179,6 +162,36 @@ export class CodeToAngular {
             }
         );
         return codeTypescript;
+    }
+
+    setFormDirectiveElement = (array: Array<FormElement>, formIdAsPropertyName: string, isArray?: boolean) => {
+        let codeForm = '';
+        
+        array.forEach(
+            (element: FormElement) => {
+                let typeEmail = (element.input?.type === 'email') ? true : false,
+                    typeText = (element.input?.type === 'text') ? true : false,
+                    typePassword = (element.input?.type === 'password') ? true : false,
+                    typeDate = (element.input?.type === 'date') ? true : false,
+                    required = (element.input?.required) ? true : false;
+                
+                if (element.array) {
+                    codeForm += `${element.array.id}:new FormArray([new FormGroup({`;
+                    codeForm += this.setFormDirectiveElement(element.array.elements, formIdAsPropertyName, true);
+                    codeForm += `})]),`;
+                }
+                    
+                if (typeText || typePassword || typeEmail || typeDate) {
+                    codeForm += `'${element.input?.name}': new FormControl(${element.input?.defaultValue ? `'${element.input?.defaultValue}'` : null}, [${required ? 'Validators.required,' : ''} ${typeEmail ? 'Validators.email,' : ''}]), `;
+                }
+
+                if (element.select?.options?.object) {
+                    codeForm += `'${element.select?.name}': new FormControl(${element.select?.defaultValue ? `'${element.select?.defaultValue}'` : null}, [${required ? 'Validators.required,' : ''} ${typeEmail ? 'Validators.email,' : ''}]), `;
+                }
+            }
+        );
+
+        return codeForm;
     }
 
     setTableDirective = (tableArray: any) => {

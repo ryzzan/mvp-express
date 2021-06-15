@@ -17,6 +17,7 @@ export declare class CodeToAngular {
     }, array: Array<FormElement>, formIdAsPropertyName: string, isArray?: boolean | undefined) => string;
     setTableHtml: (tableArray: any) => string;
     setFormDirective: (formArray: any[]) => string;
+    setFormDirectiveElement: (array: Array<FormElement>, formIdAsPropertyName: string, isArray?: boolean | undefined) => string;
     setTableDirective: (tableArray: any) => string;
     setFormService: (formArray: any[]) => void;
     setTableService: (formArray: any) => void;
