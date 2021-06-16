@@ -41,8 +41,8 @@ export class CodeToAngular {
             codeForm = '';
         array.forEach((element: FormElement) => {
             if (element.array) {
-                codeForm += `<mat-card *ngFor="let ${element.array.id}Item of ${formIdAsPropertyName}FormGroups.${element.array.id}; index as i">`;
-                codeForm += `<mat-card-header>${element.array.label} {{1 + i}}<mat-card-header>`;
+                codeForm += `<mat-card *ngFor="let ${element.array.id}Item of ${formIdAsPropertyName}Form.${element.array.id}; index as i">`;
+                codeForm += `<mat-card-header>${element.array.label} {{1 + i}}</mat-card-header>`;
                 codeForm += this.setFormHtmlElement(form, element.array.elements, formIdAsPropertyName, true);
                 codeForm += `</mat-card>`;
             }
@@ -61,9 +61,9 @@ export class CodeToAngular {
             if (element.select) {
                 let select = element.select;
 
-                codeForm += `<mat-form-field formControlName="${select.name}">`;
+                codeForm += `<mat-form-field>`;
                 codeForm += `<mat-label>${select.label}</mat-label>`;
-                codeForm += `<mat-select><mat-option *ngFor="let ${select.name}Item of ${select.name}SelectObject" [value]="${select.name}Item.value">{{${select.name}Item.valueView}}</mat-option></mat-select>`;
+                codeForm += `<mat-select formControlName="${select.name}"><mat-option *ngFor="let ${select.name}Item of ${select.name}SelectObject" [value]="${select.name}Item.value">{{${select.name}Item.valueView}}</mat-option></mat-select>`;
                 codeForm += `</mat-form-field>`;
             }
 
