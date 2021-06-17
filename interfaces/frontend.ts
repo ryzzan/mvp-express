@@ -33,7 +33,8 @@ export enum OptionType {
 };
 
 export enum ActionType {
-    Api = 'API'
+    Api = 'API',
+    Link = 'LINK'
 };
 
 export enum ActionVerb {
@@ -43,6 +44,18 @@ export enum ActionVerb {
     Put = 'PUT',
     Delete = 'DELETE'
 };
+
+export interface RowMenuElement {
+    label: string;
+    icon?: string;
+    action: {
+        type: ActionType;
+        verb?: ActionVerb;
+        url?: string;
+        body?: Object;
+    }
+    validator?: string;
+}
 
 export interface FormElement {
     array?: { 
@@ -56,15 +69,16 @@ export interface FormElement {
         label: string,
         required?: boolean,
         name: string,
-        placeholder: string,
+        placeholder?: string,
         defaultValue?: string,
+        comment?: string,
     };
     select?: {
         id: string,
         label: string,
         required?: boolean,
         name: string,
-        placeholder: string,
+        placeholder?: string,
         defaultValue?: string,
         options: {
             type: OptionType,
@@ -91,7 +105,20 @@ export interface FormElement {
     };
 };
 
-interface TableElement {};
+export interface TableElement {
+    column: {
+        label: string;
+        sort?: boolean;
+        comment?: string;
+    };
+    row: {
+        type: string;
+        field?: string;
+        icon?:  string;
+        menu?: Array<RowMenuElement>;
+        comment?: string;
+    };
+};
 
 export interface ObjectToCode {
     backendFramework?: BackendFramework;

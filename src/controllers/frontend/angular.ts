@@ -3,7 +3,7 @@
  *  - Form tab
  *  - Services
  */
-import { ObjectToCode, FormElement } from "../../../interfaces/frontend";
+import { ObjectToCode, FormElement, TableElement } from "../../../interfaces/frontend";
 
 export class CodeToAngular {
     public setAngularCode = (objectToCode: ObjectToCode) => {
@@ -56,11 +56,11 @@ export class CodeToAngular {
 
             // Create code: input
             if (element.input) {
-                let input = element.input;
+                let input = element.input, placeholder = input.placeholder ? `placeholder="${input.placeholder}"` : '';
 
                 codeForm += `<mat-form-field>`;
                 codeForm += `<mat-label>${input.label}</mat-label>`;
-                codeForm += `<input matInput type="${input.type}" formControlName="${input.name}" id="${input.id}" placeholder="${input.placeholder}" ${input.required ? 'required' : ''} autocomplete="new-password">`;
+                codeForm += `<input matInput type="${input.type}" formControlName="${input.name}" id="${input.id}" ${placeholder} ${input.required ? 'required' : ''} autocomplete="new-password">`;
                 codeForm += `</mat-form-field>`;
             }
 
@@ -87,17 +87,35 @@ export class CodeToAngular {
     } 
 
     setTableHtml = (tableArray: any) => {
-        let codeHtml = '';
+        let codeHtml = '', rowMenu = '';
         tableArray.forEach((table: { elements: any; id: any; action: any; }) => {
             let codeTable = '',
                 array = table.elements,
                 tableIdAsPropertyName = this.idToPropertyName(table.id),
                 tableIdAsClassName = this.idToClassName(table.id);
                 
-            array.forEach((element: { row: { field: any; }; column: { label: any; }; }) => {
+            array.forEach((element: TableElement) => {
+                let rowElement = '';
+                if (element.row.type !== 'menu') rowElement = `{{element.${element.row.field}}}`;
+                if (element.row.type === 'menu') {
+                    /** Trigger to menu */
+                    rowElement += `<button mat-icon-button class="icon" aria-label="${tableIdAsClassName}" [matMenuTriggerFor]="${tableIdAsPropertyName}Menu">`;
+                    rowElement += `<mat-icon>${element.row.icon}</mat-icon>`;
+                    rowElement += `</button>`;
+                    /** Menu itself */
+                    rowMenu += `<mat-menu #${tableIdAsPropertyName}Menu="matMenu">`;
+                    element.row.menu?.forEach((menuItem) => {
+                        rowMenu += `<button mat-menu-item>`;
+                        rowMenu += menuItem.icon ? `<mat-icon>${menuItem.icon}</mat-icon>` : '';
+                        rowMenu += `<span>${menuItem.label}</span>`;
+                        rowMenu += `</button>`;
+                    })
+                    rowMenu += `</mat-menu>`;
+
+                }
                 codeTable += `<ng-container matColumnDef="${element.row.field}">`;
                 codeTable += `<th mat-header-cell *matHeaderCellDef> ${element.column.label} </th>`;
-                codeTable += `<td mat-cell *matCellDef="let element"> {{element.${element.row.field}}} </td>`;
+                codeTable += `<td mat-cell *matCellDef="let element"> ${rowElement} </td>`;
                 codeTable += `</ng-container>`;
             });
     
@@ -107,6 +125,7 @@ export class CodeToAngular {
             codeHtml += `<table mat-table [dataSource]="${tableIdAsPropertyName}DataSource" class="mat-elevation-z8">`;
             codeHtml += codeTable;
             codeHtml += `</table>`;
+            codeHtml += rowMenu;
         });
         return codeHtml;
     }
