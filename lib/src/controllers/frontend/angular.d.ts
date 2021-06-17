@@ -17,7 +17,14 @@ export declare class CodeToAngular {
     }, array: Array<FormElement>, formIdAsPropertyName: string, isArray?: boolean | undefined) => string;
     setTableHtml: (tableArray: any) => string;
     setFormDirective: (formArray: any[]) => string;
-    setFormDirectiveElement: (array: Array<FormElement>, formIdAsPropertyName: string, isArray?: boolean | undefined) => string;
+    setFormDirectiveElement: (array: Array<FormElement>, formIdAsPropertyName: string, isArray?: boolean | undefined) => {
+        codeForm: string;
+        codeSelectObject: string;
+        codeArrayAdd: string;
+        codeArrayGet: string;
+        codeArrayNew: string;
+        codeArrayRemove: string;
+    };
     setTableDirective: (tableArray: any) => string;
     setFormService: (formArray: any[]) => void;
     setTableService: (formArray: any) => void;

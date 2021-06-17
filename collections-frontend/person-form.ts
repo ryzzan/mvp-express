@@ -10,6 +10,7 @@ import {
 export const PERSON_FORM: ObjectToCode = {
     frontendFramework: FrontendFramework.Angular,
     module: "person-form",
+    title: "Pessoa",
     form: [{
         id: "person",
         elements: [{

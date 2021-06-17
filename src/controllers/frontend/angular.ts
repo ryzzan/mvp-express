@@ -29,8 +29,9 @@ export class CodeToAngular {
         formArray.forEach((form: { elements: any; id: any; }) => {
             let array = form.elements,
                 formIdAsPropertyName = this.idToPropertyName(form.id);
-                
+            codeHtml += `<mat-card><mat-card-content>`;
             codeHtml += this.setFormHtmlElement(form, array, formIdAsPropertyName);
+            codeHtml += `</mat-card-content></mat-card>`;
         });
 
         return codeHtml;
@@ -41,10 +42,16 @@ export class CodeToAngular {
             codeForm = '';
         array.forEach((element: FormElement) => {
             if (element.array) {
-                codeForm += `<mat-card *ngFor="let ${element.array.id}Item of ${formIdAsPropertyName}Form.${element.array.id}; index as i">`;
-                codeForm += `<mat-card-header>${element.array.label} {{1 + i}}</mat-card-header>`;
+                let add = 'add'+element.array.id.charAt(0).toUpperCase() + element.array.id.slice(1),
+                remove = 'remove'+element.array.id.charAt(0).toUpperCase() + element.array.id.slice(1);
+                codeForm += `<ng-container formArrayName="${element.array.id}"><mat-card *ngFor="let _ of ${element.array.id}.controls; index as i"><ng-container [formGroupName]="i">`;
+                codeForm += `<mat-card-header>${element.array.label} {{1 + i}}</mat-card-header><mat-card-content>`;
                 codeForm += this.setFormHtmlElement(form, element.array.elements, formIdAsPropertyName, true);
-                codeForm += `</mat-card>`;
+                codeForm += `</mat-card-content><mat-card-actions>`;
+                codeForm += `<button mat-button type="button" color="warn" (click)="${remove}(i)">Remover ${element.array.label.toLowerCase()}</button>`;
+                codeForm += `</mat-card-actions></ng-container></mat-card></ng-container>`;
+                codeForm += `<mat-card><mat-card-content>`;
+                codeForm += `<button mat-button type="button" (click)=${add}()>Adicionar ${element.array.label.toLowerCase()}</button></mat-card-content></mat-card>`;
             }
 
             // Create code: input
@@ -109,6 +116,11 @@ export class CodeToAngular {
             codeForm = '',
             codeSelectObject = '',
             codeAction = '',
+            codeArrayAdd = '',
+            codeArrayGet = '',
+            codeArrayNew = '',
+            codeArrayRemove = '',
+            codeConstructor = 'constructor(',
             array,
             formIdAsPropertyName: any,
             formIdAsClassName;
@@ -122,41 +134,38 @@ export class CodeToAngular {
                 formIdAsPropertyName = this.idToPropertyName(form.id),
                 formIdAsClassName = this.idToClassName(form.id);
 
-                // Create code: form group
-                codeForm += `${formIdAsPropertyName}Form = new FormGroup({`;
-                codeForm += this.setFormDirectiveElement(array, formIdAsPropertyName);
+                /** Create code: form group */
+                codeConstructor += `private ${formIdAsPropertyName}FormBuilder: FormBuilder,`
+                codeForm += `${formIdAsPropertyName}Form = this.${formIdAsPropertyName}FormBuilder.group({`;
+                codeForm += this.setFormDirectiveElement(array, formIdAsPropertyName).codeForm;
                 codeForm += `});`;
-                
-                // Create code: submit
+
+                /** Create code: select object */
+                codeSelectObject += this.setFormDirectiveElement(array, formIdAsPropertyName).codeSelectObject;
+
+                /** Create code: form array */
+                codeArrayAdd += this.setFormDirectiveElement(array, formIdAsPropertyName).codeArrayAdd;
+                codeArrayGet += this.setFormDirectiveElement(array, formIdAsPropertyName).codeArrayGet;
+                codeArrayNew += this.setFormDirectiveElement(array, formIdAsPropertyName).codeArrayNew;
+                codeArrayRemove += this.setFormDirectiveElement(array, formIdAsPropertyName).codeArrayRemove;
+
+                /** Create code: submit */
                 array.forEach((element: {button: { type: string; action: { type: string; url: any; verb: string; }}}) => {
                     // Create code: button action
                     if (element.button?.type === 'submit' && element.button?.action && element.button?.action.type === 'API') {
                         codeAction += `${formIdAsPropertyName}Submit = () => {fetch('${element.button?.action.url}', {method: '${element.button?.action.verb.toUpperCase()}',headers: {'Content-type': 'application/json','Access-Control-Allow-Origin': '*',},body: JSON.stringify(this.${formIdAsPropertyName}Form.value),}).then((data) => {data.json().then((keys) => {})});}`;
                     }
                 });
-
-                // Create code: select object
-                array.forEach(
-                    (element: { select?: {name: string; options?: {type: string; url?: string; object?: Array<{value: string, valueView: string}>}}}) => {
-                        // Create code: select
-                        if (element.select?.options?.object) {
-                            const objectArray = element.select.options.object;
-                            codeForm += `${element.select.name}SelectObject = [`;
-                            objectArray.forEach(
-                                (selectObject: {value: string; valueView: string;}) => {
-                                    codeForm += `{value: '${selectObject.value}', valueView: '${selectObject.valueView}'}, `;
-                                }
-                            )
-                            codeForm += `];`;
-                        }
-                    }
-                );
                 
+                codeConstructor += `) {};`;
                 codeTypescript += `import { Component } from '@angular/core';`;
-                codeTypescript += `import { FormControl, FormGroup, Validators } from '@angular/forms';`;
+                codeTypescript += `import { FormBuilder, FormGroup, Validators } from '@angular/forms';`;
                 codeTypescript += `@Component({selector: 'app-${form.id}', templateUrl: './${form.id}.component.html', styleUrls: ['./${form.id}.component.css']})`;
                 codeTypescript += `export class ${formIdAsClassName}Component {`;
+                codeTypescript += codeConstructor.replace(/\, \)/gi, ')').replace(/\, \,/gi, '');
+                codeTypescript += codeSelectObject.replace(/\, \]/gi, ']').replace(/\, \}/gi, '}').replace(/\, \,/gi, '');
                 codeTypescript += codeForm.replace(/\, \]/gi, ']').replace(/\, \}/gi, '}').replace(/\, \,/gi, '');
+                codeTypescript += codeArrayNew + codeArrayAdd + codeArrayGet + codeArrayRemove;
                 codeTypescript += codeAction;
                 codeTypescript += `}`;
             }
@@ -165,7 +174,12 @@ export class CodeToAngular {
     }
 
     setFormDirectiveElement = (array: Array<FormElement>, formIdAsPropertyName: string, isArray?: boolean) => {
-        let codeForm = '';
+        let codeForm = '',
+            codeSelectObject = '',
+            codeArrayNew = '',
+            codeArrayGet = '',
+            codeArrayAdd = '',
+            codeArrayRemove = '';
         
         array.forEach(
             (element: FormElement) => {
@@ -176,22 +190,43 @@ export class CodeToAngular {
                     required = (element.input?.required) ? true : false;
                 
                 if (element.array) {
-                    codeForm += `${element.array.id}:new FormArray([new FormGroup({`;
-                    codeForm += this.setFormDirectiveElement(element.array.elements, formIdAsPropertyName, true);
-                    codeForm += `})]),`;
+                    let add = 'add'+element.array.id.charAt(0).toUpperCase() + element.array.id.slice(1),
+                        remove = 'remove'+element.array.id.charAt(0).toUpperCase() + element.array.id.slice(1),
+                        newArray = 'new'+element.array.id.charAt(0).toUpperCase() + element.array.id.slice(1);
+
+                    codeForm += `${element.array.id}: this.${formIdAsPropertyName}FormBuilder.array([]),`;
+
+                    codeSelectObject += this.setFormDirectiveElement(element.array.elements, formIdAsPropertyName, true).codeSelectObject;
+                    codeArrayAdd += `${add}() {this.${element.array.id}.push(this.${newArray}())}`;
+                    codeArrayGet += `get ${element.array.id}(): FormArray {return this.${formIdAsPropertyName}Form.get('${element.array.id}') as FormArray};`;
+                    codeArrayNew += `${newArray}(): FormGroup { return this.${formIdAsPropertyName}FormBuilder.group({`;
+                    codeArrayNew += this.setFormDirectiveElement(element.array.elements, formIdAsPropertyName, true).codeForm;
+                    codeArrayNew += `})};`
+                    codeArrayRemove += `${remove}(i:number) {this.${element.array.id}.removeAt(i)}`;
                 }
                     
                 if (typeText || typePassword || typeEmail || typeDate) {
-                    codeForm += `'${element.input?.name}': new FormControl(${element.input?.defaultValue ? `'${element.input?.defaultValue}'` : null}, [${required ? 'Validators.required,' : ''} ${typeEmail ? 'Validators.email,' : ''}]), `;
+                    codeForm += `${element.input?.name}: [${element.input?.defaultValue ? `'${element.input?.defaultValue}'` : null}, [${required ? 'Validators.required,' : ''} ${typeEmail ? 'Validators.email,' : ''}]],`;
                 }
 
-                if (element.select?.options?.object) {
-                    codeForm += `'${element.select?.name}': new FormControl(${element.select?.defaultValue ? `'${element.select?.defaultValue}'` : null}, [${required ? 'Validators.required,' : ''} ${typeEmail ? 'Validators.email,' : ''}]), `;
+                if (element.select?.options) {
+                    codeForm += `${element.select?.name}: [${element.select?.defaultValue ? `'${element.select?.defaultValue}'` : null}, [${required ? 'Validators.required,' : ''} ${typeEmail ? 'Validators.email,' : ''}]],`;
+                    
+                    if (element.select?.options?.object) {
+                        const objectArray = element.select.options.object;
+                        codeSelectObject += `${element.select.name}SelectObject = [`;
+                        objectArray.forEach(
+                            (selectObject: {value: string; valueView: string;}) => {
+                                codeSelectObject += `{value: '${selectObject.value}', valueView: '${selectObject.valueView}'}, `;
+                            }
+                        )
+                        codeSelectObject += `];`;
+                    }
                 }
             }
         );
 
-        return codeForm;
+        return {codeForm: codeForm, codeSelectObject: codeSelectObject, codeArrayAdd: codeArrayAdd, codeArrayGet: codeArrayGet, codeArrayNew: codeArrayNew, codeArrayRemove: codeArrayRemove};
     }
 
     setTableDirective = (tableArray: any) => {

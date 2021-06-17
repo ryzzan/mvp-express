@@ -89,6 +89,7 @@ export interface ObjectToCode {
     backendFramework?: BackendFramework;
     frontendFramework?: FrontendFramework;
     module: string;
+    title: string;
     form?: [
         {
             id: string;
