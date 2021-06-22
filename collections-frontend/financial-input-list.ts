@@ -1,13 +1,14 @@
-import { ActionType, ActionVerb, FrontendFramework, ObjectToCode } from '../interfaces/frontend';
+import { ActionTypeEnum, ActionVerbEnum, FrontendFrameworkEnum, ObjectToCode } from '../interfaces/frontend';
 
 export const FINANCIAL_INPUT_LIST: ObjectToCode = {
-    frontendFramework: FrontendFramework.Angular,
+    frontendFramework: FrontendFrameworkEnum.Angular,
     module: "acl-list",
+    title: "Finaceira",
     table: [{
         id: "acl-list",
-        action: {
-            type: ActionType.Api,
-            verb: ActionVerb.Get,
+        data: {
+            type: ActionTypeEnum.Api,
+            verb: ActionVerbEnum.Get,
             url: "$ENV$/acls"
         },
         elements: [{
@@ -63,14 +64,14 @@ export const FINANCIAL_INPUT_LIST: ObjectToCode = {
                 menu: [{
                     label: "Editar",
                     action: {
-                        type: "link",
+                        type: ActionTypeEnum.Link,
                         url: "$ENV$/companies/{id}"
                     }
                 }, {
                     label: "Remover",
                     action: {
-                        type: "api",
-                        verb: "delete",
+                        type: ActionTypeEnum.Link,
+                        verb: ActionVerbEnum.Delete,
                         url: "$ENV$/people/{id}"
                     },
                     validator: "$VALIDATOR_CONFIRM_ACTION$"

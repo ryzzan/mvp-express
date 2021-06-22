@@ -1,6 +1,7 @@
-import {ObjectToCode, FrontendFramework, ButtonType, InputType, OptionType, ActionType, ActionVerb} from '../interfaces/frontend';
+import {ObjectToCode, FrontendFrameworkEnum, ButtonTypeEnum, InputTypeEnum, RequestTypeEnum, ActionTypeEnum, ActionVerbEnum} from '../interfaces/frontend';
 export const COMPANY_FORM: ObjectToCode = {
-    frontendFramework: FrontendFramework.Angular,
+    frontendFramework: FrontendFrameworkEnum.Angular,
+    title: "Empresa",
     module: "company-form",
     form: [{
         id: "company",
@@ -8,7 +9,7 @@ export const COMPANY_FORM: ObjectToCode = {
             input: {
                 // TO-DO API over uniqueId
                 id: "uniqueId",
-                type: InputType.Text,
+                type: InputTypeEnum.Text,
                 label: "CNPJ",
                 required: true,
                 name: "uniqueId",
@@ -18,7 +19,7 @@ export const COMPANY_FORM: ObjectToCode = {
         }, {
             input: {
                 id: "businessName",
-                type: InputType.Text,
+                type: InputTypeEnum.Text,
                 label: "Nome fantasia",
                 required: true,
                 name: "businessName",
@@ -27,7 +28,7 @@ export const COMPANY_FORM: ObjectToCode = {
         }, {
             input: {
                 id: "companyName",
-                type: InputType.Text,
+                type: InputTypeEnum.Text,
                 label: "Razão social",
                 required: true,
                 name: "companyName",
@@ -36,7 +37,7 @@ export const COMPANY_FORM: ObjectToCode = {
         }, {
             input: {
                 id: "openingDate",
-                type: InputType.Date,
+                type: InputTypeEnum.Date,
                 label: "Data de abertura",
                 required: true,
                 name: "openingDate",
@@ -46,7 +47,7 @@ export const COMPANY_FORM: ObjectToCode = {
             input: {
                 // TO-DO Autocomplete ADDING multiple activities
                 id: "companyActivity",
-                type: InputType.Text,
+                type: InputTypeEnum.Text,
                 label: "CNAE",
                 required: true,
                 name: "companyActivity",
@@ -55,7 +56,7 @@ export const COMPANY_FORM: ObjectToCode = {
         }, {
             input: {
                 id: "contactId",
-                type: InputType.Text,
+                type: InputTypeEnum.Text,
                 label: "Identificador",
                 required: true,
                 name: "contactId",
@@ -69,7 +70,7 @@ export const COMPANY_FORM: ObjectToCode = {
                 name: "contactType",
                 placeholder: "Tipo de contato",
                 options: {
-                    type: OptionType.Object,
+                    type: RequestTypeEnum.Object,
                     object: [{
                         value: "mobile",
                         valueView: "Celular"
@@ -88,7 +89,7 @@ export const COMPANY_FORM: ObjectToCode = {
         }, {
             input: {
                 id: "value",
-                type: InputType.Text,
+                type: InputTypeEnum.Text,
                 label: "Valor",
                 required: true,
                 name: "value",
@@ -97,7 +98,7 @@ export const COMPANY_FORM: ObjectToCode = {
         }, {
             input: {
                 id: "contactComplement",
-                type: InputType.Text,
+                type: InputTypeEnum.Text,
                 label: "Complemento",
                 required: true,
                 name: "contactComplement",
@@ -106,7 +107,7 @@ export const COMPANY_FORM: ObjectToCode = {
         }, {
             input: {
                 id: "postalCode",
-                type: InputType.Text,
+                type: InputTypeEnum.Text,
                 label: "CEP",
                 required: true,
                 name: "postalCode",
@@ -115,7 +116,7 @@ export const COMPANY_FORM: ObjectToCode = {
         }, {
             input: {
                 id: "addressId",
-                type: InputType.Text,
+                type: InputTypeEnum.Text,
                 label: "Identificador",
                 required: true,
                 name: "addressId",
@@ -124,7 +125,7 @@ export const COMPANY_FORM: ObjectToCode = {
         }, {
             input: {
                 id: "address",
-                type: InputType.Text,
+                type: InputTypeEnum.Text,
                 label: "Logradouro",
                 required: true,
                 name: "address",
@@ -133,7 +134,7 @@ export const COMPANY_FORM: ObjectToCode = {
         }, {
             input: {
                 id: "number",
-                type: InputType.Text,
+                type: InputTypeEnum.Text,
                 label: "Número",
                 required: true,
                 name: "number",
@@ -142,7 +143,7 @@ export const COMPANY_FORM: ObjectToCode = {
         }, {
             input: {
                 id: "district",
-                type: InputType.Text,
+                type: InputTypeEnum.Text,
                 label: "Bairro",
                 required: true,
                 name: "district",
@@ -151,7 +152,7 @@ export const COMPANY_FORM: ObjectToCode = {
         }, {
             input: {
                 id: "addressComplement",
-                type: InputType.Text,
+                type: InputTypeEnum.Text,
                 label: "Complemento",
                 name: "addressComplement",
                 placeholder: "Mais informações que ajudem a achar o seu endereço"
@@ -159,7 +160,7 @@ export const COMPANY_FORM: ObjectToCode = {
         }, {
             input: {
                 id: "country",
-                type: InputType.Text,
+                type: InputTypeEnum.Text,
                 label: "País",
                 name: "country",
                 placeholder: "País em que fica seu endereço"
@@ -167,7 +168,7 @@ export const COMPANY_FORM: ObjectToCode = {
         }, {
             input: {
                 id: "state",
-                type: InputType.Text,
+                type: InputTypeEnum.Text,
                 label: "Estado",
                 name: "state",
                 placeholder: "Estado em que fica seu endereço"
@@ -175,7 +176,7 @@ export const COMPANY_FORM: ObjectToCode = {
         }, {
             input: {
                 id: "city",
-                type: InputType.Text,
+                type: InputTypeEnum.Text,
                 label: "Cidade",
                 name: "city",
                 placeholder: "Município em que fica seu endereço"
@@ -183,12 +184,12 @@ export const COMPANY_FORM: ObjectToCode = {
         }, {
             button: {
                 id: "create",
-                type: ButtonType.Submit,
+                type: ButtonTypeEnum.Submit,
                 label: "CRIAR",
                 icon:  "add",
                 action: {
-                    type: ActionType.Api,
-                    verb: ActionVerb.Post,
+                    type: ActionTypeEnum.Api,
+                    verb: ActionVerbEnum.Post,
                     url: "$ENV$/auth/login"
                 }
             }

@@ -1,16 +1,25 @@
-import { ActionType, ActionVerb, ButtonType, FrontendFramework, InputType, ObjectToCode } from '../interfaces/frontend';
+import { ActionTypeEnum, ActionVerbEnum, FilterComparisonOperatorEnum, FilterTypeEnum, FrontendFrameworkEnum, ObjectToCode } from '../interfaces/frontend';
 
 export const USER_LIST: ObjectToCode = {
-    frontendFramework: FrontendFramework.Angular,
+    frontendFramework: FrontendFrameworkEnum.Angular,
     module: "user-list",
+    title: "Usuário",
     table: [{
         id: "user-list",
-        action: {
-            type: ActionType.Api,
-            verb: ActionVerb.Get,
+        data: {
+            type: ActionTypeEnum.Api,
+            verb: ActionVerbEnum.Get,
             url: "$ENV$/users"
         },
         elements: [{
+            column: {
+                label: "CPF"
+            },
+            row: {
+                type: "string",
+                field: "uniqueId"
+            }
+        }, {
             column: {
                 label: "Nome",
                 sort: true
@@ -18,14 +27,6 @@ export const USER_LIST: ObjectToCode = {
             row: {
                 type: "string",
                 field: "name"
-            }
-        }, {
-            column: {
-                label: "Código único"
-            },
-            row: {
-                type: "string",
-                field: "uniqueId"
             }
         }, {
             column: {
@@ -50,15 +51,7 @@ export const USER_LIST: ObjectToCode = {
             },
             row: {
                 type: "array",
-                field: "contacts",
-                filter: {
-                    type: "object",
-                    where: [{
-                        attribute: "type",
-                        operator: "equal",
-                        value: "mobile"
-                    }]
-                }
+                field: "mobile"
             }
         }, {
             column: {
@@ -66,15 +59,7 @@ export const USER_LIST: ObjectToCode = {
             },
             row: {
                 type: "array",
-                field: "contacts",
-                filter: {
-                    type: "object",
-                    where: [{
-                        attribute: "type",
-                        operator: "equal",
-                        value: "email"
-                    }]
-                }
+                field: "email"
             }
         }, {
             column: {
@@ -82,29 +67,26 @@ export const USER_LIST: ObjectToCode = {
             },
             row: {
                 type: "menu",
-                icon: {
-                    ui: "material",
-                    name: "more_vert"
-                },
+                icon: "more_vert",
                 menu: [{
                     label: "Editar",
                     action: {
-                        type: "link",
+                        type: ActionTypeEnum.Link,
                         url: "$ENV$/companies/{id}"
                     }
                 }, {
                     label: "Remover",
                     action: {
-                        type: "api",
-                        verb: "delete",
+                        type: ActionTypeEnum.Api,
+                        verb: ActionVerbEnum.Delete,
                         url: "$ENV$/people/{id}"
                     },
                     validator: "$VALIDATOR_CONFIRM_ACTION$"
                 }, {
                     label: "Bloquear",
                     action: {
-                        type: "api",
-                        verb: "put",
+                        type: ActionTypeEnum.Api,
+                        verb: ActionVerbEnum.Put,
                         url: "$ENV$/people/{id}",
                         body: {
                             isBlocked: true
@@ -114,8 +96,8 @@ export const USER_LIST: ObjectToCode = {
                 }, {
                     label: "Desbloquear",
                     action: {
-                        type: "api",
-                        verb: "put",
+                        type: ActionTypeEnum.Api,
+                        verb: ActionVerbEnum.Put,
                         url: "$ENV$/people/{id}",
                         body: {
                             isBlocked: false

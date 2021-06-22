@@ -1,16 +1,25 @@
-import { ActionType, ActionVerb, ButtonType, FrontendFramework, InputType, ObjectToCode } from '../interfaces/frontend';
+import { ActionTypeEnum, ActionVerbEnum, FrontendFrameworkEnum, FilterTypeEnum, FilterComparisonOperatorEnum, ObjectToCode } from '../interfaces/frontend';
 
 export const COMPANY_LIST: ObjectToCode = {
-    frontendFramework: FrontendFramework.Angular,
+    frontendFramework: FrontendFrameworkEnum.Angular,
     module: "company-list",
+    title: "Empresa",
     table: [{
         id: "company-list",
-        action: {
-            type: ActionType.Api,
-            verb: ActionVerb.Get,
-            url: "$ENV$/companies"
+        data: {
+            type: ActionTypeEnum.Api,
+            verb: ActionVerbEnum.Get,
+            url: "$ENV$/adxtv"
         },
         elements: [{
+            column: {
+                label: "CNPJ"
+            },
+            row: {
+                type: "string",
+                field: "uniqueId"
+            }
+        }, {
             column: {
                 label: "Nome fantasia",
                 sort: true
@@ -18,14 +27,6 @@ export const COMPANY_LIST: ObjectToCode = {
             row: {
                 type: "string",
                 field: "businessName"
-            }
-        }, {
-            column: {
-                label: "CNPJ"
-            },
-            row: {
-                type: "string",
-                field: "uniqueId"
             }
         }, {
             column: {
@@ -45,10 +46,10 @@ export const COMPANY_LIST: ObjectToCode = {
                 type: "array",
                 field: "contacts",
                 filter: {
-                    type: "object",
+                    type: FilterTypeEnum.Object,
                     where: [{
                         attribute: "type",
-                        operator: "equal",
+                        comparison: FilterComparisonOperatorEnum.Equal,
                         value: "mobile"
                     }]
                 }
@@ -61,10 +62,10 @@ export const COMPANY_LIST: ObjectToCode = {
                 type: "array",
                 field: "contacts",
                 filter: {
-                    type: "object",
+                    type: FilterTypeEnum.Object,
                     where: [{
                         attribute: "type",
-                        operator: "equal",
+                        comparison: FilterComparisonOperatorEnum.Equal,
                         value: "email"
                     }]
                 }
@@ -75,29 +76,26 @@ export const COMPANY_LIST: ObjectToCode = {
             },
             row: {
                 type: "menu",
-                icon: {
-                    ui: "material",
-                    name: "more_vert"
-                },
+                icon: "more_vert",
                 menu: [{
                     label: "Editar",
                     action: {
-                        type: "link",
+                        type: ActionTypeEnum.Link,
                         url: "$ENV$/companies/{id}"
                     }
                 }, {
                     label: "Remover",
                     action: {
-                        type: "api",
-                        verb: "delete",
+                        type: ActionTypeEnum.Link,
+                        verb: ActionVerbEnum.Delete,
                         url: "$ENV$/people/{id}"
                     },
                     validator: "$VALIDATOR_CONFIRM_ACTION$"
                 }, {
                     label: "Bloquear",
                     action: {
-                        type: "api",
-                        verb: "put",
+                        type: ActionTypeEnum.Api,
+                        verb: ActionVerbEnum.Put,
                         url: "$ENV$/people/{id}",
                         body: {
                             isBlocked: true
@@ -107,8 +105,8 @@ export const COMPANY_LIST: ObjectToCode = {
                 }, {
                     label: "Desbloquear",
                     action: {
-                        type: "api",
-                        verb: "put",
+                        type: ActionTypeEnum.Api,
+                        verb: ActionVerbEnum.Put,
                         url: "$ENV$/people/{id}",
                         body: {
                             isBlocked: false

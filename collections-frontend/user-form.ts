@@ -1,13 +1,14 @@
-import {ObjectToCode, FrontendFramework, ButtonType, InputType, OptionType, ActionType, ActionVerb} from '../interfaces/frontend';
+import {ObjectToCode, FrontendFrameworkEnum, ButtonTypeEnum, InputTypeEnum, RequestTypeEnum, ActionTypeEnum, ActionVerbEnum} from '../interfaces/frontend';
 export const USER_FORM: ObjectToCode = {
-    frontendFramework: FrontendFramework.Angular,
+    frontendFramework: FrontendFrameworkEnum.Angular,
     module: "user-form",
+    title: "Usuário",
     form: [{
         id: "user",
         elements: [{
             input: {
                 id: "uniqueId",
-                type: InputType.Text,
+                type: InputTypeEnum.Text,
                 label: "CPF",
                 required: true,
                 name: "uniqueId",
@@ -17,7 +18,7 @@ export const USER_FORM: ObjectToCode = {
         }, {
             input: {
                 id: "name",
-                type: InputType.Text,
+                type: InputTypeEnum.Text,
                 label: "Nome",
                 required: true,
                 name: "name",
@@ -26,7 +27,7 @@ export const USER_FORM: ObjectToCode = {
         }, {
             input: {
                 id: "birthday",
-                type: InputType.Date,
+                type: InputTypeEnum.Date,
                 label: "Nascimento",
                 required: true,
                 name: "birthday",
@@ -39,7 +40,7 @@ export const USER_FORM: ObjectToCode = {
                 required: true,
                 name: "gender",
                 options: {
-                    type: OptionType.Object,
+                    type: RequestTypeEnum.Object,
                     object: [{
                         value: 'f',
                         valueView: 'Feminino'
@@ -53,7 +54,7 @@ export const USER_FORM: ObjectToCode = {
         }, {
             input: {
                 id: "contactId",
-                type: InputType.Text,
+                type: InputTypeEnum.Text,
                 label: "Identificador",
                 required: true,
                 name: "contactId",
@@ -67,7 +68,7 @@ export const USER_FORM: ObjectToCode = {
                 name: "contactType",
                 placeholder: "Tipo de contato",
                 options: {
-                    type: OptionType.Object,
+                    type: RequestTypeEnum.Object,
                     object: [{
                         value: "mobile",
                         valueView: "Celular"
@@ -86,7 +87,7 @@ export const USER_FORM: ObjectToCode = {
         }, {
             input: {
                 id: "value",
-                type: InputType.Text,
+                type: InputTypeEnum.Text,
                 label: "Valor",
                 required: true,
                 name: "value",
@@ -95,7 +96,7 @@ export const USER_FORM: ObjectToCode = {
         }, {
             input: {
                 id: "contactComplement",
-                type: InputType.Text,
+                type: InputTypeEnum.Text,
                 label: "Complemento",
                 required: true,
                 name: "contactComplement",
@@ -104,7 +105,7 @@ export const USER_FORM: ObjectToCode = {
         }, {
             input: {
                 id: "postalCode",
-                type: InputType.Text,
+                type: InputTypeEnum.Text,
                 label: "CEP",
                 required: true,
                 name: "postalCode",
@@ -113,7 +114,7 @@ export const USER_FORM: ObjectToCode = {
         }, {
             input: {
                 id: "addressId",
-                type: InputType.Text,
+                type: InputTypeEnum.Text,
                 label: "Identificador",
                 required: true,
                 name: "addressId",
@@ -122,7 +123,7 @@ export const USER_FORM: ObjectToCode = {
         }, {
             input: {
                 id: "address",
-                type: InputType.Text,
+                type: InputTypeEnum.Text,
                 label: "Logradouro",
                 required: true,
                 name: "address",
@@ -131,7 +132,7 @@ export const USER_FORM: ObjectToCode = {
         }, {
             input: {
                 id: "number",
-                type: InputType.Text,
+                type: InputTypeEnum.Text,
                 label: "Número",
                 required: true,
                 name: "number",
@@ -140,7 +141,7 @@ export const USER_FORM: ObjectToCode = {
         }, {
             input: {
                 id: "district",
-                type: InputType.Text,
+                type: InputTypeEnum.Text,
                 label: "Bairro",
                 required: true,
                 name: "district",
@@ -149,7 +150,7 @@ export const USER_FORM: ObjectToCode = {
         }, {
             input: {
                 id: "addressComplement",
-                type: InputType.Text,
+                type: InputTypeEnum.Text,
                 label: "Complemento",
                 name: "addressComplement",
                 placeholder: "Mais informações que ajudem a achar o seu endereço"
@@ -157,7 +158,7 @@ export const USER_FORM: ObjectToCode = {
         }, {
             input: {
                 id: "country",
-                type: InputType.Text,
+                type: InputTypeEnum.Text,
                 label: "País",
                 name: "country",
                 placeholder: "País em que fica seu endereço"
@@ -165,7 +166,7 @@ export const USER_FORM: ObjectToCode = {
         }, {
             input: {
                 id: "state",
-                type: InputType.Text,
+                type: InputTypeEnum.Text,
                 label: "Estado",
                 name: "state",
                 placeholder: "Estado em que fica seu endereço"
@@ -173,7 +174,7 @@ export const USER_FORM: ObjectToCode = {
         }, {
             input: {
                 id: "city",
-                type: InputType.Text,
+                type: InputTypeEnum.Text,
                 label: "Cidade",
                 name: "city",
                 placeholder: "Município em que fica seu endereço"
@@ -181,7 +182,7 @@ export const USER_FORM: ObjectToCode = {
         }, {
             input: {
                 id: "connectionEmail",
-                type: InputType.Email,
+                type: InputTypeEnum.Email,
                 label: "E-mail",
                 name: "connectionEmail",
                 placeholder: "E-mail para conexão"
@@ -189,7 +190,7 @@ export const USER_FORM: ObjectToCode = {
         }, {
             input: {
                 id: "connectionPassword",
-                type: InputType.Password,
+                type: InputTypeEnum.Password,
                 label: "Senha",
                 name: "connectionPassword",
                 placeholder: "Senha para conexão"
@@ -197,12 +198,12 @@ export const USER_FORM: ObjectToCode = {
         }, {
             button: {
                 id: "create",
-                type: ButtonType.Submit,
+                type: ButtonTypeEnum.Submit,
                 label: "CRIAR",
                 icon:  "add",
                 action: {
-                    type: ActionType.Api,
-                    verb: ActionVerb.Post,
+                    type: ActionTypeEnum.Api,
+                    verb: ActionVerbEnum.Post,
                     url: "$ENV$/auth/login"
                 }
             }

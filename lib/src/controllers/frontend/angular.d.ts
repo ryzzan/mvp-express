@@ -1,35 +1,19 @@
 /**
  * TO-DO
- *  - Form tab
+ *  - Tree
  *  - Services
  */
-import { ObjectToCode, FormElement } from "../../../interfaces/frontend";
+import { ObjectToCode } from "../../../interfaces/frontend";
+import { FormAngular } from './angular/form';
+import { TableAngular } from './angular/table';
+import { TreeAngular } from './angular/tree';
 export declare class CodeToAngular {
+    formAngular: FormAngular;
+    tableAngular: TableAngular;
+    treeAngular: TreeAngular;
     setAngularCode: (objectToCode: ObjectToCode) => {
         html: string;
         directive: string;
         interface: string;
     };
-    setFormHtml: (formArray: any[]) => string;
-    setFormHtmlElement: (form: {
-        elements: any;
-        id: any;
-    }, array: Array<FormElement>, formIdAsPropertyName: string, isArray?: boolean | undefined) => string;
-    setTableHtml: (tableArray: any) => string;
-    setFormDirective: (formArray: any[]) => string;
-    setFormDirectiveElement: (array: Array<FormElement>, formIdAsPropertyName: string, isArray?: boolean | undefined) => {
-        codeForm: string;
-        codeSelectObject: string;
-        codeArrayAdd: string;
-        codeArrayGet: string;
-        codeArrayNew: string;
-        codeArrayRemove: string;
-    };
-    setTableDirective: (tableArray: any) => string;
-    setFormService: (formArray: any[]) => void;
-    setTableService: (formArray: any) => void;
-    setFormInterface: (formArray: any[]) => string;
-    setTableInterface: (formArray: any) => void;
-    idToPropertyName: (id: string) => string;
-    idToClassName: (id: string) => string;
 }

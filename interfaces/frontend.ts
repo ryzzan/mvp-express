@@ -1,4 +1,4 @@
-export enum BackendFramework {
+export enum BackendFrameworkEnum {
     Loopback = 'LOOPBACK',
     Nest = 'NEST',
     Fastify = 'FASTIFY',
@@ -6,7 +6,7 @@ export enum BackendFramework {
     Springboot = 'SPRINGBOOT'
 };
 
-export enum FrontendFramework {
+export enum FrontendFrameworkEnum {
     Angular = 'ANGULAR',
     Pure = 'PURE',
     React = 'REACT',
@@ -14,30 +14,31 @@ export enum FrontendFramework {
     Vue = 'VUE',
 };
 
-export enum InputType {
+export enum InputTypeEnum {
     Text = 'text',
     Password = 'password',
     Email = 'email',
-    Date = 'date'
+    Date = 'date',
+    Number = 'number'
 };
 
-export enum ButtonType {
+export enum ButtonTypeEnum {
     Submit = 'submit',
     Reset = 'reset',
     Link = 'link'
 };
 
-export enum OptionType {
+export enum RequestTypeEnum {
     Api = 'API',
     Object = 'OBJECT'
 };
 
-export enum ActionType {
+export enum ActionTypeEnum {
     Api = 'API',
     Link = 'LINK'
 };
 
-export enum ActionVerb {
+export enum ActionVerbEnum {
     Post = 'POST',
     Get = 'GET',
     Patch = 'PATCH',
@@ -45,65 +46,133 @@ export enum ActionVerb {
     Delete = 'DELETE'
 };
 
-export interface RowMenuElement {
-    label: string;
-    icon?: string;
-    action: {
-        type: ActionType;
-        verb?: ActionVerb;
-        url?: string;
-        body?: Object;
-    }
-    validator?: string;
+export enum FilterTypeEnum {
+    Api = 'API',
+    Object = 'OBJECT'
 }
 
-export interface FormElement {
+export enum FilterComparisonOperatorEnum {
+    Equal = 'eq',
+    Greater = 'gt',
+    GreaterOrEqual = 'gte',
+    InArray = 'in',
+    Less = 'lt',
+    LessOrEqual = 'lte',
+    NotEqual = 'ne',
+    NotInArray = 'nin',
+
+}
+
+export enum FilterLogicalOperatorEnum {
+    And = 'and',
+    Not = 'not',
+    Nor = 'nor',
+    Or = 'or'
+}
+
+export interface ObjectToCode {
+    backendFramework?: BackendFrameworkEnum;
+    frontendFramework?: FrontendFrameworkEnum;
+    module: string;
+    title: string;
+    form?: Array<Form>;
+    table?: Array<Table>;
+    tree?: Array<Tree>;
+};
+
+/**
+ * Form
+ */
+
+export interface Form {
+    id: string;
+    title?: string;
+    subtitle?:string;
+    tabs?: Array<FormTabElementInterface>;
+    isDialog?: boolean;
+    actions?: {
+        id: string;
+        elements: Array<FormElementInterface>;
+    };
+    elements: Array<FormElementInterface>;
+};
+
+export interface FormElementInterface {
     array?: { 
         id: string;
         label: string;
-        elements: Array<FormElement>;
+        elements: Array<FormElementInterface>;
     };
     input?: {
-        id: string,
-        type: InputType,
-        label: string,
-        required?: boolean,
-        name: string,
-        placeholder?: string,
-        defaultValue?: string,
-        comment?: string,
+        id: string;
+        type: InputTypeEnum;
+        label: string;
+        required?: boolean;
+        name: string;
+        placeholder?: string;
+        defaultValue?: string;
+        comment?: string;
+    };
+    slide?: {
+        id: string;
+        label: string;
+        required?: boolean;
+        name: string;
+        defaultValue?: boolean;
+        comment?: string;
     };
     select?: {
-        id: string,
-        label: string,
-        required?: boolean,
-        name: string,
-        placeholder?: string,
-        defaultValue?: string,
-        options: {
-            type: OptionType,
-            url?: string,
-            object?: Array<{
-                value: string,
-                valueView: string
-            }>
-        }
+        id: string;
+        label: string;
+        required?: boolean;
+        name: string;
+        placeholder?: string;
+        defaultValue?: string;
+        isMultiple?: boolean;
+        options: SelectOptionInterface;
     };
     checkbox?: {};
     radio?: {};
     autocomplete?: {};
     button?: {
-        id: string,
-        type: ButtonType,
-        label: string,
-        icon?: string,
-        action: {
-            type: ActionType,
-            verb?: ActionVerb,
-            url?: string
-        }
+        id: string;
+        type: ButtonTypeEnum;
+        label: string;
+        icon?: string;
+        action: RequestInterface
     };
 };
+
+export interface SelectOptionInterface {
+    type: RequestTypeEnum;
+    url?: string;
+    object?: Array<SelectOptionObjectInterface>;
+}
+
+export interface FormTabElementInterface {
+    id: string;
+    label: string;
+    elements: Array<FormElementInterface>;
+}
+
+export interface SelectOptionObjectInterface {
+    value: string;
+    valueView: string;
+}
+
+/**
+ * Table
+ */
+
+export interface Table {
+    id: string;
+    data: RequestInterface;
+    actions?: {
+        id: string;
+        elements: Array<FormElementInterface>;
+    };
+    elements: Array<TableElement>;
+}
 
 export interface TableElement {
     column: {
@@ -115,27 +184,72 @@ export interface TableElement {
         type: string;
         field?: string;
         icon?:  string;
-        menu?: Array<RowMenuElement>;
+        filter?: FilterInterface;
+        menu?: Array<{
+            label: string;
+            icon?: string;
+            action: RequestInterface;
+            validator?: string;
+        }>;
         comment?: string;
     };
 };
 
-export interface ObjectToCode {
-    backendFramework?: BackendFramework;
-    frontendFramework?: FrontendFramework;
-    module: string;
-    title: string;
-    form?: [{
-        id: string,
-        elements: Array<FormElement>
-    }];
-    table?: [{
-        id: string,
-        action: {
-            type: ActionType,
-            verb: ActionVerb,
-            url: string
-        },
-        elements: Array<TableElement>
-    }];
+export interface RowMenuElementInterface {
+    label: string;
+    icon?: string;
+    action: RequestInterface;
+    validator?: string;
+}
+
+/**
+ * Tree
+ */
+export interface Tree {
+    id: string;
+    elements: Array<TreeElementInterface>;
+}
+
+export interface TreeElementInterface {
+    id: string;
+    nodes: TreeNodeInterface;
 };
+
+export interface TreeNodeInterface {
+    type: RequestTypeEnum;
+    url?: string;
+    object?: Array<TreeNodeObjectInterface>;
+}
+
+export interface TreeNodeObjectInterface {
+    name: string;
+    children?: Array<TreeNodeObjectInterface>;
+    menu?: Array<{
+        label: string;
+        icon?: string;
+        action: RequestInterface;
+        validator?: string;
+    }>;
+}
+
+/**
+ * Request
+ */
+export interface RequestInterface {
+    type: ActionTypeEnum;
+    verb?: ActionVerbEnum;
+    url?: string;
+    body?: Object;
+}
+
+export interface FilterWhereInterface {
+    attribute?: string;
+    comparison?: FilterComparisonOperatorEnum;
+    logical?: FilterLogicalOperatorEnum;
+    value?: string;
+}
+
+export interface FilterInterface {
+    type: FilterTypeEnum;
+    where?: Array<FilterWhereInterface>;
+}

@@ -1,13 +1,14 @@
-import {ObjectToCode, FrontendFramework, ButtonType, InputType, OptionType, ActionType, ActionVerb} from '../interfaces/frontend';
+import {ObjectToCode, FrontendFrameworkEnum, ButtonTypeEnum, InputTypeEnum, RequestTypeEnum, ActionTypeEnum, ActionVerbEnum} from '../interfaces/frontend';
 export const ACL_FORM: ObjectToCode = {
-    frontendFramework: FrontendFramework.Angular,
-    module: "acl-list",
+    frontendFramework: FrontendFrameworkEnum.Angular,
+    module: "acl-form",
+    title: "ACL",
     form: [{
-        id: "acl",
+        id: "acl-form",
         elements: [{
             input: {
                 id: "group",
-                type: InputType.Text,
+                type: InputTypeEnum.Text,
                 label: "Grupo",
                 required: true,
                 name: "group",
@@ -22,7 +23,7 @@ export const ACL_FORM: ObjectToCode = {
                 name: "module",
                 placeholder: "Fluxo de uso",
                 options: {
-                    type: OptionType.Object,
+                    type: RequestTypeEnum.Object,
                     object: [{
                         value: "user-list",
                         valueView: "Usuários"
@@ -44,8 +45,9 @@ export const ACL_FORM: ObjectToCode = {
                 label: "Permissão",
                 required: true,
                 name: "permission",
+                isMultiple: true,
                 options: {
-                    type: OptionType.Object,
+                    type: RequestTypeEnum.Object,
                     object: [{
                         value: "create",
                         valueView: "Criar"
@@ -62,18 +64,22 @@ export const ACL_FORM: ObjectToCode = {
                 },
                 placeholder: "Verbo de ação"
             }
-        }, {
-            button: {
-                id: "create",
-                type: ButtonType.Submit,
-                label: "CRIAR",
-                icon:  "add",
-                action: {
-                    type: ActionType.Api,
-                    verb: ActionVerb.Post,
-                    url: "$ENV$/acl"
+        }],
+        actions: {
+            id: "acl-form-action",
+            elements: [{
+                button: {
+                    id: "create",
+                    type: ButtonTypeEnum.Submit,
+                    label: "CRIAR",
+                    icon:  "add",
+                    action: {
+                        type: ActionTypeEnum.Api,
+                        verb: ActionVerbEnum.Post,
+                        url: "$ENV$/acl"
+                    }
                 }
-            }
-        }]
+            }]
+        }
     }]
 };

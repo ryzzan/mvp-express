@@ -1,13 +1,14 @@
-import {ObjectToCode, FrontendFramework, ButtonType, InputType, OptionType, ActionType, ActionVerb} from '../interfaces/frontend';
+import {ObjectToCode, FrontendFrameworkEnum, ButtonTypeEnum, InputTypeEnum, ActionTypeEnum, ActionVerbEnum} from '../interfaces/frontend';
 export const RECOVER_PASSWORD: ObjectToCode = {
-    frontendFramework: FrontendFramework.Angular,
+    frontendFramework: FrontendFrameworkEnum.Angular,
     module: "recover-password",
+    title: "Recuperar senha",
     form: [{
         id: "recoverPassword",
         elements: [{
             input: {
                 id: "email",
-                type: InputType.Email,
+                type: InputTypeEnum.Email,
                 label: "E-mail",
                 required: true,
                 name: "email",
@@ -16,7 +17,7 @@ export const RECOVER_PASSWORD: ObjectToCode = {
         }, {
             input: {
                 id: "repeatEmail",
-                type: InputType.Email,
+                type: InputTypeEnum.Email,
                 label: "Repetir e-mail",
                 required: true,
                 name: "repeatEmail",
@@ -25,12 +26,12 @@ export const RECOVER_PASSWORD: ObjectToCode = {
         }, {
             button: {
                 id: "create",
-                type: ButtonType.Submit,
+                type: ButtonTypeEnum.Submit,
                 label: "ENVIAR",
                 icon:  "add",
                 action: {
-                    type: ActionType.Api,
-                    verb: ActionVerb.Post,
+                    type: ActionTypeEnum.Api,
+                    verb: ActionVerbEnum.Post,
                     url: "$ENV$/acl"
                 }
             }

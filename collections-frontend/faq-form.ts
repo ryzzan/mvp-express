@@ -1,13 +1,14 @@
-import {ObjectToCode, FrontendFramework, ButtonType, InputType, OptionType, ActionType, ActionVerb} from '../interfaces/frontend';
+import {ObjectToCode, FrontendFrameworkEnum, ButtonTypeEnum, InputTypeEnum, ActionTypeEnum, ActionVerbEnum} from '../interfaces/frontend';
 export const FAQ_FORM: ObjectToCode = {
-    frontendFramework: FrontendFramework.Angular,
-    module: "faq-list",
+    frontendFramework: FrontendFrameworkEnum.Angular,
+    module: "faq-form",
+    title: "FAQ",
     form: [{
-        id: "faq",
+        id: "faq-form",
         elements: [{
             input: {
                 id: "question",
-                type: InputType.Text,
+                type: InputTypeEnum.Text,
                 label: "Pergunta",
                 required: true,
                 name: "question",
@@ -17,25 +18,29 @@ export const FAQ_FORM: ObjectToCode = {
         }, {
             input: {
                 id: "answer",
-                type: InputType.Text,
+                type: InputTypeEnum.Text,
                 label: "Resposta",
                 required: true,
                 name: "answer",
                 placeholder: "Resposta à pergunta",
                 // regex: /^\d+$/
             }
-        }, {
-            button: {
-                id: "create",
-                type: ButtonType.Submit,
-                label: "CRIAR",
-                icon:  "add",
-                action: {
-                    type: ActionType.Api,
-                    verb: ActionVerb.Post,
-                    url: "$ENV$/auth/faq"
+        },],
+        actions: {
+            id:"faq-form-action",
+            elements: [{
+                button: {
+                    id: "create",
+                    type: ButtonTypeEnum.Submit,
+                    label: "CRIAR",
+                    icon:  "add",
+                    action: {
+                        type: ActionTypeEnum.Api,
+                        verb: ActionVerbEnum.Post,
+                        url: "$ENV$/auth/faq"
+                    }
                 }
-            }
-        }]
+            }]
+        }
     }]
 };

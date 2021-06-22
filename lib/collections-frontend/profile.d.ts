@@ -1,2 +1,2 @@
 import { ObjectToCode } from '../interfaces/frontend';
-export declare const ACL_FORM: ObjectToCode;
+export declare const PROFILE: ObjectToCode;

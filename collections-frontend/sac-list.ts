@@ -1,13 +1,14 @@
-import { ActionType, ActionVerb, FrontendFramework, ObjectToCode } from '../interfaces/frontend';
+import { ActionTypeEnum, ActionVerbEnum, FrontendFrameworkEnum, ObjectToCode } from '../interfaces/frontend';
 
 export const SAC_LIST: ObjectToCode = {
-    frontendFramework: FrontendFramework.Angular,
+    frontendFramework: FrontendFrameworkEnum.Angular,
     module: "sac-list",
+    title: "SAC",
     table: [{
         id: "sac-list",
-        action: {
-            type: ActionType.Api,
-            verb: ActionVerb.Get,
+        data: {
+            type: ActionTypeEnum.Api,
+            verb: ActionVerbEnum.Get,
             url: "$ENV$/sacs"
         },
         elements: [{
@@ -53,14 +54,14 @@ export const SAC_LIST: ObjectToCode = {
                 menu: [{
                     label: "Editar",
                     action: {
-                        type: "link",
+                        type: ActionTypeEnum.Link,
                         url: "$ENV$/companies/{id}"
                     }
                 }, {
                     label: "Remover",
                     action: {
-                        type: "api",
-                        verb: "delete",
+                        type: ActionTypeEnum.Api,
+                        verb: ActionVerbEnum.Delete,
                         url: "$ENV$/people/{id}"
                     },
                     validator: "$VALIDATOR_CONFIRM_ACTION$"

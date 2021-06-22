@@ -1,9 +1,9 @@
 import { ObjectToCode } from '../interfaces/frontend';
-import {Main} from './index';
-import { LOCATION_FORM } from '../collections-frontend-lopes/location-form';
+import { Main } from './index';
+import { COMPANY_LIST } from '../collections-frontend-daxtv/company-list';
 
 const main = new Main;
 
-const object: ObjectToCode = LOCATION_FORM;
+const object: ObjectToCode = COMPANY_LIST;
 
 console.log(main.setObjectToCode(object));

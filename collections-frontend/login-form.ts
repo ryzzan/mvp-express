@@ -1,13 +1,14 @@
-import {ObjectToCode, FrontendFramework, ButtonType, InputType, OptionType, ActionType, ActionVerb} from '../interfaces/frontend';
+import {ObjectToCode, FrontendFrameworkEnum, ButtonTypeEnum, InputTypeEnum, ActionTypeEnum, ActionVerbEnum} from '../interfaces/frontend';
 export const FAQ_FORM: ObjectToCode = {
-    frontendFramework: FrontendFramework.Angular,
-    module: "login-list",
+    frontendFramework: FrontendFrameworkEnum.Angular,
+    module: "login-form",
+    title: "Login",
     form: [{
-        id: "login",
+        id: "login-form",
         elements: [{
             input: {
                 id: "user",
-                type: InputType.Text,
+                type: InputTypeEnum.Text,
                 label: "Usuário",
                 required: true,
                 name: "user",
@@ -17,7 +18,7 @@ export const FAQ_FORM: ObjectToCode = {
         }, {
             input: {
                 id: "password",
-                type: InputType.Password,
+                type: InputTypeEnum.Password,
                 label: "Senha",
                 required: true,
                 name: "password",
@@ -27,12 +28,12 @@ export const FAQ_FORM: ObjectToCode = {
         }, {
             button: {
                 id: "create",
-                type: ButtonType.Submit,
+                type: ButtonTypeEnum.Submit,
                 label: "ENTRAR",
                 icon:  "add",
                 action: {
-                    type: ActionType.Api,
-                    verb: ActionVerb.Post,
+                    type: ActionTypeEnum.Api,
+                    verb: ActionVerbEnum.Post,
                     url: "$ENV$/auth/login"
                 }
             }

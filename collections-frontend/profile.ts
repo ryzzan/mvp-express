@@ -7,12 +7,12 @@ import {
     ActionTypeEnum,
     ActionVerbEnum
 } from '../interfaces/frontend';
-export const PERSON_FORM: ObjectToCode = {
+export const PROFILE: ObjectToCode = {
     frontendFramework: FrontendFrameworkEnum.Angular,
-    module: "person-form",
-    title: "Pessoa",
+    module: "profile",
+    title: "Perfil",
     form: [{
-        id: "person-form",
+        id: "profile",
         tabs: [{
             id: "tab-personal",
             label: "Dados pessoais",
@@ -213,7 +213,7 @@ export const PERSON_FORM: ObjectToCode = {
             }]
         }],
         actions: {
-            id: "person-form-submit",
+            id: "profile-submit",
             elements: [{
                 button: {
                     id: "create",

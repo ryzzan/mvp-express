@@ -1,21 +1,21 @@
 import {
     ObjectToCode,
-    FrontendFramework,
-    ButtonType,
-    InputType,
-    OptionType,
-    ActionType,
-    ActionVerb
+    FrontendFrameworkEnum,
+    ButtonTypeEnum,
+    InputTypeEnum,
+    ActionTypeEnum,
+    ActionVerbEnum
 } from '../interfaces/frontend';
 export const CHANGE_PASSWORD: ObjectToCode = {
-    frontendFramework: FrontendFramework.Angular,
+    frontendFramework: FrontendFrameworkEnum.Angular,
     module: "change-password",
+    title: "Mudar senha",
     form: [{
         id: "changePassword",
         elements: [{
             input: {
                 id: "password",
-                type: InputType.Password,
+                type: InputTypeEnum.Password,
                 label: "Senha",
                 required: true,
                 name: "password",
@@ -24,7 +24,7 @@ export const CHANGE_PASSWORD: ObjectToCode = {
         }, {
             input: {
                 id: "repeatPassword",
-                type: InputType.Password,
+                type: InputTypeEnum.Password,
                 label: "Repetir senha",
                 required: true,
                 name: "repeatPassword",
@@ -33,12 +33,12 @@ export const CHANGE_PASSWORD: ObjectToCode = {
         }, {
             button: {
                 id: "create",
-                type: ButtonType.Submit,
+                type: ButtonTypeEnum.Submit,
                 label: "ALTERAR",
                 icon: "add",
                 action: {
-                    type: ActionType.Api,
-                    verb: ActionVerb.Post,
+                    type: ActionTypeEnum.Api,
+                    verb: ActionVerbEnum.Post,
                     url: "$ENV$/acl"
                 }
             }

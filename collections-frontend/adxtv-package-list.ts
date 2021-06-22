@@ -1,13 +1,14 @@
-import { ActionType, ActionVerb, FrontendFramework, ObjectToCode } from '../interfaces/frontend';
+import { ActionTypeEnum, ActionVerbEnum, FrontendFrameworkEnum, ObjectToCode } from '../interfaces/frontend';
 
 export const ADXTV_PACKAGE_LIST: ObjectToCode = {
-    frontendFramework: FrontendFramework.Angular,
+    frontendFramework: FrontendFrameworkEnum.Angular,
     module: "adxtv-package-list",
+    title: "Pacotes",
     table: [{
         id: "adxtv-package-list",
-        action: {
-            type: ActionType.Api,
-            verb: ActionVerb.Get,
+        data: {
+            type: ActionTypeEnum.Api,
+            verb: ActionVerbEnum.Get,
             url: "$ENV$/adxtv"
         },
         elements: [{
@@ -44,15 +45,17 @@ export const ADXTV_PACKAGE_LIST: ObjectToCode = {
                 icon: "more_vert",
                 menu: [{
                     label: "Editar",
+                    icon: "edit",
                     action: {
-                        type: "link",
+                        type: ActionTypeEnum.Link,
                         url: "$ENV$/companies/{id}"
                     }
                 }, {
                     label: "Remover",
+                    icon: "delete",
                     action: {
-                        type: "api",
-                        verb: "delete",
+                        type: ActionTypeEnum.Api,
+                        verb: ActionVerbEnum.Delete,
                         url: "$ENV$/people/{id}"
                     },
                     validator: "$VALIDATOR_CONFIRM_ACTION$"

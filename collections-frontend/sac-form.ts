@@ -1,13 +1,14 @@
-import {ObjectToCode, FrontendFramework, ButtonType, InputType, OptionType, ActionType, ActionVerb} from '../interfaces/frontend';
+import {ObjectToCode, FrontendFrameworkEnum, ButtonTypeEnum, InputTypeEnum, RequestTypeEnum, ActionTypeEnum, ActionVerbEnum} from '../interfaces/frontend';
 export const SAC_FORM: ObjectToCode = {
-    frontendFramework: FrontendFramework.Angular,
-    module: "sac-list",
+    frontendFramework: FrontendFrameworkEnum.Angular,
+    module: "sac-form",
+    title: "SAC",
     form: [{
-        id: "sac",
+        id: "sac-form",
         elements: [{
             input: {
                 id: "id",
-                type: InputType.Text,
+                type: InputTypeEnum.Text,
                 label: "Identificador",
                 required: true,
                 name: "id",
@@ -21,7 +22,7 @@ export const SAC_FORM: ObjectToCode = {
                 name: "contactType",
                 placeholder: "Tipo de contato",
                 options: {
-                    type: OptionType.Object,
+                    type: RequestTypeEnum.Object,
                     object: [{
                         value: "mobile",
                         valueView: "Celular"
@@ -40,7 +41,7 @@ export const SAC_FORM: ObjectToCode = {
         }, {
             input: {
                 id: "value",
-                type: InputType.Text,
+                type: InputTypeEnum.Text,
                 label: "Valor",
                 required: true,
                 name: "value",
@@ -49,24 +50,28 @@ export const SAC_FORM: ObjectToCode = {
         }, {
             input: {
                 id: "complement",
-                type: InputType.Text,
+                type: InputTypeEnum.Text,
                 label: "Complemento",
                 required: true,
                 name: "complement",
                 placeholder: "Informação adicional do contato"
             }
-        }, {
-            button: {
-                id: "create",
-                type: ButtonType.Submit,
-                label: "CRIAR",
-                icon:  "add",
-                action: {
-                    type: ActionType.Api,
-                    verb: ActionVerb.Post,
-                    url: "$ENV$/sac"
+        },],
+        actions: {
+            id: "sac-form-action",
+            elements: [{
+                button: {
+                    id: "create",
+                    type: ButtonTypeEnum.Submit,
+                    label: "CRIAR",
+                    icon:  "add",
+                    action: {
+                        type: ActionTypeEnum.Api,
+                        verb: ActionVerbEnum.Post,
+                        url: "$ENV$/sac"
+                    }
                 }
-            }
-        }]
+            }]
+        }
     }]
 };
