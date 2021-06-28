@@ -1,10 +1,19 @@
-import {ObjectToCode, FrontendFrameworkEnum, ButtonTypeEnum, InputTypeEnum, RequestTypeEnum, ActionTypeEnum, ActionVerbEnum} from '../interfaces/frontend';
+import {
+    ObjectToCode,
+    FrontendFrameworkEnum,
+    ButtonTypeEnum,
+    InputTypeEnum,
+    RequestTypeEnum,
+    ActionVerbEnum
+} from '../interfaces/frontend';
 export const ACL_FORM: ObjectToCode = {
     frontendFramework: FrontendFrameworkEnum.Angular,
     module: "acl-form",
-    title: "ACL",
+    title: "Permissões",
     form: [{
         id: "acl-form",
+        title: 'Permissão',
+        subtitle: 'Tratamento de dados de permissão',
         elements: [{
             input: {
                 id: "group",
@@ -72,9 +81,9 @@ export const ACL_FORM: ObjectToCode = {
                     id: "create",
                     type: ButtonTypeEnum.Submit,
                     label: "CRIAR",
-                    icon:  "add",
+                    icon: "add",
                     action: {
-                        type: ActionTypeEnum.Api,
+                        type: RequestTypeEnum.Api,
                         verb: ActionVerbEnum.Post,
                         url: "$ENV$/acl"
                     }

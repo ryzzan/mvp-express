@@ -1,4 +1,11 @@
-import {ObjectToCode, FrontendFrameworkEnum, ButtonTypeEnum, InputTypeEnum, RequestTypeEnum, ActionTypeEnum, ActionVerbEnum} from '../interfaces/frontend';
+import {
+    ObjectToCode,
+    FrontendFrameworkEnum,
+    ButtonTypeEnum,
+    InputTypeEnum,
+    RequestTypeEnum,
+    ActionVerbEnum
+} from '../interfaces/frontend';
 export const USER_FORM: ObjectToCode = {
     frontendFramework: FrontendFrameworkEnum.Angular,
     module: "user-form",
@@ -200,9 +207,9 @@ export const USER_FORM: ObjectToCode = {
                 id: "create",
                 type: ButtonTypeEnum.Submit,
                 label: "CRIAR",
-                icon:  "add",
+                icon: "add",
                 action: {
-                    type: ActionTypeEnum.Api,
+                    type: RequestTypeEnum.Api,
                     verb: ActionVerbEnum.Post,
                     url: "$ENV$/auth/login"
                 }

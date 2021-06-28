@@ -6,12 +6,13 @@ import {
     RequestTypeEnum,
     ActionVerbEnum
 } from '../interfaces/frontend';
-export const CHANGE_PASSWORD: ObjectToCode = {
+export const CHANGE_PASSWORD_PROFILE_FORM: ObjectToCode = {
     frontendFramework: FrontendFrameworkEnum.Angular,
-    module: "change-password",
+    module: "change-password-profile-form",
     title: "Mudar senha",
     form: [{
-        id: "changePassword",
+        id: "change-password-profile-form",
+        title: "Alterar senha",
         elements: [{
             input: {
                 id: "password",
@@ -30,18 +31,22 @@ export const CHANGE_PASSWORD: ObjectToCode = {
                 name: "repeatPassword",
                 placeholder: "Repita sua nova senha",
             }
-        }, {
-            button: {
-                id: "create",
-                type: ButtonTypeEnum.Submit,
-                label: "ALTERAR",
-                icon: "add",
-                action: {
-                    type: RequestTypeEnum.Api,
-                    verb: ActionVerbEnum.Post,
-                    url: "$ENV$/acl"
+        }],
+        actions: {
+            id: "change-password-profile-form-action",
+            elements: [{
+                button: {
+                    id: "create",
+                    type: ButtonTypeEnum.Submit,
+                    label: "ALTERAR",
+                    icon: "add",
+                    action: {
+                        type: RequestTypeEnum.Api,
+                        verb: ActionVerbEnum.Post,
+                        url: "$ENV$/acl"
+                    }
                 }
-            }
-        }]
+            }]
+        }
     }]
 };

@@ -1,4 +1,4 @@
-import { ActionTypeEnum, ActionVerbEnum, FrontendFrameworkEnum, ObjectToCode } from '../interfaces/frontend';
+import { RequestTypeEnum, ActionVerbEnum, FrontendFrameworkEnum, ObjectToCode } from '../interfaces/frontend';
 
 export const ADXTV_PACKAGE_LIST: ObjectToCode = {
     frontendFramework: FrontendFrameworkEnum.Angular,
@@ -7,7 +7,7 @@ export const ADXTV_PACKAGE_LIST: ObjectToCode = {
     table: [{
         id: "adxtv-package-list",
         data: {
-            type: ActionTypeEnum.Api,
+            type: RequestTypeEnum.Api,
             verb: ActionVerbEnum.Get,
             url: "$ENV$/adxtv"
         },
@@ -47,14 +47,14 @@ export const ADXTV_PACKAGE_LIST: ObjectToCode = {
                     label: "Editar",
                     icon: "edit",
                     action: {
-                        type: ActionTypeEnum.Link,
+                        type: RequestTypeEnum.Link,
                         url: "$ENV$/companies/{id}"
                     }
                 }, {
                     label: "Remover",
                     icon: "delete",
                     action: {
-                        type: ActionTypeEnum.Api,
+                        type: RequestTypeEnum.Api,
                         verb: ActionVerbEnum.Delete,
                         url: "$ENV$/people/{id}"
                     },

@@ -1,2 +1,2 @@
 import { ObjectToCode } from '../interfaces/frontend';
-export declare const PROFILE: ObjectToCode;
+export declare const ANIMAL_TABLE: ObjectToCode;

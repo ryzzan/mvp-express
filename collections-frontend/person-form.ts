@@ -4,7 +4,6 @@ import {
     ButtonTypeEnum,
     InputTypeEnum,
     RequestTypeEnum,
-    ActionTypeEnum,
     ActionVerbEnum
 } from '../interfaces/frontend';
 export const PERSON_FORM: ObjectToCode = {
@@ -221,7 +220,7 @@ export const PERSON_FORM: ObjectToCode = {
                     label: "CRIAR",
                     icon: "add",
                     action: {
-                        type: ActionTypeEnum.Api,
+                        type: RequestTypeEnum.Api,
                         verb: ActionVerbEnum.Post,
                         url: "$ENV$/auth/login"
                     }

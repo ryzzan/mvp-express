@@ -4,7 +4,6 @@ import {
     ButtonTypeEnum,
     InputTypeEnum,
     RequestTypeEnum,
-    ActionTypeEnum,
     ActionVerbEnum
 } from '../interfaces/frontend';
 export const ANIMAL_FORM: ObjectToCode = {
@@ -12,7 +11,9 @@ export const ANIMAL_FORM: ObjectToCode = {
     module: "animal-form",
     title: "Animais",
     form: [{
-        id: "animal",
+        id: "animal-form",
+        title: "Animal",
+        subtitle: "Administrar dados de um animal",
         tabs: [{
             id: "tab-animal",
             label: "Dados do animal",
@@ -430,7 +431,7 @@ export const ANIMAL_FORM: ObjectToCode = {
                     label: "CRIAR",
                     icon: "add",
                     action: {
-                        type: ActionTypeEnum.Api,
+                        type: RequestTypeEnum.Api,
                         verb: ActionVerbEnum.Post,
                         url: "$ENV$/auth/login"
                     }

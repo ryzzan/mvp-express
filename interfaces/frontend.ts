@@ -25,17 +25,15 @@ export enum InputTypeEnum {
 export enum ButtonTypeEnum {
     Submit = 'submit',
     Reset = 'reset',
-    Link = 'link'
+    Link = 'link',
+    Delete = 'delete'
 };
 
 export enum RequestTypeEnum {
     Api = 'API',
-    Object = 'OBJECT'
-};
-
-export enum ActionTypeEnum {
-    Api = 'API',
-    Link = 'LINK'
+    Object = 'OBJECT', 
+    Link = 'LINK',
+    Dialog = 'DIALOG',
 };
 
 export enum ActionVerbEnum {
@@ -89,12 +87,13 @@ export interface Form {
     title?: string;
     subtitle?:string;
     tabs?: Array<FormTabElementInterface>;
-    isDialog?: boolean;
+    dialog?: DialogInterface;
+    isTable?: boolean;
     actions?: {
         id: string;
         elements: Array<FormElementInterface>;
     };
-    elements: Array<FormElementInterface>;
+    elements?: Array<FormElementInterface>;
 };
 
 export interface FormElementInterface {
@@ -167,10 +166,10 @@ export interface SelectOptionObjectInterface {
 export interface Table {
     id: string;
     data: RequestInterface;
-    actions?: {
-        id: string;
-        elements: Array<FormElementInterface>;
-    };
+    title?: string;
+    subtitle?: string;
+    object?: Array<Object>;
+    actions?: Form;
     elements: Array<TableElement>;
 }
 
@@ -190,6 +189,7 @@ export interface TableElement {
             icon?: string;
             action: RequestInterface;
             validator?: string;
+            dialog?: DialogInterface;
         }>;
         comment?: string;
     };
@@ -233,10 +233,19 @@ export interface TreeNodeObjectInterface {
 }
 
 /**
+ * Dialog
+ */
+export interface DialogInterface {
+    template: string;
+    id: string;
+    dialogDataInterface?: Object; // Two way data bind over dialog
+}
+
+/**
  * Request
  */
 export interface RequestInterface {
-    type: ActionTypeEnum;
+    type: RequestTypeEnum;
     verb?: ActionVerbEnum;
     url?: string;
     body?: Object;

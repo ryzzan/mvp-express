@@ -22,15 +22,14 @@ export declare enum InputTypeEnum {
 export declare enum ButtonTypeEnum {
     Submit = "submit",
     Reset = "reset",
-    Link = "link"
+    Link = "link",
+    Delete = "delete"
 }
 export declare enum RequestTypeEnum {
     Api = "API",
-    Object = "OBJECT"
-}
-export declare enum ActionTypeEnum {
-    Api = "API",
-    Link = "LINK"
+    Object = "OBJECT",
+    Link = "LINK",
+    Dialog = "DIALOG"
 }
 export declare enum ActionVerbEnum {
     Post = "POST",
@@ -73,7 +72,11 @@ export interface ObjectToCode {
  */
 export interface Form {
     id: string;
+    title?: string;
+    subtitle?: string;
     tabs?: Array<FormTabElementInterface>;
+    dialog?: DialogInterface;
+    isTable?: boolean;
     actions?: {
         id: string;
         elements: Array<FormElementInterface>;
@@ -145,10 +148,10 @@ export interface SelectOptionObjectInterface {
 export interface Table {
     id: string;
     data: RequestInterface;
-    actions?: {
-        id: string;
-        elements: Array<FormElementInterface>;
-    };
+    title?: string;
+    subtitle?: string;
+    object?: Array<Object>;
+    actions?: Form;
     elements: Array<TableElement>;
 }
 export interface TableElement {
@@ -167,6 +170,7 @@ export interface TableElement {
             icon?: string;
             action: RequestInterface;
             validator?: string;
+            dialog?: DialogInterface;
         }>;
         comment?: string;
     };
@@ -204,10 +208,18 @@ export interface TreeNodeObjectInterface {
     }>;
 }
 /**
+ * Dialog
+ */
+export interface DialogInterface {
+    template: string;
+    id: string;
+    dialogDataInterface?: Object;
+}
+/**
  * Request
  */
 export interface RequestInterface {
-    type: ActionTypeEnum;
+    type: RequestTypeEnum;
     verb?: ActionVerbEnum;
     url?: string;
     body?: Object;
@@ -221,12 +233,4 @@ export interface FilterWhereInterface {
 export interface FilterInterface {
     type: FilterTypeEnum;
     where?: Array<FilterWhereInterface>;
-}
-/**
- * Dialog
- */
-export interface DialogInterface {
-    id: string;
-    title?: string;
-    elements: Array<Form>;
 }

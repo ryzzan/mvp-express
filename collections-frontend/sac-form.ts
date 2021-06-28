@@ -1,4 +1,4 @@
-import {ObjectToCode, FrontendFrameworkEnum, ButtonTypeEnum, InputTypeEnum, RequestTypeEnum, ActionTypeEnum, ActionVerbEnum} from '../interfaces/frontend';
+import {ObjectToCode, FrontendFrameworkEnum, ButtonTypeEnum, InputTypeEnum, RequestTypeEnum, RequestTypeEnum, ActionVerbEnum} from '../interfaces/frontend';
 export const SAC_FORM: ObjectToCode = {
     frontendFramework: FrontendFrameworkEnum.Angular,
     module: "sac-form",
@@ -66,7 +66,7 @@ export const SAC_FORM: ObjectToCode = {
                     label: "CRIAR",
                     icon:  "add",
                     action: {
-                        type: ActionTypeEnum.Api,
+                        type: RequestTypeEnum.Api,
                         verb: ActionVerbEnum.Post,
                         url: "$ENV$/sac"
                     }

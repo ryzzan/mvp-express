@@ -1,4 +1,4 @@
-import { ActionTypeEnum, ActionVerbEnum, FrontendFrameworkEnum, FilterTypeEnum, FilterComparisonOperatorEnum, ObjectToCode } from '../interfaces/frontend';
+import { RequestTypeEnum, ActionVerbEnum, FrontendFrameworkEnum, FilterTypeEnum, FilterComparisonOperatorEnum, ObjectToCode } from '../interfaces/frontend';
 
 export const COMPANY_LIST: ObjectToCode = {
     frontendFramework: FrontendFrameworkEnum.Angular,
@@ -7,7 +7,7 @@ export const COMPANY_LIST: ObjectToCode = {
     table: [{
         id: "company-list",
         data: {
-            type: ActionTypeEnum.Api,
+            type: RequestTypeEnum.Api,
             verb: ActionVerbEnum.Get,
             url: "$ENV$/adxtv"
         },
@@ -80,13 +80,13 @@ export const COMPANY_LIST: ObjectToCode = {
                 menu: [{
                     label: "Editar",
                     action: {
-                        type: ActionTypeEnum.Link,
+                        type: RequestTypeEnum.Link,
                         url: "$ENV$/companies/{id}"
                     }
                 }, {
                     label: "Remover",
                     action: {
-                        type: ActionTypeEnum.Link,
+                        type: RequestTypeEnum.Link,
                         verb: ActionVerbEnum.Delete,
                         url: "$ENV$/people/{id}"
                     },
@@ -94,7 +94,7 @@ export const COMPANY_LIST: ObjectToCode = {
                 }, {
                     label: "Bloquear",
                     action: {
-                        type: ActionTypeEnum.Api,
+                        type: RequestTypeEnum.Api,
                         verb: ActionVerbEnum.Put,
                         url: "$ENV$/people/{id}",
                         body: {
@@ -105,7 +105,7 @@ export const COMPANY_LIST: ObjectToCode = {
                 }, {
                     label: "Desbloquear",
                     action: {
-                        type: ActionTypeEnum.Api,
+                        type: RequestTypeEnum.Api,
                         verb: ActionVerbEnum.Put,
                         url: "$ENV$/people/{id}",
                         body: {

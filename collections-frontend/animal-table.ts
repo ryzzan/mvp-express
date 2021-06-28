@@ -1,65 +1,51 @@
-import { RequestTypeEnum, ActionVerbEnum, FilterComparisonOperatorEnum, FilterTypeEnum, FrontendFrameworkEnum, ObjectToCode } from '../interfaces/frontend';
-
-export const USER_LIST: ObjectToCode = {
+import { FrontendFrameworkEnum, ObjectToCode, RequestTypeEnum, ActionVerbEnum } from '../interfaces/frontend';
+export const ANIMAL_TABLE: ObjectToCode = {
     frontendFramework: FrontendFrameworkEnum.Angular,
-    module: "user-list",
-    title: "Usuário",
+    module: 'animal-table',
+    title: 'Animais',
     table: [{
-        id: "user-list",
+        id: 'animal-table',
+        title: 'Minha tabela de animais',
+        subtitle: 'Dados dos meus animais de estimação',
         data: {
-            type: RequestTypeEnum.Api,
-            verb: ActionVerbEnum.Get,
-            url: "$ENV$/users"
+            type: RequestTypeEnum.Object
         },
+        object: [{
+            name: 'Cake',
+            species: 'Canina',
+            phone: '(82) 98205-1109'
+        }, {
+            name: 'Tetê',
+            species: 'Canina',
+            phone: '(82) 99924-2682'
+        }, {
+            name: 'Dona Gata',
+            species: 'Felina',
+            phone: '(82) 99924-2682'
+        }],
         elements: [{
             column: {
-                label: "CPF"
+                label: 'Nome'
             },
             row: {
-                type: "string",
-                field: "uniqueId"
+                type: 'string',
+                field: 'name'
             }
         }, {
             column: {
-                label: "Nome",
-                sort: true
+                label: 'Espécie'
             },
             row: {
-                type: "string",
-                field: "name"
+                type: 'string',
+                field: 'species'
             }
         }, {
             column: {
-                label: "Gênero",
-                sort: true
+                label: 'Contato'
             },
             row: {
-                type: "string",
-                field: "gender"
-            }
-        }, {
-            column: {
-                label: "Data de nascimento"
-            },
-            row: {
-                type: "string",
-                field: "birthday"
-            }
-        }, {
-            column: {
-                label: "Telefone"
-            },
-            row: {
-                type: "array",
-                field: "mobile"
-            }
-        }, {
-            column: {
-                label: "E-mail"
-            },
-            row: {
-                type: "array",
-                field: "email"
+                type: 'string',
+                field: 'phone'
             }
         }, {
             column: {
@@ -72,14 +58,18 @@ export const USER_LIST: ObjectToCode = {
                     label: "Editar",
                     action: {
                         type: RequestTypeEnum.Link,
-                        url: "$ENV$/companies/{id}"
+                        url: "/main/test/123"
                     }
                 }, {
                     label: "Remover",
                     action: {
-                        type: RequestTypeEnum.Api,
+                        type: RequestTypeEnum.Dialog,
                         verb: ActionVerbEnum.Delete,
-                        url: "$ENV$/people/{id}"
+                        url: "$ENV$/people/{id}",
+                    },
+                    dialog: {
+                        template: "RemoveConfirmationDialogComponent",
+                        id: "remove-confirmation-dialog"
                     },
                     validator: "$VALIDATOR_CONFIRM_ACTION$"
                 }, {
@@ -108,4 +98,4 @@ export const USER_LIST: ObjectToCode = {
             }
         }]
     }]
-};
+}
