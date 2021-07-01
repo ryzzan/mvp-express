@@ -1,94 +1,75 @@
 import {
     ObjectToCode,
     FrontendFrameworkEnum,
-    ButtonTypeEnum,
-    InputTypeEnum,
     RequestTypeEnum,
-    ActionVerbEnum
+    ActionVerbEnum,
+    FormInputTypeEnum,
+    FormButtonTypeEnum
 } from '../interfaces/frontend';
 export const ACL_FORM: ObjectToCode = {
     frontendFramework: FrontendFrameworkEnum.Angular,
     module: "acl-form",
     title: "Permissões",
-    form: [{
+    form: {
         id: "acl-form",
         title: 'Permissão',
+        label: 'Permission',
         subtitle: 'Tratamento de dados de permissão',
         elements: [{
             input: {
-                id: "group",
-                type: InputTypeEnum.Text,
+                type: FormInputTypeEnum.Text,
                 label: "Grupo",
-                required: true,
+                isRequired: true,
                 name: "group",
                 placeholder: "Identificador de grupo de permissões",
                 // regex: /^\d+$/
             }
         }, {
             select: {
-                id: "module",
                 label: "Módulo",
-                required: true,
                 name: "module",
-                placeholder: "Fluxo de uso",
-                options: {
-                    type: RequestTypeEnum.Object,
-                    object: [{
-                        value: "user-list",
-                        valueView: "Usuários"
-                    }, {
-                        value: "client-list",
-                        valueView: "Clientes"
-                    }, {
-                        value: "financial-list",
-                        valueView: "Financeiros"
-                    }, {
-                        value: "acl-list",
-                        valueView: "ACLs"
-                    }]
-                }
+                isRequired: true,
+                optionsObject: [{
+                    value: "user-list",
+                    label: "Usuários"
+                }, {
+                    value: "client-list",
+                    label: "Clientes"
+                }, {
+                    value: "financial-list",
+                    label: "Financeiros"
+                }, {
+                    value: "acl-list",
+                    label: "ACLs"
+                }]
             }
         }, {
             select: {
-                id: "permission",
                 label: "Permissão",
-                required: true,
+                isRequired: true,
                 name: "permission",
                 isMultiple: true,
-                options: {
-                    type: RequestTypeEnum.Object,
-                    object: [{
-                        value: "create",
-                        valueView: "Criar"
-                    }, {
-                        value: "read",
-                        valueView: "Ler"
-                    }, {
-                        value: "update",
-                        valueView: "Atualizar"
-                    }, {
-                        value: "delete",
-                        valueView: "Remover"
-                    }]
-                },
-                placeholder: "Verbo de ação"
+                optionsObject: [{
+                    value: "create",
+                    label: "Criar"
+                }, {
+                    value: "read",
+                    label: "Ler"
+                }, {
+                    value: "update",
+                    label: "Atualizar"
+                }, {
+                    value: "delete",
+                    label: "Remover"
+                }],
             }
         }],
-        actions: {
-            id: "acl-form-action",
-            elements: [{
+        actions: [{
                 button: {
-                    id: "create",
-                    type: ButtonTypeEnum.Submit,
+                    type: FormButtonTypeEnum.Submit,
                     label: "CRIAR",
-                    icon: "add",
-                    action: {
-                        type: RequestTypeEnum.Api,
-                        verb: ActionVerbEnum.Post,
-                        url: "$ENV$/acl"
-                    }
+                    icon: "add"
                 }
             }]
-        }
-    }]
+    }
 };

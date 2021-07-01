@@ -1,9 +1,11 @@
 import { ObjectToCode } from '../../interfaces/frontend';
 
 import { CodeToAngular } from './frontend/angular';
+import { CodeToPure } from './frontend/pure';
 
-export class FrontendCode extends CodeToAngular {
+export class FrontendCode {
     codeToAngular = new CodeToAngular;
+    codeToPure = new CodeToPure;
 
     public setFrontendCode = (object: ObjectToCode) => {
         let response;
@@ -14,7 +16,7 @@ export class FrontendCode extends CodeToAngular {
                 break;
     
             case 'PURE':
-                //TO-DO
+                response = this.codeToPure.setPureCode(object);
                 break;
 
             case 'REACT':

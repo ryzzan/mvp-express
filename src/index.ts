@@ -1,7 +1,7 @@
 import {ObjectToCode} from '../interfaces/frontend';
 import { FrontendCode } from './controllers/frontend';
 
-export class Main extends FrontendCode {
+export class Main {
     frontendCode = new FrontendCode;
     setObjectToCode = (object: ObjectToCode) => {
         if (object.frontendFramework) {
