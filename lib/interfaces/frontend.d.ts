@@ -11,10 +11,10 @@ export interface ObjectToCode {
  * Form
  */
 export interface FormInterface {
-    actions: Array<FormElementInterface>;
     elements: Array<FormElementInterface>;
     id: string;
     label: string;
+    actions?: Array<FormElementInterface>;
     title?: string;
     subtitle?: string;
     attributes?: FormAttributeEnum;
@@ -38,6 +38,7 @@ export interface FormElementInterface {
 export interface ButtonInterface {
     type: FormButtonTypeEnum;
     label: string;
+    dialog?: DialogInterface;
     name?: string;
     isAutofocus?: boolean;
     isDisabled?: boolean;
@@ -126,13 +127,13 @@ export interface TextareaInterface {
 export interface TableInterface {
     id: string;
     data: RequestInterface;
-    title?: string;
-    subtitle?: string;
-    object?: Array<Object>;
+    elements: Array<TableElementInterface>;
     actions?: FormInterface;
-    elements: Array<TableElement>;
+    object?: Array<Object>;
+    subtitle?: string;
+    title?: string;
 }
-export interface TableElement {
+export interface TableElementInterface {
     column: {
         label: string;
         sort?: boolean;
@@ -144,11 +145,11 @@ export interface TableElement {
         icon?: string;
         filter?: FilterInterface;
         menu?: Array<{
-            label: string;
-            icon?: string;
             action: RequestInterface;
-            validator?: string;
+            label: string;
             dialog?: DialogInterface;
+            icon?: string;
+            validator?: string;
         }>;
         comment?: string;
     };
@@ -189,7 +190,7 @@ export interface TreeNodeObjectInterface {
  * Dialog
  */
 export interface DialogInterface {
-    template: string;
+    templateFolder: string;
     id: string;
     dialogDataInterface?: Object;
 }
@@ -211,6 +212,18 @@ export interface FilterWhereInterface {
 export interface FilterInterface {
     type: FilterTypeEnum;
     where?: Array<FilterWhereInterface>;
+}
+/**
+ * Frontend
+ */
+export interface DirectiveElements {
+    dialog?: boolean;
+    form?: boolean;
+    formArray?: boolean;
+    formValidators?: boolean;
+    router?: boolean;
+    routerActivatedRoute?: boolean;
+    routerRouter?: boolean;
 }
 /**
  * Enum: Form

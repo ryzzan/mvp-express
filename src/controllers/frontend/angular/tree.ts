@@ -9,8 +9,8 @@
 //         treeArray.forEach((tree: Tree) => {
 //             let codeTree = '',
 //                 array = tree.elements,
-//                 treeIdAsPropertyName = this.shared.stringToLowerCamelCaseName(tree.id),
-//                 treeIdAsClassName = this.shared.stringToUpperCamelCase(tree.id);
+//                 treeIdAsPropertyName = this.shared.setIdToPropertyName(tree.id),
+//                 treeIdAsClassName = this.shared.setIdToClassName(tree.id);
             
 //             codeTree += this.setTreeHtmlElement(array, treeIdAsPropertyName, treeIdAsClassName);
             
@@ -84,8 +84,8 @@
 //             codeConstructor = 'constructor(';
 //             codeTreeObject = '',
 //             array = tree.elements,
-//             treeIdAsPropertyName = this.shared.stringToLowerCamelCaseName(tree.id),
-//             treeIdAsClassName = this.shared.stringToUpperCamelCase(tree.id);
+//             treeIdAsPropertyName = this.shared.setIdToPropertyName(tree.id),
+//             treeIdAsClassName = this.shared.setIdToClassName(tree.id);
     
 //             // if (tree.action.type === 'api') {
 //             //     codeAction += `${treeIdAsPropertyName}Tree = () => {fetch('${tree.action.url}', {method: 'GET',headers: {'Content-type': 'application/json','Access-Control-Allow-Origin': '*',},}).then((data) => {data.json().then((keys) => {return keys;})});}`;

@@ -1,6 +1,6 @@
 export declare class SharedFunctions {
-    stringToLowerCamelCaseName: (id: string) => string;
-    stringToUpperCamelCase: (id: string) => string;
+    setIdToPropertyName: (id: string) => string;
+    setIdToClassName: (id: string) => string;
     /**
      * @todo Set alternative attributes to substitute the original ones
      * @param objectOriginal

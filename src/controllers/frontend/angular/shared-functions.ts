@@ -1,5 +1,5 @@
 export class SharedFunctions {
-    stringToLowerCamelCaseName = (id: string) => {
+    setIdToPropertyName = (id: string) => {
         let propertyName = '';
         const array = id.split('-');
         propertyName += array[0];
@@ -12,7 +12,7 @@ export class SharedFunctions {
         return propertyName;
     }
 
-    stringToUpperCamelCase = (id: string) => {
+    setIdToClassName = (id: string) => {
         let className = '';
         const array = id.split('-');
         className += array[0].charAt(0).toUpperCase() + array[0].slice(1);

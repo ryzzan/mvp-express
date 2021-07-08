@@ -5,6 +5,10 @@ export declare class FrontendCode {
     codeToAngular: CodeToAngular;
     codeToPure: CodeToPure;
     setFrontendCode: (object: ObjectToCode) => {
+        template: string;
+        directive: string;
+        interface: string;
+    } | {
         html: string;
         directive: string;
         interface: string;
