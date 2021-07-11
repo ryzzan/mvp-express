@@ -1,12 +1,13 @@
-import { FormInputTypeEnum, FrontendFrameworkEnum, ObjectToCode, RequestTypeEnum } from "../interfaces/frontend";
-
-export const PERSON_TABLE: ObjectToCode = {
+import { FormButtonTypeEnum, FormInputTypeEnum, FrontendFrameworkEnum, ObjectToCode, RequestTypeEnum } from "../../interfaces/frontend";
+//Mostrar totais
+export const MINKAPP_CLIENT_TABLE: ObjectToCode = {
     frontendFramework: FrontendFrameworkEnum.Angular,
-    module: 'person-table',
-    title: 'Pessoas',
+    module: 'minkapp-client-table',
+    title: 'Cliente',
+    comments: 'Ordenar por último cadastrado',
     table: {
-        id: 'person-table',
-        title: 'Usuários',
+        id: 'minkapp-client-table',
+        title: 'Clientes',
         data: {
             type: RequestTypeEnum.Object,
         },
@@ -59,12 +60,6 @@ export const PERSON_TABLE: ObjectToCode = {
                 icon: 'more_vert',
                 menu: [{
                     action: {
-                        type: RequestTypeEnum.Api,
-                        url: '/main/person/123'
-                    },
-                    label: 'Bloquear'
-                }, {
-                    action: {
                         type: RequestTypeEnum.Dialog,
                     },
                     label: 'Remover',
@@ -102,7 +97,7 @@ export const PERSON_TABLE: ObjectToCode = {
         }],
         actions: {
             label: 'Pesquisa de pessoas',
-            id: 'person-search',
+            id: 'minkapp-client-search',
             elements: [{
                 input: {
                     label: 'Nome',
@@ -121,6 +116,13 @@ export const PERSON_TABLE: ObjectToCode = {
                         label: 'Feminino',
                         value: 'feminino'
                     }]
+                }
+            }, {
+                input: {
+                    label: 'Cidade',
+                    placeholder: 'Pesquisar por nome da cidade',
+                    name: 'city',
+                    type: FormInputTypeEnum.Text,
                 }
             }, {
                 select: {
@@ -170,6 +172,11 @@ export const PERSON_TABLE: ObjectToCode = {
                         label: 'Espiritualidade',
                         value: 'Espiritualidade'
                     }]
+                }
+            }, {
+                button: {
+                    type: FormButtonTypeEnum.Button,
+                    label: 'Baixar relatório'
                 }
             }]
         }

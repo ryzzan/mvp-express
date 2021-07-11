@@ -25,14 +25,31 @@ export class FormTemplate {
         add = `add${arrayClassName}`,
         remove = `remove${arrayClassName}`;
 
-        let codeArray = `<ng-container formArrayName="${arrayPropertyName}"><mat-card *ngFor="let _ of ${arrayPropertyName}.controls; index as i"><ng-container [formGroupName]="i">`;
-        codeArray += `<mat-card-header>${array.label} {{1 + i}}</mat-card-header><mat-card-content>`;
-        codeArray += this.formTemplate.setFormHtml(array);
-        codeArray += `</mat-card-content><mat-card-actions>`;
-        codeArray += `<button mat-button type="button" color="warn" (click)="${remove}(i)">Remover ${array.label.toLowerCase()}</button>`;
-        codeArray += `</mat-card-actions></ng-container></mat-card></ng-container>`;
-        codeArray += `<mat-card><mat-card-content>`;
-        codeArray += `<button mat-button type="button" (click)=${add}()>Adicionar ${array.label.toLowerCase()}</button></mat-card-content></mat-card>`;
+        let codeArray = 
+        `<ng-container formArrayName="${arrayPropertyName}">
+            <mat-card *ngFor="let _ of ${arrayPropertyName}.controls; index as i">
+                <ng-container [formGroupName]="i">
+                    <mat-card-header>
+                        ${array.label} {{1 + i}}
+                    </mat-card-header>
+                    <mat-card-content>
+                        ${this.formTemplate.setFormHtml(array)}
+                    </mat-card-content>
+                    <mat-card-actions>
+                        <button mat-button type="button" color="warn" (click)="${remove}(i)">
+                            Remover ${array.label.toLowerCase()}
+                        </button>
+                    </mat-card-actions>
+                </ng-container>
+            </mat-card>
+        </ng-container>
+        <mat-card>
+            <mat-card-content>
+                <button mat-button type="button" (click)=${add}()>
+                    Adicionar ${array.label.toLowerCase()}
+                </button>
+            </mat-card-content>
+        </mat-card>`;
         
         return codeArray;
     }
@@ -41,10 +58,11 @@ export class FormTemplate {
         const placeholder = input.placeholder ? `placeholder="${input.placeholder}"` : '',
         required = input.isRequired ? 'required' : '';
 
-        let codeInput = `<mat-form-field>`;
-        codeInput += `<mat-label>${input.label}</mat-label>`;
-        codeInput += `<input matInput type="${input.type}" formControlName="${input.name}" ${placeholder} ${required} autocomplete="new-password">`;
-        codeInput += `</mat-form-field>`;
+        let codeInput = 
+        `<mat-form-field>
+            <mat-label>${input.label}</mat-label>
+            <input matInput type="${input.type}" formControlName="${input.name}" ${placeholder} ${required} autocomplete="new-password">
+        </mat-form-field>`;
 
         return codeInput;
     }
@@ -53,10 +71,15 @@ export class FormTemplate {
         const multiple = select.isMultiple ? 'multiple' : '',
         required = select.isRequired ? 'required' : '';
 
-        let codeSelect = `<mat-form-field>`;
-        codeSelect += `<mat-label>${select.label}</mat-label>`;
-        codeSelect += `<mat-select formControlName="${select.name}" ${required} ${multiple}><mat-option *ngFor="let ${select.name}Item of ${select.name}SelectObject" [value]="${select.name}Item.value">{{${select.name}Item.value}}</mat-option></mat-select>`;
-        codeSelect += `</mat-form-field>`;
+        let codeSelect = 
+        `<mat-form-field>
+            <mat-label>${select.label}</mat-label>
+            <mat-select formControlName="${select.name}" ${required} ${multiple}>
+                <mat-option *ngFor="let ${select.name}Item of ${select.name}SelectObject" [value]="${select.name}Item.value">
+                    {{${select.name}Item.value}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>`;
 
         return codeSelect;
     }
@@ -81,14 +104,18 @@ export class FormTemplate {
     setButton = (button: ButtonInterface) => {
         let color = '',
         dialogAction = '',
-        label = (button.type === FormButtonTypeEnum.Submit) ? `{{isAddModule ? 'Criar' : 'Editar'}}` : button.label;
+        label = (button.type === FormButtonTypeEnum.Submit) ? `{{isAddModule ? 'Criar' : 'Editar'}}` : button.label,
+        codeButton = '';
         // dialogAction = (form.dialog?.template) ? `mat-dialog-close` : '';
 
+        if (button.type === FormButtonTypeEnum.Button) color = '';
         if (button.type === FormButtonTypeEnum.Submit) color = `color="primary" ${dialogAction}`;
         if (button.type === FormButtonTypeEnum.Delete) color = `color="warn" ${dialogAction}`;
         if (button.type === FormButtonTypeEnum.Reset) color = `color="accent"`;
-
-        let codeButton = `<button mat-raised-button ${color}>${label}</button>`;
+        
+        if (button.type === FormButtonTypeEnum.Submit) codeButton += `<mat-card-actions>`
+        codeButton += `<button mat-raised-button ${color}>${label}</button>`;
+        if (button.type === FormButtonTypeEnum.Submit) codeButton += `</mat-card-actions>`
 
         return codeButton;
     }
@@ -96,9 +123,10 @@ export class FormTemplate {
     setTab = (tabs: Array<FormInterface>) => {
         let codeTab = `<mat-tab-group>`;
         tabs.forEach((tab: FormInterface) => {
-            codeTab += `<mat-tab label="${tab.label}" id="${tab.id}">`;
-            codeTab += this.formTemplate.setFormHtml(tab);
-            codeTab += `</mat-tab>`;
+            codeTab += 
+            `<mat-tab label="${tab.label}" id="${tab.id}">
+                ${this.formTemplate.setFormHtml(tab)}
+            </mat-tab>`;
         });
         codeTab += `</mat-tab-group>`;
 

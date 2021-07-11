@@ -1,9 +1,9 @@
 import { ObjectToCode } from '../interfaces/frontend';
 import { Main } from './index';
-import { EXAMPLE_FORM } from '../collections-frontend/example-form';
+import { MODULE_TABLE } from '../collections-frontend/mvp-express/module-table';
 
 const main = new Main;
 
-const object: ObjectToCode = EXAMPLE_FORM;
+const object: ObjectToCode = MODULE_TABLE;
 
 console.log(main.setObjectToCode(object));

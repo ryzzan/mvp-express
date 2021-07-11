@@ -3,6 +3,7 @@ export interface ObjectToCode {
     frontendFramework?: FrontendFrameworkEnum;
     module: string;
     title: string;
+    comments?: string;
     form?: FormInterface;
     table?: TableInterface;
     tree?: TreeInterface;
@@ -69,6 +70,7 @@ export interface InputInterface {
     label: string;
     name: string;
     placeholder: string;
+    condition?: string;
     isAutoFocus?: boolean; // Specifies that an <input> element should automatically get focus when the page loads
     isChecked?: boolean; // Specifies that an <input> element should be pre-selected when the page loads (for type="checkbox" or type="radio")
     isDisabled?: boolean;
@@ -127,6 +129,7 @@ export interface OutputInterface {
 export interface SelectInterface {
     name: string;
     label: string;
+    condition?: string;
     optgroups?: Array<OptgroupInterface>;
     optionsObject?: Array<OptionInterface>;
     optionsApiEndpoint?: string;
@@ -304,7 +307,7 @@ export enum FormButtonTypeEnum {
     Button = 'button',
     Reset = 'reset',
     Submit = 'submit',
-    Delete = 'button'
+    Delete = 'delete'
 }
 
 export enum FormEncTypeEnum {

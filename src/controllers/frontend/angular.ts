@@ -28,6 +28,9 @@ export class CodeToAngular {
             formPropertyName = this.sharedFunction.setIdToPropertyName(form?.id);
             
             codeTemplate += `<mat-card><form id="${form.id}" [formGroup]="${formPropertyName}Form" (ngSubmit)="${formPropertyName}Submit()">`;
+            if (form.title) codeTemplate += `<mat-card-header><mat-card-title>${form.title}</mat-card-title>`;
+            if (form.subtitle) codeTemplate += `<mat-card-subtitle>${form.subtitle}</mat-card-subtitle>`;
+            if (form.title) codeTemplate += `</mat-card-header>`;
             codeTemplate += this.formAngular.setFormHtml(form);
             codeTemplate +=`</form></mat-card>`;
 
@@ -63,7 +66,7 @@ export class CodeToAngular {
         // }
     
         return {
-            template: codeTemplate, 
+            template: codeTemplate.replace(/\n/gi, '').replace(/    /gi, ''), 
             directive: codeDirective.replace(/\, \]/gi, ']').replace(/\, \}/gi, '}').replace(/\, \,/gi, ''), 
             interface: codeInterface
         };

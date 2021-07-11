@@ -18,6 +18,47 @@ export class Directive {
     constructor() {}
 
     sharedFunction = new SharedFunctions;
+    
+    /** LET THE CARNAGE BEGIN! */
+    setObject = (object: ObjectToCode) => {
+        let codeObject = '';
+        for (const key in object) {
+            if (Object.prototype.hasOwnProperty.call(object, key)) {
+                if (key === 'form') {
+                    const form = object[key];
+                    if (form) {
+                        const formBuilderName = this.sharedFunction.setIdToPropertyName(form?.id),
+                        formClassName = this.sharedFunction.setIdToClassName(form?.id),
+                        formPropertyName = this.sharedFunction.setIdToPropertyName(form?.id),
+                        formMetaObject = {builderName: formBuilderName, className: formClassName, propertyName: formPropertyName};
+
+
+                        codeObject += `${formPropertyName}Id: string = this.${formPropertyName}Route.snapshot.params['id']; isAddModule: boolean = !this.${formPropertyName}Id;`;
+                        codeObject += `${formBuilderName}Form = this.${formBuilderName}Builder.group({`;
+                        codeObject += this.setFormBuilder(form, formMetaObject);
+                        codeObject += `});`
+
+                        codeObject += this.setForm(form, formMetaObject);
+                    }
+                }
+
+                if (key === 'table') {
+                    const table = object[key];
+                    if (table) {
+                        const formBuilderName = this.sharedFunction.setIdToPropertyName(table.id),
+                        tableClassName = this.sharedFunction.setIdToClassName(table.id),
+                        tablePropertyName = this.sharedFunction.setIdToPropertyName(table.id),
+                        tableMetaObject = {builderName: formBuilderName,className: tableClassName, propertyName: tablePropertyName};
+
+                        codeObject += this.setTable(table, tableMetaObject)
+                    }
+                }
+            }
+        }
+
+        return codeObject;
+    }
+
     /** IMPORT */
     setImport = (object: ObjectToCode, importObject: DirectiveElements) => {
         let codeImport = '';
@@ -39,11 +80,25 @@ export class Directive {
                 }
 
                 if (key === 'table') {
-                    const tableObject = object[key];
-                    for (const element in tableObject) {
-                        if (Object.prototype.hasOwnProperty.call(tableObject, element)) {
+                    const table = object[key];
+                    for (const element in table) {
+                        if (Object.prototype.hasOwnProperty.call(table, element)) {
+                            if (element === 'actions') {
+                                const actions = table.actions;
+                                if (actions) {
+                                    codeImport += `import {FormBuilder,`
+                                    this.setImportForm(actions).forEach(element => {
+                                        if (element === 'formArray') codeImport += `FormArray,FormGroup`;
+                                        if (element === 'formValidators') codeImport += `,Validators`;
+                                    });
+                                    codeImport += `} from '@angular/forms';`;
+            
+                                    codeImport += `import { ActivatedRoute, Router } from '@angular/router';`;
+                                }
+                            }
+
                             if (element === 'elements') {
-                                const elements = tableObject.elements;
+                                const elements = table.elements;
 
                                 elements.forEach(tag => {
                                     if (tag.row) {
@@ -93,7 +148,7 @@ export class Directive {
         return array;
     }
 
-    setImportFormElements = (elements: Array < FormElementInterface >, importArray: Array<string>) => {
+    setImportFormElements = (elements: Array<FormElementInterface>, importArray: Array<string>) => {
         let arrayImport = importArray;
         elements.forEach(object => {
             for (const key in object) {
@@ -119,7 +174,7 @@ export class Directive {
                     }
 
                     if (key === 'select') {
-
+                        
                     }
                 }
             }
@@ -159,30 +214,33 @@ export class Directive {
                 }
 
                 if (property === 'table') {
-                    const tableObject = object[property];
-                    for (const element in tableObject) {
-                        if (Object.prototype.hasOwnProperty.call(tableObject, element)) {
-                            if (element === 'elements') {
-                                const elements = tableObject.elements;
+                    const table = object[property];                    
+                    
+                    if (table?.elements) {
+                        const elements = table.elements;
 
-                                elements.forEach(tag => {
-                                    if (tag.row) {
-                                        if (tag.row.menu) {
-                                            const menus = tag.row.menu;
+                        elements.forEach(tag => {
+                            if (tag.row) {
+                                if (tag.row.menu) {
+                                    const menus = tag.row.menu;
 
-                                            menus.forEach(menu => {
-                                                if (menu.dialog) {
-                                                    const dialogTemplateAsClassName = this.sharedFunction.setIdToClassName(menu.dialog.templateFolder),
-                                                        tableIdAsPropertyName = this.sharedFunction.setIdToPropertyName(tableObject.id);
+                                    menus.forEach(menu => {
+                                        if (menu.dialog) {
+                                            const dialogTemplateAsClassName = this.sharedFunction.setIdToClassName(menu.dialog.templateFolder),
+                                                tableIdAsPropertyName = this.sharedFunction.setIdToPropertyName(table.id);
 
-                                                    codeConstructor += `private ${tableIdAsPropertyName}Dialog: MatDialog,`
-                                                }
-                                            });
+                                            codeConstructor += `private ${tableIdAsPropertyName}Dialog: MatDialog,`
                                         }
-                                    }
-                                });
+                                    });
+                                }
                             }
-                        }
+                        });
+                    }
+
+                    if (table?.actions) {
+                        const form = table.actions,
+                        formIdAsPropertyName = this.sharedFunction.setIdToPropertyName(form.id);
+                        codeConstructor += `private ${formIdAsPropertyName}Builder: FormBuilder,private ${formIdAsPropertyName}Route: ActivatedRoute,`;
                     }
                 }
             }
@@ -192,96 +250,26 @@ export class Directive {
         return codeConstructor;
     }
 
-
-    setTableObject = (object: ObjectToCode) => {
-        let codeTableObject = '';
-
-        for (const property in object) {
-            if (Object.prototype.hasOwnProperty.call(object, property)) {
-                if (property === 'table') {
-                    const tableObject = object[property];
-
-                    for (const element in tableObject) {
-                        if (Object.prototype.hasOwnProperty.call(tableObject, element)) {
-                            const tableIdAsPropertyName = this.sharedFunction.setIdToPropertyName(tableObject.id);
-                            if (element === 'object') {
-                                const object = tableObject[element];
-
-                                codeTableObject += `${tableIdAsPropertyName}DataSource = ${JSON.stringify(object)};`;
-                            }
-
-                            if (element === 'elements') {
-                                const rows = tableObject[element];
-                                codeTableObject += `${tableIdAsPropertyName}DisplayedColumns: string[] = [`;
-                                rows.forEach((row: TableElementInterface) => {
-                                    codeTableObject += `'${row.row.field}',`;
-                                });
-                                codeTableObject += `];`;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        return codeTableObject;
-    }
-
-    setObject = (object: ObjectToCode) => {
-        let codeObject = '';
-        for (const key in object) {
-            if (Object.prototype.hasOwnProperty.call(object, key)) {
-                if (key === 'form') {
-                    const form = object[key];
-                    if (form) {
-                        const formBuilderName = this.sharedFunction.setIdToPropertyName(form?.id),
-                        formClassName = this.sharedFunction.setIdToClassName(form?.id),
-                        formPropertyName = this.sharedFunction.setIdToPropertyName(form?.id),
-                        formMetaObject = {builderName: formBuilderName, className: formClassName, propertyName: formPropertyName};
-
-
-                        codeObject += `${formPropertyName}Id: string = this.${formPropertyName}Route.snapshot.params['id']; isAddModule: boolean = !this.${formPropertyName}Id;`;
-                        codeObject += `${formBuilderName}Form = this.${formBuilderName}Builder.group({`;
-                        codeObject += this.setFormBuilder(form, formMetaObject);
-                        codeObject += `});`
-
-                        codeObject += this.setForm(form, formMetaObject);
-                    }
-                }
-
-                if (key === 'table') {
-                    const table = object[key];
-                    if (table) {
-                        const tableClassName = this.sharedFunction.setIdToClassName(table.id),
-                        tablePropertyName = this.sharedFunction.setIdToPropertyName(table.id),
-                        tableMetaObject = {className: tableClassName, propertyName: tablePropertyName};
-
-                        codeObject += this.setTable(table, tableMetaObject)
-                    }
-                }
-            }
-        }
-
-        return codeObject;
-    }
-
     /** FORM */
     setForm = (form: FormInterface, formMetaObject: {builderName: string, className: string, propertyName: string}) => {
         let codeElements = '';
-        for (const element in form) {
-            if (Object.prototype.hasOwnProperty.call(form, element)) {
-                if (element === 'elements') {
-                    const elements = form[element];
-                    codeElements += this.setFormElements(elements, formMetaObject);
-                }
-            }
-        }
-
+        // for (const element in form) {
+        //     if (Object.prototype.hasOwnProperty.call(form, element)) {
+        //         if (element === 'elements') {
+        //             const elements = form[element];
+        //             codeElements += this.setFormElements(elements, formMetaObject);
+        //         }
+        //     }
+        // }
+        
+        if (form.elements) codeElements += this.setFormElements(form.elements, formMetaObject);
+        
         return codeElements;
     }
 
     setFormElements = (elements: Array < FormElementInterface >, formMetaObject: {builderName: string, className: string, propertyName: string}) => {
         let codeElement = '';
+        
         elements.forEach(object => {
             for (const key in object) {
                 if (Object.prototype.hasOwnProperty.call(object, key)) {
@@ -331,7 +319,7 @@ export class Directive {
                 }
             }
         })
-
+        
         return codeElement;
     }
 
@@ -410,15 +398,25 @@ export class Directive {
     }
 
     /** TABLE */
-    setTable = (table: TableInterface, tableMetaObject: {className: string, propertyName: string}) => {
+    setTable = (table: TableInterface, tableMetaObject: {builderName: string, className: string, propertyName: string}) => {
         let codeElements = '';
-        for (const element in table) {
-            if (Object.prototype.hasOwnProperty.call(table, element)) {
-                if (element === 'elements') {
-                    const elements = table[element];
-                    codeElements += this.setTableElements(elements, tableMetaObject);
-                }
-            }
+        
+        if (table.elements) codeElements += this.setTableElements(table.elements, tableMetaObject);
+        if (table.actions) {
+            const form = table.actions;
+            // codeElements += this.setForm(table.actions, tableMetaObject)
+            const formBuilderName = this.sharedFunction.setIdToPropertyName(form?.id),
+            formClassName = this.sharedFunction.setIdToClassName(form?.id),
+            formPropertyName = this.sharedFunction.setIdToPropertyName(form?.id),
+            formMetaObject = {builderName: formBuilderName, className: formClassName, propertyName: formPropertyName};
+
+
+            codeElements += `${formPropertyName}Id: string = this.${formPropertyName}Route.snapshot.params['id']; isAddModule: boolean = !this.${formPropertyName}Id;`;
+            codeElements += `${formBuilderName}Form = this.${formBuilderName}Builder.group({`;
+            codeElements += this.setFormBuilder(form, formMetaObject);
+            codeElements += `});`
+
+            codeElements += this.setForm(form, formMetaObject);
         }
 
         return codeElements;
@@ -427,24 +425,53 @@ export class Directive {
     setTableElements = (elements: Array < TableElementInterface >, tableMetaObject: {className: string, propertyName: string}) => {
         let codeElement = '';
         elements.forEach(object => {
-            for (const key in object) {
-                console.log(key);
-                if (Object.prototype.hasOwnProperty.call(object, key)) {
-                    if (key === 'row') {
-                        const row = object[key],
-                        menus = row.menu;
+            if (object.row) {
+                const menus = object.row.menu;
 
-                        menus?.forEach(menu => {
-                            if (menu.dialog) {
-                                codeElement += this.setDialog(menu.dialog, tableMetaObject.propertyName);
-                            }
-                        });
+                menus?.forEach(menu => {
+                    if (menu.dialog) {
+                        codeElement += this.setDialog(menu.dialog, tableMetaObject.propertyName);
                     }
-                }
+                });
             }
         })
 
         return codeElement;
+    }
+
+
+    setTableObject = (object: ObjectToCode) => {
+        let codeTableObject = '';
+
+        for (const property in object) {
+            if (Object.prototype.hasOwnProperty.call(object, property)) {
+                if (property === 'table') {
+                    const tableObject = object[property];
+
+                    for (const element in tableObject) {
+                        if (Object.prototype.hasOwnProperty.call(tableObject, element)) {
+                            const tableIdAsPropertyName = this.sharedFunction.setIdToPropertyName(tableObject.id);
+                            if (element === 'object') {
+                                const object = tableObject[element];
+
+                                codeTableObject += `${tableIdAsPropertyName}DataSource = ${JSON.stringify(object)};`;
+                            }
+
+                            if (element === 'elements') {
+                                const rows = tableObject[element];
+                                codeTableObject += `${tableIdAsPropertyName}DisplayedColumns: string[] = [`;
+                                rows.forEach((row: TableElementInterface) => {
+                                    codeTableObject += `'${row.row.field}',`;
+                                });
+                                codeTableObject += `];`;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return codeTableObject;
     }
 
     /** DIALOG */

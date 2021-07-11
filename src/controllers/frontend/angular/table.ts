@@ -11,7 +11,7 @@ import {
 } from './form';
 
 export class TableAngular {
-    shared = new SharedFunctions;
+    sharedFunctions = new SharedFunctions;
     form = new FormAngular;
 
     setTableHtml = (table: TableInterface) => {
@@ -20,15 +20,30 @@ export class TableAngular {
             codeTable = '',
             codeTableForm = '',
             array = table.elements,
-            tableIdAsPropertyName = this.shared.setIdToPropertyName(table.id),
-            tableIdAsClassName = this.shared.setIdToClassName(table.id);
+            tableIdAsPropertyName = this.sharedFunctions.setIdToPropertyName(table.id),
+            tableIdAsClassName = this.sharedFunctions.setIdToClassName(table.id);
 
 
         /**
          * Form over table
          */
         if (table.actions) {
-            codeTableForm += this.form.setFormHtml(table.actions, true);
+            const form = table.actions,
+            importObject = {}, 
+            formIdAsClassName = this.sharedFunctions.setIdToClassName(form?.id),
+            formPropertyName = this.sharedFunctions.setIdToPropertyName(form?.id);
+            
+            codeTableForm += 
+            `<mat-card>
+                <mat-card-header>
+                    <mat-card-subtitle>
+                        Filtragem <mat-icon>search</mat-icon>
+                    </mat-card-subtitle>
+                </mat-card-header>
+                <form id="${form.id}" [formGroup]="${formPropertyName}Form" (ngSubmit)="${formPropertyName}Submit()">
+                    ${this.form.setFormHtml(table.actions, true)}
+                </form>
+            </mat-card>`;
         }
 
         /**
@@ -50,7 +65,7 @@ export class TableAngular {
                     menuButtonAction = '';
                     if (menuItem.action.type && menuItem.action.type == RequestTypeEnum.Link) menuButtonAction = `[routerLink]="['${menuItem.action.url}']"`;
                     if (menuItem.dialog && menuItem.dialog?.templateFolder) {
-                        const dialogTemplateAsPropertyName = this.shared.setIdToPropertyName(menuItem.dialog?.templateFolder);
+                        const dialogTemplateAsPropertyName = this.sharedFunctions.setIdToPropertyName(menuItem.dialog?.templateFolder);
                         menuButtonAction = `(click)="${dialogTemplateAsPropertyName}OpenDialog()"`;
                     }
 
@@ -71,7 +86,7 @@ export class TableAngular {
         codeTable += `<tr mat-header-row *matHeaderRowDef="${tableIdAsPropertyName}DisplayedColumns"></tr>`;
         codeTable += `<tr mat-row *matRowDef="let row; columns: ${tableIdAsPropertyName}DisplayedColumns;"></tr>`;
 
-        codeHtml += `<mat-card>`;
+        codeHtml += `<mat-card>`; 
         if (table.title) codeHtml += `<mat-card-title>${table.title}</mat-card-title>`;
         if (table.subtitle) codeHtml += `<mat-card-subtitle>${table.subtitle}</mat-card-subtitle>`;
         codeHtml += codeTableForm;
@@ -102,8 +117,8 @@ export class TableAngular {
         //             codeTable = '',
         //             codeTableForm = '',
         //             array = table.elements,
-        //             tableIdAsPropertyName = this.shared.setIdToPropertyName(table.id),
-        //             tableIdAsClassName = this.shared.setIdToClassName(table.id);
+        //             tableIdAsPropertyName = this.sharedFunctions.setIdToPropertyName(table.id),
+        //             tableIdAsClassName = this.sharedFunctions.setIdToClassName(table.id);
 
 
         //             /**
