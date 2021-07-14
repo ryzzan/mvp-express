@@ -17,47 +17,52 @@ export const MODULE_FORM: ObjectToCode = {
                 isRequired: true
             }
         }, {
-            select: {
-                label: 'Componentes relacionados',
-                name: 'compoenents',
-                isMultiple: true,
-                optionsObject: [{
-                    label: 'company-form',
-                    value: 'company-form',
-                }, {
-                    label: 'company-table',
-                    value: 'company-table',
-                }, {
-                    label: 'component-form',
-                    value: 'component-form',
-                }, {
-                    label: 'component-table',
-                    value: 'component-table',
-                }, {
-                    label: 'module-form',
-                    value: 'module-form',
-                }, {
-                    label: 'module-table',
-                    value: 'module-table',
-                }, {
-                    label: 'person-form',
-                    value: 'person-form',
-                }, {
-                    label: 'person-table',
-                    value: 'person-table',
-                }, {
-                    label: 'project-form',
-                    value: 'project-form',
-                }, {
-                    label: 'project-table',
-                    value: 'project-table',
-                }, {
-                    label: 'prospect-form',
-                    value: 'prospect-form',
-                }, {
-                    label: 'prospect-table',
-                    value: 'prospect-table',
-                },]
+            array: {
+                id: "module-form-array",
+                label: "Componente",
+                elements: [{
+                    select: {
+                        label: 'Componentes relacionados',
+                        name: 'components',
+                        optionsObject: [{
+                            label: 'company-form',
+                            value: 'company-form',
+                        }, {
+                            label: 'company-table',
+                            value: 'company-table',
+                        }, {
+                            label: 'component-form',
+                            value: 'component-form',
+                        }, {
+                            label: 'component-table',
+                            value: 'component-table',
+                        }, {
+                            label: 'module-form',
+                            value: 'module-form',
+                        }, {
+                            label: 'module-table',
+                            value: 'module-table',
+                        }, {
+                            label: 'person-form',
+                            value: 'person-form',
+                        }, {
+                            label: 'person-table',
+                            value: 'person-table',
+                        }, {
+                            label: 'project-form',
+                            value: 'project-form',
+                        }, {
+                            label: 'project-table',
+                            value: 'project-table',
+                        }, {
+                            label: 'prospect-form',
+                            value: 'prospect-form',
+                        }, {
+                            label: 'prospect-table',
+                            value: 'prospect-table',
+                        },]
+                    }
+                }]
             }
         }],
         actions: [{
