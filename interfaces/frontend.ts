@@ -3,6 +3,7 @@ export interface ObjectToCode {
     frontendFramework?: FrontendFrameworkEnum;
     module: string;
     title: string;
+    projectPath: string;
     comments?: string;
     form?: FormInterface;
     table?: TableInterface;
@@ -472,3 +473,12 @@ export enum ActionVerbEnum {
     Put = 'PUT',
     Delete = 'DELETE'
 };
+
+
+/**
+ * Enum: Others
+ */
+ export enum ComponentCodeType {
+    Controller = 'controller',
+    Template = 'template'
+}

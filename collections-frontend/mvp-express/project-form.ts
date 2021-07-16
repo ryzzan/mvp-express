@@ -4,6 +4,7 @@ export const PROJECT_FORM: ObjectToCode = {
     module: 'project-form',
     title: 'Projeto',
     frontendFramework: FrontendFrameworkEnum.Angular,
+    projectPath: '/home/ryzzan/Projects/Kunlatek/mvp-test',
     form: {
         id: 'project-form',
         label: 'Projeto',

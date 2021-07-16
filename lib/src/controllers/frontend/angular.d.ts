@@ -4,6 +4,7 @@
  *  - Services
  */
 import { Directive } from "./angular/directive";
+import { FileSystem } from "./angular/fs/filesystem";
 import { FormAngular } from './angular/form';
 import { ObjectToCode } from "../../../interfaces/frontend";
 import { SharedFunctions } from "./angular/shared-functions";
@@ -12,10 +13,7 @@ export declare class CodeToAngular {
     formAngular: FormAngular;
     directive: Directive;
     tableAngular: TableAngular;
+    fs: FileSystem;
     sharedFunction: SharedFunctions;
-    setAngularCode: (objectToCode: ObjectToCode) => {
-        template: string;
-        directive: string;
-        interface: string;
-    };
+    setAngularCode: (objectToCode: ObjectToCode) => Promise<void>;
 }

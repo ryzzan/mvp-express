@@ -4,8 +4,9 @@
  *  - Services
  */
 import { Directive } from "./angular/directive";
+import { FileSystem } from "./angular/fs/filesystem";
 import { FormAngular } from './angular/form';
-import { ObjectToCode } from "../../../interfaces/frontend";
+import { ComponentCodeType, ObjectToCode } from "../../../interfaces/frontend";
 import { SharedFunctions } from "./angular/shared-functions";
 import { TableAngular } from './angular/table';
 // import { TreeAngular } from './angular/tree';
@@ -14,11 +15,12 @@ export class CodeToAngular {
     formAngular = new FormAngular;
     directive = new Directive;
     tableAngular = new TableAngular;
+    fs = new FileSystem;
     // treeAngular = new TreeAngular;
 
     sharedFunction = new SharedFunctions;
 
-    public setAngularCode = (objectToCode: ObjectToCode) => {
+    public setAngularCode = async (objectToCode: ObjectToCode) => {
         let codeTemplate = '', codeDirective = '', codeInterface = '';
         const form = objectToCode.form, 
         table = objectToCode.table;
@@ -35,11 +37,13 @@ export class CodeToAngular {
             codeTemplate +=`</form></mat-card>`;
 
             codeDirective += this.directive.setImport(objectToCode, importObject);
-            codeDirective += `@Component({selector: 'app-${form.id}', templateUrl: './${form.id}.component.html', styleUrls: ['./${form.id}.component.css']})`;
+            codeDirective += `@Component({selector: 'app-${form.id}', templateUrl: './${form.id}.component.html', styleUrls: ['./${form.id}.component.sass']})`;
             codeDirective += `export class ${formIdAsClassName}Component {`;
             codeDirective += this.directive.setClassConstructor(objectToCode);
             codeDirective += this.directive.setObject(objectToCode);
             codeDirective += `}`;
+            await this.fs.createProjectComponentPathAndFile(objectToCode.projectPath, form.id, codeDirective, ComponentCodeType.Controller);
+            await this.fs.createProjectComponentPathAndFile(objectToCode.projectPath, form.id, codeTemplate, ComponentCodeType.Template);
             // codeInterface +=  this.formAngular.setFormInterface(form);
         }
         
@@ -50,12 +54,16 @@ export class CodeToAngular {
             codeTemplate += this.tableAngular.setTableHtml(table);
             
             codeDirective += this.directive.setImport(objectToCode, importObject);
-            codeDirective += `@Component({selector: 'app-${table.id}', templateUrl: './${table.id}.component.html', styleUrls: ['./${table.id}.component.css']})`;
+            codeDirective += `@Component({selector: 'app-${table.id}', templateUrl: './${table.id}.component.html', styleUrls: ['./${table.id}.component.sass']})`;
             codeDirective += `export class ${tableIdAsClassName}Component {`;
             codeDirective += this.directive.setClassConstructor(objectToCode);
             codeDirective += this.directive.setTableObject(objectToCode);
             codeDirective += this.directive.setObject(objectToCode);
             codeDirective += `}`;
+            console.info('Enviado código de template para tratar na arquitetura.');
+            await this.fs.createProjectComponentPathAndFile(objectToCode.projectPath, table.id, codeDirective, ComponentCodeType.Controller);
+            console.info('Enviado código de directive para tratar na arquitetura.');
+            await this.fs.createProjectComponentPathAndFile(objectToCode.projectPath, table.id, codeTemplate, ComponentCodeType.Template);
         //     codeInterface +=  this.tableAngular.setTableInterface(table);
         }
 
@@ -64,11 +72,11 @@ export class CodeToAngular {
         //     codeDirective += this.treeAngular.setTreeDirective(objectToCode.tree);
         //     codeInterface +=  this.treeAngular.setTreeInterface(objectToCode.tree);
         // }
-    
-        return {
+
+        console.info({
             template: codeTemplate.replace(/\n/gi, '').replace(/    /gi, ''), 
             directive: codeDirective.replace(/\, \]/gi, ']').replace(/\, \}/gi, '}').replace(/\, \,/gi, ''), 
-            interface: codeInterface
-        };
+            interface: codeInterface,
+        });
     }
 }

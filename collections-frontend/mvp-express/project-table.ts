@@ -4,6 +4,7 @@ export const PROJECT_TABLE: ObjectToCode = {
     module: "project-table",
     title: "Projetos",
     frontendFramework: FrontendFrameworkEnum.Angular,
+    projectPath: '/home/ryzzan/Projects/Kunlatek/mvp-test',
     table: {
         id: "project-table",
         title: "Projetos",
