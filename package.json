@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc",
     "start": "tsc && node dist/src/testing.js",
-    "format": "prettier --write \"src/**/*.ts\"",
+    "format": "prettier --write \"{src,apps,libs,test,collections-frontend}/**/*.ts\"",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix"
   },
   "author": "",
