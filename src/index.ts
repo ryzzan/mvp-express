@@ -1,12 +1,15 @@
-import { ObjectToCode } from '../interfaces/frontend';
+import { BuildedCode, ObjectToCode } from '../interfaces/frontend';
 import { FrontendCode } from './controllers/frontend';
 
 export class Main {
   frontendCode = new FrontendCode();
-  setObjectToCode = (object: ObjectToCode) => {
+
+  async setObjectToCode(
+    object: ObjectToCode,
+  ): Promise<BuildedCode | undefined | string> {
     if (object.frontendFramework) {
       try {
-        return this.frontendCode.setFrontendCode(object);
+        return await this.frontendCode.setFrontendCode(object);
       } catch (error) {
         return error;
       }
@@ -17,5 +20,5 @@ export class Main {
     }
 
     return 'No frontend nor backend chosen';
-  };
+  }
 }

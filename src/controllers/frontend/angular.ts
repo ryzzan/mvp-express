@@ -1,26 +1,22 @@
-/**
- * TO-DO
- *  - Tree
- *  - Services
- */
 import { Directive } from './angular/directive';
 import { FileSystem } from './angular/fs/filesystem';
 import { FormAngular } from './angular/form';
-import { ComponentCodeType, ObjectToCode } from '../../../interfaces/frontend';
+import {
+  BuildedCode,
+  ComponentCodeType,
+  ObjectToCode,
+} from '../../../interfaces/frontend';
 import { SharedFunctions } from './angular/shared-functions';
 import { TableAngular } from './angular/table';
-// import { TreeAngular } from './angular/tree';
-
 export class CodeToAngular {
   formAngular = new FormAngular();
   directive = new Directive();
   tableAngular = new TableAngular();
   fs = new FileSystem();
-  // treeAngular = new TreeAngular;
 
   sharedFunction = new SharedFunctions();
 
-  public setAngularCode = async (objectToCode: ObjectToCode) => {
+  async setAngularCode(objectToCode: ObjectToCode): Promise<BuildedCode> {
     let codeTemplate = '';
     let codeDirective = '';
     const codeInterface = '';
@@ -92,22 +88,18 @@ export class CodeToAngular {
         codeTemplate,
         ComponentCodeType.Template,
       );
-      //     codeInterface +=  this.tableAngular.setTableInterface(table);
     }
 
-    // if (objectToCode.tree) {
-    //     codeTemplate += this.treeAngular.setTreeHtml(objectToCode.tree);
-    //     codeDirective += this.treeAngular.setTreeDirective(objectToCode.tree);
-    //     codeInterface +=  this.treeAngular.setTreeInterface(objectToCode.tree);
-    // }
-
-    console.info({
+    const buildedComponent = {
       template: codeTemplate.replace(/\n/gi, '').replace(/    /gi, ''),
       directive: codeDirective
         .replace(/\, \]/gi, ']')
         .replace(/\, \}/gi, '}')
         .replace(/\, \,/gi, ''),
       interface: codeInterface,
-    });
-  };
+    };
+
+    console.info(buildedComponent);
+    return buildedComponent;
+  }
 }

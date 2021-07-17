@@ -1,4 +1,4 @@
-import { ObjectToCode } from '../../interfaces/frontend';
+import { BuildedCode, ObjectToCode } from '../../interfaces/frontend';
 
 import { CodeToAngular } from './frontend/angular';
 import { CodeToPure } from './frontend/pure';
@@ -7,12 +7,14 @@ export class FrontendCode {
   codeToAngular = new CodeToAngular();
   codeToPure = new CodeToPure();
 
-  public setFrontendCode = (object: ObjectToCode) => {
+  async setFrontendCode(
+    object: ObjectToCode,
+  ): Promise<BuildedCode | undefined> {
     let response;
 
     switch (object.frontendFramework) {
       case 'ANGULAR':
-        response = this.codeToAngular.setAngularCode(object);
+        response = await this.codeToAngular.setAngularCode(object);
         break;
 
       case 'PURE':
@@ -36,5 +38,5 @@ export class FrontendCode {
     }
 
     return response;
-  };
+  }
 }
