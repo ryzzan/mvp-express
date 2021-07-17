@@ -1,11 +1,9 @@
-import { TableAngular } from "../table";
+import { TableAngular } from '../table';
 
 export class TableTemplate {
-    tableTemplate = new TableAngular;
+  tableTemplate = new TableAngular();
 
-    setRow = () => {
-    }
+  setRow = () => {};
 
-    setColumn = () => {
-    }
+  setColumn = () => {};
 }

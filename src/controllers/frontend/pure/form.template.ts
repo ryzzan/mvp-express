@@ -1,31 +1,19 @@
-import { SharedFunctions } from "../angular/shared-functions"
+import { SharedFunctions } from '../angular/shared-functions';
 
 export class FormTemplate {
-    sharedFunctions = new SharedFunctions;
-    
-    constructor() {}
+  sharedFunctions = new SharedFunctions();
 
-    setForm = () => {
+  constructor() {}
 
-    }
+  setForm = () => {};
 
-    setInput = () => {
+  setInput = () => {};
 
-    }
+  setSelect = () => {};
 
-    setSelect = () => {
+  setOptgroup = () => {};
 
-    }
+  setOptions = () => {};
 
-    setOptgroup = () => {
-
-    }
-
-    setOptions = () => {
-        
-    }
-
-    setButton =() => {
-
-    }
+  setButton = () => {};
 }

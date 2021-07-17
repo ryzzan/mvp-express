@@ -1,61 +1,64 @@
-import { FormElementInterface, FormInterface } from "../../../../../interfaces/frontend";
+import {
+  FormElementInterface,
+  FormInterface,
+} from '../../../../../interfaces/frontend';
 
 export class FormDirective {
-    constructor() {}
+  constructor() {}
 
-    setImport = (form: FormInterface) => {
-        const elements = form.elements;
-        let codeImport = `import { Component } from '@angular/core';`,
-        importObject = {
-            forms: {
-                validators: false,
-                formArray: false,
-            },
-            router: {
-                activatedRoute: false,
-                router: false,
-            },
-        };
+  setImport = (form: FormInterface) => {
+    const elements = form.elements;
+    let codeImport = `import { Component } from '@angular/core';`;
+    const importObject = {
+      forms: {
+        validators: false,
+        formArray: false,
+      },
+      router: {
+        activatedRoute: false,
+        router: false,
+      },
+    };
 
-        elements.forEach(element => {
-            if (element.array) {
-                importObject.forms.formArray = true;
-            }
+    elements.forEach(element => {
+      if (element.array) {
+        importObject.forms.formArray = true;
+      }
 
-            if (element.input) {
-                if (element.input.validators) importObject.forms.validators; 
-            }
+      if (element.input) {
+        if (element.input.validators) importObject.forms.validators;
+      }
 
-            if (element.select) {
-                if (element.select.validators) importObject.forms.validators; 
-            }
-        });
+      if (element.select) {
+        if (element.select.validators) importObject.forms.validators;
+      }
+    });
 
-        /** Forms */
-        codeImport += `import {FormBuilder`
-        if (importObject.forms.formArray) codeImport += `,FormArray,FormGroup`;
-        if (importObject.forms.validators) codeImport += `,Validators`;
-        codeImport += `} from '@angular/forms';`; 
+    /** Forms */
+    codeImport += `import {FormBuilder`;
+    if (importObject.forms.formArray) codeImport += `,FormArray,FormGroup`;
+    if (importObject.forms.validators) codeImport += `,Validators`;
+    codeImport += `} from '@angular/forms';`;
 
-        /** Router */
-        codeImport += `import {ActivatedRoute,Router} from '@angular/router';`
+    /** Router */
+    codeImport += `import {ActivatedRoute,Router} from '@angular/router';`;
 
-        return codeImport;
-    }
+    return codeImport;
+  };
 
-    setDecoratorComponent = () => {}
+  setDecoratorComponent = () => {};
 
-    setClass = () => {}
+  setClass = () => {};
 
-    setClassConstructor = () => {}
+  setClassConstructor = () => {};
 
-    setFormProperty = () => {}
+  setFormProperty = () => {};
 
-    setFormArray = () => {}
+  setFormArray = () => {};
 
-    setFormAction = () => {}
+  setFormAction = () => {};
 
-    setTableProperty = () => {}
+  setTableProperty = () => {};
 
-    setSelectObject = () => {}
+  setSelectObject = () => {};
 }
