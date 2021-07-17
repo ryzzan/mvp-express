@@ -30,7 +30,7 @@ export class FormTemplate {
                         ${array.label} {{1 + i}}
                     </mat-card-header>
                     <mat-card-content>
-                        ${this.formTemplate.setFormHtml(array)}
+                        ${this.formTemplate.setFormInputs(array)}
                     </mat-card-content>
                     <mat-card-actions>
                         <button mat-button type="button" color="warn" (click)="${remove}(i)">
@@ -124,7 +124,7 @@ export class FormTemplate {
     let codeTab = `<mat-tab-group>`;
     tabs.forEach((tab: FormInterface) => {
       codeTab += `<mat-tab label="${tab.label}" id="${tab.id}">
-                ${this.formTemplate.setFormHtml(tab)}
+                ${this.formTemplate.setFormInputs(tab)}
             </mat-tab>`;
     });
     codeTab += `</mat-tab-group>`;

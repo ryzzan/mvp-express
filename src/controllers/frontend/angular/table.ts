@@ -41,7 +41,7 @@ export class TableAngular {
                 <form id="${
                   form.id
                 }" [formGroup]="${formPropertyName}Form" (ngSubmit)="${formPropertyName}Submit()">
-                    ${this.form.setFormHtml(table.actions, true)}
+                    ${this.form.setFormInputs(table.actions)}
                 </form>
             </mat-card>`;
     }

@@ -1,14 +1,17 @@
 import * as fs from 'fs';
 import * as chp from 'child_process';
-import { ComponentCodeType } from '../../../../../interfaces/frontend';
+import {
+  ComponentCodeType,
+  CreateProjectComponentPathAndFile,
+} from '../../../../../interfaces/frontend';
 
 export class FileSystem {
-  createProjectComponentPathAndFile = async (
-    projectPath: string,
-    componentPath: string,
-    componentCode: string,
-    componentCodeType: ComponentCodeType,
-  ) => {
+  async createProjectComponentPathAndFile({
+    projectPath,
+    componentPath,
+    componentCode,
+    componentCodeType,
+  }: CreateProjectComponentPathAndFile): Promise<void> {
     const projectFolder = projectPath.split(/[\/]+/).pop();
     const splitProjectFolder = projectPath.split(/[\/]+/);
     const projectFolderParent = splitProjectFolder
@@ -38,41 +41,40 @@ export class FileSystem {
 
     try {
       console.info(`Pasta de componente existente.`);
-      const projectAndComponent = fs.readdirSync(projectAndComponentPath);
-      await this.writeCodeToComponentFile(
+      await this.writeCodeToComponentFile({
         projectPath,
         componentPath,
         componentCode,
         componentCodeType,
-      );
+      });
     } catch (error) {
       console.info(`Pasta de componente inexistente.`);
       try {
         fs.mkdirSync(projectAndComponentPath);
-        await this.writeCodeToComponentFile(
+        await this.writeCodeToComponentFile({
           projectPath,
           componentPath,
           componentCode,
           componentCodeType,
-        );
+        });
       } catch (error) {
-        await this.writeCodeToComponentFile(
+        await this.writeCodeToComponentFile({
           projectPath,
           componentPath,
           componentCode,
           componentCodeType,
-        );
+        });
       }
     }
-  };
+  }
 
   /** Create file and write in it */
-  writeCodeToComponentFile = async (
-    projectPath: string,
-    componentPath: string,
-    componentCode: string,
-    componentCodeType: ComponentCodeType,
-  ) => {
+  async writeCodeToComponentFile({
+    projectPath,
+    componentPath,
+    componentCode,
+    componentCodeType,
+  }: CreateProjectComponentPathAndFile): Promise<void> {
     let componentFilePath = '';
 
     if (componentCodeType === ComponentCodeType.Controller)
@@ -81,7 +83,6 @@ export class FileSystem {
       componentFilePath = `${projectPath}/src/app/components/${componentPath}/${componentPath}.component.html`;
 
     try {
-      const file = fs.readFileSync(componentFilePath);
       console.info(`Arquivo ${componentPath} existente.`);
       fs.writeFileSync(componentFilePath, componentCode);
       console.info(`Aquivo escrito com sucesso em ${componentFilePath}.`);
@@ -103,8 +104,5 @@ export class FileSystem {
         `Aquivo criado e escrito com sucesso em ${componentFilePath}`,
       );
     }
-    /** Make code prettier */
-
-    /** Test and validate code */
-  };
+  }
 }

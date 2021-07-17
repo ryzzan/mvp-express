@@ -1,20 +1,27 @@
-import { BuildedCode, ObjectToCode } from '../../interfaces/frontend';
+import {
+  BuildedCode,
+  MainConfiguration,
+  ObjectToCode,
+} from '../../interfaces/frontend';
 
 import { CodeToAngular } from './frontend/angular';
 import { CodeToPure } from './frontend/pure';
 
 export class FrontendCode {
-  codeToAngular = new CodeToAngular();
-  codeToPure = new CodeToPure();
+  codeToAngular;
+  codeToPure;
 
-  async setFrontendCode(
-    object: ObjectToCode,
-  ): Promise<BuildedCode | undefined> {
+  constructor(configs: MainConfiguration) {
+    this.codeToAngular = new CodeToAngular(configs);
+    this.codeToPure = new CodeToPure();
+  }
+
+  setFrontendCode(object: ObjectToCode): BuildedCode | undefined {
     let response;
 
     switch (object.frontendFramework) {
       case 'ANGULAR':
-        response = await this.codeToAngular.setAngularCode(object);
+        response = this.codeToAngular.setAngularCode(object);
         break;
 
       case 'PURE':
