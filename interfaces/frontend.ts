@@ -1,3 +1,7 @@
+export interface MainConfiguration {
+  exportInAExistentProject?: boolean;
+}
+
 export interface ObjectToCode {
   backendFramework?: BackendFrameworkEnum;
   frontendFramework?: FrontendFrameworkEnum;
@@ -27,8 +31,13 @@ export interface FormInterface {
   title?: string;
   subtitle?: string;
   attributes?: FormAttributeEnum;
+  service: ServiceInterface;
 }
-
+export interface ServiceInterface {
+  baseUrl: string;
+  endPoint: string;
+  methods: Array<ServiceFunctionsEnum>;
+}
 export interface FormElementInterface {
   array?: FormInterface;
   button?: ButtonInterface;
@@ -63,10 +72,12 @@ export interface ButtonInterface {
   formTarget?: FormTargetEnum;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface DatalistInterface {
   // TO-DO
 }
 
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface FieldsetInterface {
   // TO-DO
 }
@@ -107,8 +118,10 @@ export interface InputInterface {
   width?: number;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface LabelInterface {}
 
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface LegendInterface {}
 
 export interface OptgroupInterface {
@@ -124,6 +137,7 @@ export interface OptionInterface {
   isSelected?: boolean;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface OutputInterface {}
 
 export interface SelectInterface {
@@ -141,6 +155,7 @@ export interface SelectInterface {
   isRequired?: boolean;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface TextareaInterface {}
 
 /**
@@ -152,7 +167,7 @@ export interface TableInterface {
   data: RequestInterface;
   elements: Array<TableElementInterface>;
   actions?: FormInterface;
-  object?: Array<Object>;
+  object?: Array<unknown>;
   subtitle?: string;
   title?: string;
 }
@@ -222,7 +237,7 @@ export interface TreeNodeObjectInterface {
 export interface DialogInterface {
   templateFolder: string;
   id: string;
-  dialogDataInterface?: Object; // Two way data bind over dialog
+  dialogDataInterface?: unknown; // Two way data bind over dialog
 }
 
 /**
@@ -232,7 +247,7 @@ export interface RequestInterface {
   type: RequestTypeEnum;
   verb?: ActionVerbEnum;
   url?: string;
-  body?: Object;
+  body?: unknown;
 }
 
 export interface FilterWhereInterface {
@@ -324,6 +339,14 @@ export enum FormTargetEnum {
   Self = '_self',
   Parent = '_parent',
   Top = '_top',
+}
+
+export enum ServiceFunctionsEnum {
+  Get = 'get',
+  Find = 'find',
+  Save = 'save',
+  Update = 'update',
+  Delete = 'delete',
 }
 
 /**
@@ -476,3 +499,14 @@ export enum ComponentCodeType {
   Controller = 'controller',
   Template = 'template',
 }
+
+export interface CreateProjectComponentPathAndFile {
+  projectPath: string;
+  componentPath: string;
+  componentCode: string;
+  componentCodeType: ComponentCodeType;
+}
+export type ProjectComponentPathAndFile = Omit<
+  CreateProjectComponentPathAndFile,
+  'projectPath'
+>;
