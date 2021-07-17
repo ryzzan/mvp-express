@@ -8,15 +8,12 @@ import {
   TableInterface,
 } from '../../../../interfaces/frontend';
 import { SharedFunctions } from './shared-functions';
-import { TableDirective } from './table/table.directive';
 
 export class Directive {
-  constructor() {}
-
   sharedFunction = new SharedFunctions();
 
-  /** LET THE CARNAGE BEGIN! */
-  setObject = (object: ObjectToCode) => {
+  // LET THE CARNAGE BEGIN!
+  setObject(object: ObjectToCode): string {
     let codeObject = '';
     for (const key in object) {
       if (Object.prototype.hasOwnProperty.call(object, key)) {
@@ -72,10 +69,10 @@ export class Directive {
     }
 
     return codeObject;
-  };
+  }
 
-  /** IMPORT */
-  setImport = (object: ObjectToCode, importObject: DirectiveElements) => {
+  // IMPORT
+  setImport(object: ObjectToCode, importObject: DirectiveElements): string {
     let codeImport = '';
 
     for (const key in object) {
@@ -152,12 +149,12 @@ export class Directive {
     }
 
     return codeImport;
-  };
+  }
 
-  setImportForm = (
+  setImportForm(
     form: FormInterface,
     importArray: Array<string> = ['form'],
-  ) => {
+  ): Array<string> {
     let array: Array<string> = importArray;
     for (const element in form) {
       if (Object.prototype.hasOwnProperty.call(form, element)) {
@@ -169,12 +166,12 @@ export class Directive {
     }
 
     return array;
-  };
+  }
 
-  setImportFormElements = (
+  setImportFormElements(
     elements: Array<FormElementInterface>,
     importArray: Array<string>,
-  ) => {
+  ): Array<string> {
     const arrayImport = importArray;
     elements.forEach(object => {
       for (const key in object) {
@@ -205,10 +202,10 @@ export class Directive {
     });
 
     return arrayImport;
-  };
+  }
 
-  /** CONSTRUCTOR */
-  setClassConstructor = (object: ObjectToCode) => {
+  // CONSTRUCTOR
+  setClassConstructor(object: ObjectToCode): string {
     let codeConstructor = 'constructor(';
 
     for (const property in object) {
@@ -279,17 +276,17 @@ export class Directive {
     codeConstructor += `) {}`;
 
     return codeConstructor;
-  };
+  }
 
-  /** FORM */
-  setForm = (
+  // FORM
+  setForm(
     form: FormInterface,
     formMetaObject: {
       builderName: string;
       className: string;
       propertyName: string;
     },
-  ) => {
+  ): string {
     let codeElements = '';
     // for (const element in form) {
     //     if (Object.prototype.hasOwnProperty.call(form, element)) {
@@ -304,16 +301,16 @@ export class Directive {
       codeElements += this.setFormElements(form.elements, formMetaObject);
 
     return codeElements;
-  };
+  }
 
-  setFormElements = (
+  setFormElements(
     elements: Array<FormElementInterface>,
     formMetaObject: {
       builderName: string;
       className: string;
       propertyName: string;
     },
-  ) => {
+  ): string {
     let codeElement = '';
 
     elements.forEach(object => {
@@ -376,16 +373,16 @@ export class Directive {
     });
 
     return codeElement;
-  };
+  }
 
-  setFormBuilder = (
+  setFormBuilder(
     form: FormInterface,
     formMetaObject: {
       builderName: string;
       className: string;
       propertyName: string;
     },
-  ) => {
+  ): string {
     let codeElements = '';
     for (const element in form) {
       if (Object.prototype.hasOwnProperty.call(form, element)) {
@@ -397,16 +394,16 @@ export class Directive {
     }
 
     return codeElements;
-  };
+  }
 
-  setFormBuilderElements = (
+  setFormBuilderElements(
     elements: Array<FormElementInterface>,
     formMetaObject: {
       builderName: string;
       className: string;
       propertyName: string;
     },
-  ) => {
+  ): string {
     let codeElement = '';
     elements.forEach(object => {
       for (const key in object) {
@@ -463,24 +460,25 @@ export class Directive {
     });
 
     return codeElement;
-  };
+  }
 
-  setFormValidators = (validators: Array<string>) => {
+  setFormValidators(validators: Array<string>): string {
     let codeValidator = '';
     validators.forEach(validator => {
       codeValidator += `Validators.${validator},`;
     });
-  };
+    return codeValidator;
+  }
 
-  /** TABLE */
-  setTable = (
+  // TABLE
+  setTable(
     table: TableInterface,
     tableMetaObject: {
       builderName: string;
       className: string;
       propertyName: string;
     },
-  ) => {
+  ): string {
     let codeElements = '';
 
     if (table.elements)
@@ -508,12 +506,12 @@ export class Directive {
     }
 
     return codeElements;
-  };
+  }
 
-  setTableElements = (
+  setTableElements(
     elements: Array<TableElementInterface>,
     tableMetaObject: { className: string; propertyName: string },
-  ) => {
+  ): string {
     let codeElement = '';
     elements.forEach(object => {
       if (object.row) {
@@ -531,9 +529,9 @@ export class Directive {
     });
 
     return codeElement;
-  };
+  }
 
-  setTableObject = (object: ObjectToCode) => {
+  setTableObject(object: ObjectToCode): string {
     let codeTableObject = '';
 
     for (const property in object) {
@@ -568,10 +566,10 @@ export class Directive {
     }
 
     return codeTableObject;
-  };
+  }
 
-  /** DIALOG */
-  setDialog = (dialog: DialogInterface, componentCallingDialogId: string) => {
+  // DIALOG
+  setDialog(dialog: DialogInterface, componentCallingDialogId: string): string {
     let codeDialog = '';
     const dialogTemplateAsClassName = this.sharedFunction.setIdToClassName(
       dialog.templateFolder,
@@ -596,5 +594,5 @@ export class Directive {
     codeDialog += `};`;
 
     return codeDialog;
-  };
+  }
 }
