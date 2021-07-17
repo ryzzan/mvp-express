@@ -8,6 +8,7 @@ export interface ObjectToCode {
     form?: FormInterface;
     table?: TableInterface;
     tree?: TreeInterface;
+    nest?: NestInterface;
 }
 /**
  * Form
@@ -228,6 +229,13 @@ export interface DirectiveElements {
     router?: boolean;
     routerActivatedRoute?: boolean;
     routerRouter?: boolean;
+}
+/**
+ * Nest
+ */
+export interface NestInterface {
+    id: string;
+    components: Array<string>;
 }
 /**
  * Enum: Form

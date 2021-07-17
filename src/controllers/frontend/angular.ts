@@ -15,6 +15,7 @@ export class CodeToAngular {
     formAngular = new FormAngular;
     directive = new Directive;
     tableAngular = new TableAngular;
+
     fs = new FileSystem;
     // treeAngular = new TreeAngular;
 
@@ -23,7 +24,8 @@ export class CodeToAngular {
     public setAngularCode = async (objectToCode: ObjectToCode) => {
         let codeTemplate = '', codeDirective = '', codeInterface = '';
         const form = objectToCode.form, 
-        table = objectToCode.table;
+        table = objectToCode.table,
+        nest = objectToCode.nest;
         if (form) {
             const importObject = {}, 
             formIdAsClassName = this.sharedFunction.setIdToClassName(form?.id),
@@ -42,7 +44,9 @@ export class CodeToAngular {
             codeDirective += this.directive.setClassConstructor(objectToCode);
             codeDirective += this.directive.setObject(objectToCode);
             codeDirective += `}`;
+            console.info('Enviado código de directive para tratar na arquitetura.');
             await this.fs.createProjectComponentPathAndFile(objectToCode.projectPath, form.id, codeDirective, ComponentCodeType.Controller);
+            console.info('Enviado código de template para tratar na arquitetura.');
             await this.fs.createProjectComponentPathAndFile(objectToCode.projectPath, form.id, codeTemplate, ComponentCodeType.Template);
             // codeInterface +=  this.formAngular.setFormInterface(form);
         }
@@ -60,9 +64,9 @@ export class CodeToAngular {
             codeDirective += this.directive.setTableObject(objectToCode);
             codeDirective += this.directive.setObject(objectToCode);
             codeDirective += `}`;
-            console.info('Enviado código de template para tratar na arquitetura.');
-            await this.fs.createProjectComponentPathAndFile(objectToCode.projectPath, table.id, codeDirective, ComponentCodeType.Controller);
             console.info('Enviado código de directive para tratar na arquitetura.');
+            await this.fs.createProjectComponentPathAndFile(objectToCode.projectPath, table.id, codeDirective, ComponentCodeType.Controller);
+            console.info('Enviado código de template para tratar na arquitetura.');
             await this.fs.createProjectComponentPathAndFile(objectToCode.projectPath, table.id, codeTemplate, ComponentCodeType.Template);
         //     codeInterface +=  this.tableAngular.setTableInterface(table);
         }
@@ -72,6 +76,13 @@ export class CodeToAngular {
         //     codeDirective += this.treeAngular.setTreeDirective(objectToCode.tree);
         //     codeInterface +=  this.treeAngular.setTreeInterface(objectToCode.tree);
         // }
+
+        if (nest) {
+            nest.components.forEach(res => codeTemplate += `<app-${res}></app-${res}>`);
+
+            console.info('Enviado código de template para tratar na arquitetura.');
+            await this.fs.createProjectComponentPathAndFile(objectToCode.projectPath, nest.id, codeTemplate, ComponentCodeType.Template, true);
+        }
 
         console.info({
             template: codeTemplate.replace(/\n/gi, '').replace(/    /gi, ''), 

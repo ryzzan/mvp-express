@@ -8,6 +8,7 @@ export interface ObjectToCode {
     form?: FormInterface;
     table?: TableInterface;
     tree?: TreeInterface;
+    nest?: NestInterface;
 };
 
 /**
@@ -261,6 +262,15 @@ export interface FilterInterface {
     router?: boolean;
     routerActivatedRoute?: boolean;
     routerRouter?: boolean;
+}
+
+/**
+ * Nest
+ */
+
+export interface NestInterface {
+    id: string;
+    components: Array<string>;
 }
 
 /**
