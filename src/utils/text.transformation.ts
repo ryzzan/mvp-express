@@ -89,4 +89,44 @@ export class TextTransformation {
 
     return className;
   }
+
+  static objectToString(objectOriginal: any): string {
+    let string = Array.isArray(objectOriginal) ? '[' : '';
+    if (Array.isArray(objectOriginal)) {
+      objectOriginal.forEach((object: any) => {
+        string += `{`;
+        for (const key in object) {
+          if (Object.prototype.hasOwnProperty.call(object, key)) {
+            const element = object[key];
+            string += `${key}: ${element},`;
+            if (Array.isArray(element)) {
+              string += Array.isArray(element) ? `[` : '';
+              string += this.objectToString(element);
+              string += Array.isArray(element) ? `]` : '';
+            }
+          }
+        }
+        string += `}`;
+      });
+    }
+
+    if (!Array.isArray(objectOriginal)) {
+      string += `{`;
+      for (const key in objectOriginal) {
+        if (Object.prototype.hasOwnProperty.call(objectOriginal, key)) {
+          const element = objectOriginal[key];
+          string += `${key}: ${element},`;
+          if (Array.isArray(element)) {
+            string += Array.isArray(element) ? `[` : '';
+            string += this.objectToString(element);
+            string += Array.isArray(element) ? `]` : '';
+          }
+        }
+      }
+      string += `}`;
+    }
+
+    string += Array.isArray(objectOriginal) ? ']' : '';
+    return string;
+  }
 }

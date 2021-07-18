@@ -39,11 +39,11 @@ export class Directive {
   }
 
   private replaceTextTransformationToString(template: string): string {
-    template = this.customDirective.injectImports(template);
     template = this.customDirective.injectVariables(template);
     template = this.customDirective.injectDependencies(template);
     template = this.customDirective.injectConstructor(template);
     template = this.customDirective.injectActions(template);
+    template = this.customDirective.injectImports(template);
     template = TextTransformation.replaceKebabfyFunctionToString(template);
     template = TextTransformation.replacePascalfyFunctionToString(template);
 

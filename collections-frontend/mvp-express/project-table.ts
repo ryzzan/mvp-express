@@ -5,12 +5,12 @@ import {
 } from '../../interfaces/frontend';
 
 export const PROJECT_TABLE: ObjectToCode = {
-  module: 'project-table',
+  module: 'projectTable',
   title: 'Projetos',
   frontendFramework: FrontendFrameworkEnum.Angular,
-  projectPath: '/home/ryzzan/Projects/Kunlatek/mvp-test',
+  projectPath: '/Users/roberto/projects/mvp-test',
   table: {
-    id: 'project-table',
+    id: 'projectTable',
     title: 'Projetos',
     data: {
       type: RequestTypeEnum.Object,

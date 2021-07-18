@@ -18,7 +18,8 @@ export class CodeToPure {
     return {
       template: codeHtml,
       directive: codeDirective,
-      interface: codeInterface,
+      interfaceComponent: codeInterface,
+      service: '',
     };
   }
 }

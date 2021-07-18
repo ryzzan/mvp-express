@@ -1,11 +1,13 @@
 import { Directive } from './angular/directive';
 import { FileSystem } from './angular/fs/filesystem';
 import {
-  BuildedCode,
   ComponentCodeType,
+  FormInterface,
+  BuildedCode,
   MainConfiguration,
   ObjectToCode,
   ProjectComponentPathAndFile,
+  TableInterface,
 } from '../../../interfaces/frontend';
 import { ServiceAngular } from './angular/service';
 import FormDirective from './angular/directives/form.directive';
@@ -25,83 +27,135 @@ export class CodeToAngular {
 
   setAngularCode(objectToCode: ObjectToCode): BuildedCode {
     this.objectToCode = objectToCode;
-    let codeTemplate = '';
-    let codeDirective = '';
-    let codeService = '';
-    const codeInterface = '';
     const { form, table } = objectToCode;
+    let buildedComponent: BuildedCode = {
+      template: '',
+      directive: '',
+      service: '',
+      interfaceComponent: '',
+    };
 
     if (form) {
-      const builderName = TextTransformation.setIdToPropertyName(form?.id);
-      const className = TextTransformation.setIdToClassName(form?.id);
-      const propertyName = TextTransformation.setIdToPropertyName(form?.id);
-      const formDirective = new FormDirective(
-        {
-          builderName,
-          className,
-          propertyName,
-        },
-        form.elements,
-      );
-      this.directive = new Directive(formDirective);
-      const formTemplateAngular = new FormTemplate();
-      codeTemplate = formTemplateAngular.setFormSkeleton(form, propertyName);
-      codeDirective = this.directive.setComponentSkeleton(form.id);
-
-      if (form.service) {
-        const service = new ServiceAngular(form.service);
-        codeService = service.setTemplateSkeleton(propertyName);
-      }
-
-      this.exportToAProject({
-        componentPath: TextTransformation.kebabfy(form.id),
-        componentCode: codeDirective,
-        componentCodeType: ComponentCodeType.Controller,
-      });
-      this.exportToAProject({
-        componentPath: TextTransformation.kebabfy(form.id),
-        componentCode: codeTemplate,
-        componentCodeType: ComponentCodeType.Template,
-      });
+      buildedComponent = this.getForm(form);
     }
 
     if (table) {
-      const tableTemplate = new TableTemplate();
-      codeTemplate += tableTemplate.setTableHtml(table);
-      const builderName = TextTransformation.setIdToPropertyName(table?.id);
-      const className = TextTransformation.setIdToClassName(table?.id);
-      const propertyName = TextTransformation.setIdToPropertyName(table?.id);
-      const formDirective = new TableDirective(
-        {
-          builderName,
-          className,
-          propertyName,
-        },
-        table.elements,
-      );
-      this.directive = new Directive(formDirective);
-      codeDirective = this.directive.setComponentSkeleton(table?.id);
-      console.info('Enviado código de template para tratar na arquitetura.');
-      this.exportToAProject({
-        componentPath: table.id,
-        componentCode: codeDirective,
-        componentCodeType: ComponentCodeType.Controller,
-      });
-      console.info('Enviado código de directive para tratar na arquitetura.');
-      this.exportToAProject({
-        componentPath: table.id,
-        componentCode: codeTemplate,
-        componentCodeType: ComponentCodeType.Template,
-      });
+      buildedComponent = this.getTable(table);
     }
 
-    const buildedComponent = {
-      template: codeTemplate.replace(/\n/gi, '').replace(/    /gi, ''),
-      directive: codeDirective.replace(/\n/gi, '').replace(/    /gi, ''),
-      interface: codeInterface,
-      service: codeService.replace(/\n/gi, '').replace(/    /gi, ''),
-    };
+    return buildedComponent;
+  }
 
+  getForm(form: FormInterface): BuildedCode {
+    let template = '';
+    let directive = '';
+    let service = '';
+    const builderName = TextTransformation.setIdToPropertyName(form?.id);
+    const className = TextTransformation.setIdToClassName(form?.id);
+    const propertyName = TextTransformation.setIdToPropertyName(form?.id);
+    const formDirective = new FormDirective(
+      {
+        builderName,
+        className,
+        propertyName,
+      },
+      form.elements,
+    );
+
+    const formTemplateAngular = new FormTemplate();
+    template = formTemplateAngular.setFormSkeleton(form, propertyName);
+
+    this.directive = new Directive(formDirective);
+    directive = this.directive.setComponentSkeleton(form.id);
+
+    if (form.service) {
+      const serviceAngular = new ServiceAngular(form.service);
+      service = serviceAngular.setTemplateSkeleton(propertyName);
+    }
+
+    this.exportToAProject({
+      componentPath: TextTransformation.kebabfy(form.id),
+      componentCode: directive,
+      componentCodeType: ComponentCodeType.Controller,
+    });
+    this.exportToAProject({
+      componentPath: TextTransformation.kebabfy(form.id),
+      componentCode: template,
+      componentCodeType: ComponentCodeType.Template,
+    });
+
+    const buildedComponent = this.buildedComponent({
+      template,
+      directive,
+      interfaceComponent: '',
+      service,
+    });
+
+    return buildedComponent;
+  }
+
+  getTable(table: TableInterface): BuildedCode {
+    let template = '';
+    let directive = '';
+    let service = '';
+    const builderName = TextTransformation.setIdToPropertyName(table?.id);
+    const className = TextTransformation.setIdToClassName(table?.id);
+    const propertyName = TextTransformation.setIdToPropertyName(table?.id);
+    const formDirective = new TableDirective(
+      {
+        builderName,
+        className,
+        propertyName,
+      },
+      table.elements,
+    );
+
+    const tableTemplate = new TableTemplate();
+    template = tableTemplate.setTableHtml(table);
+
+    this.directive = new Directive(formDirective);
+    directive = this.directive.setComponentSkeleton(table?.id);
+
+    if (table.service) {
+      const serviceAngular = new ServiceAngular(table.service);
+      service = serviceAngular.setTemplateSkeleton(propertyName);
+    }
+
+    console.info('Enviado código de template para tratar na arquitetura.');
+    this.exportToAProject({
+      componentPath: TextTransformation.kebabfy(table.id),
+      componentCode: directive,
+      componentCodeType: ComponentCodeType.Controller,
+    });
+    console.info('Enviado código de directive para tratar na arquitetura.');
+    this.exportToAProject({
+      componentPath: TextTransformation.kebabfy(table.id),
+      componentCode: template,
+      componentCodeType: ComponentCodeType.Template,
+    });
+
+    const buildedComponent = this.buildedComponent({
+      template,
+      directive,
+      interfaceComponent: '',
+      service,
+    });
+
+    return buildedComponent;
+  }
+
+  private buildedComponent({
+    template,
+    directive,
+    interfaceComponent,
+    service,
+  }: BuildedCode): BuildedCode {
+    const buildedComponent = {
+      template: template.replace(/\n/gi, '').replace(/    /gi, ''),
+      directive: directive.replace(/\n/gi, '').replace(/    /gi, ''),
+      interfaceComponent,
+      service: service.replace(/\n/gi, '').replace(/    /gi, ''),
+    };
     return buildedComponent;
   }
 

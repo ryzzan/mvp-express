@@ -16,7 +16,8 @@ export interface ObjectToCode {
 export interface BuildedCode {
   template: string;
   directive: string;
-  interface: string;
+  interfaceComponent: string;
+  service: string;
 }
 
 /**
@@ -170,6 +171,7 @@ export interface TableInterface {
   object?: Array<unknown>;
   subtitle?: string;
   title?: string;
+  service?: ServiceInterface;
 }
 
 export interface TableElementInterface {

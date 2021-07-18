@@ -5,6 +5,6 @@ import { PROJECT_TABLE } from '../collections-frontend/mvp-express/project-table
 
 const main = new Main({ exportInAExistentProject: true });
 
-const object: ObjectToCode = PROJECT_FORM;
+const object: ObjectToCode = PROJECT_TABLE;
 
 console.log(main.setObjectToCode(object));
