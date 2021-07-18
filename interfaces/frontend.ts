@@ -349,6 +349,7 @@ export enum ServiceFunctionsEnum {
   Save = 'save',
   Update = 'update',
   Delete = 'delete',
+  SoftDelete = 'softDelete',
 }
 
 /**

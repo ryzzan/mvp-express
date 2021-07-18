@@ -10,6 +10,7 @@ interface GetMethods {
   save(baseUrl: string, endPoint: string): string;
   update(baseUrl: string, endPoint: string): string;
   delete(baseUrl: string, endPoint: string): string;
+  softDelete(baseUrl: string, endPoint: string): string;
 }
 
 // TODO: Get interfaces
@@ -44,6 +45,11 @@ export class ServiceAngular {
         return this._httpClient.delete(\`${baseUrl}/${endPoint}/\${id}\`).toPromise();
       }
     `,
+    softDelete: (baseUrl: string, endPoint: string): string => `
+      delete(id: number) {
+        return this._httpClient.delete(\`${baseUrl}/${endPoint}/\${id}\`).toPromise();
+      }
+    `,
   };
 
   setTemplateSkeleton(projectName: string): string {
@@ -74,8 +80,8 @@ export class ServiceAngular {
   private getMethodsTemplate(methods: Array<ServiceFunctionsEnum>): string {
     let methodsTemplate = '';
     methods.forEach(method => {
-      const m = method as keyof GetMethods;
-      methodsTemplate += this.getMethods[m](
+      const methodKey = method as keyof GetMethods;
+      methodsTemplate += this.getMethods[methodKey](
         this.service.baseUrl,
         this.service.endPoint,
       );
