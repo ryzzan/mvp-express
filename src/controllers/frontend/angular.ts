@@ -14,7 +14,7 @@ import { FormTemplate } from './angular/templates/form.template';
 import { TableTemplate } from './angular/templates/table.template';
 import { TextTransformation } from '../../utils/text.transformation';
 export class CodeToAngular {
-  directive: any;
+  directive: Directive;
   fs = new FileSystem();
   enableExportComponent: boolean | undefined;
   objectToCode: ObjectToCode;
@@ -66,8 +66,6 @@ export class CodeToAngular {
     }
 
     if (table) {
-      const importObject = {};
-      const tableIdAsClassName = TextTransformation.setIdToClassName(table?.id);
       const tableTemplate = new TableTemplate();
       codeTemplate += tableTemplate.setTableHtml(table);
       const builderName = TextTransformation.setIdToPropertyName(table?.id);
@@ -82,7 +80,7 @@ export class CodeToAngular {
         table.elements,
       );
       this.directive = new Directive(formDirective);
-      codeDirective = this.directive.setComponentSkeleton();
+      codeDirective = this.directive.setComponentSkeleton(table?.id);
       console.info('Enviado código de template para tratar na arquitetura.');
       this.exportToAProject({
         componentPath: table.id,
