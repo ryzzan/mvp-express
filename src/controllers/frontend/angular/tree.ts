@@ -3,17 +3,17 @@
 
 // export class TreeAngular {
 //     shared = new SharedFunctions;
-    
+
 //     setTreeHtml = (treeArray: Tree, nested?: boolean) => {
 //         let codeHtml = '', nodeMenu = '';
 //         treeArray.forEach((tree: Tree) => {
 //             let codeTree = '',
 //                 array = tree.elements,
-//                 treeIdAsPropertyName = this.shared.stringToLowerCamelCaseName(tree.id),
-//                 treeIdAsClassName = this.shared.stringToUpperCamelCase(tree.id);
-            
+//                 treeIdAsPropertyName = this.shared.setIdToPropertyName(tree.id),
+//                 treeIdAsClassName = this.shared.setIdToClassName(tree.id);
+
 //             codeTree += this.setTreeHtmlElement(array, treeIdAsPropertyName, treeIdAsClassName);
-            
+
 //             codeHtml += `<mat-tree [dataSource]="${treeIdAsPropertyName}DataSource" [treeControl]="${treeIdAsPropertyName}TreeControl" class="example-tree">`;
 //             codeHtml += codeTree;
 //             codeHtml += `</mat-tree>`;
@@ -63,7 +63,7 @@
 //                 codeTree += `</div>`;
 //                 codeTree += `</mat-nested-tree-node>`;
 //             // }
-            
+
 //         });
 
 //         return codeTree;
@@ -78,15 +78,15 @@
 //         array,
 //         treeIdAsPropertyName: string,
 //         treeIdAsClassName: string;
-        
+
 //         treeArray.forEach((tree: Tree) => {
 //             codeTree = '',
 //             codeConstructor = 'constructor(';
 //             codeTreeObject = '',
 //             array = tree.elements,
-//             treeIdAsPropertyName = this.shared.stringToLowerCamelCaseName(tree.id),
-//             treeIdAsClassName = this.shared.stringToUpperCamelCase(tree.id);
-    
+//             treeIdAsPropertyName = this.shared.setIdToPropertyName(tree.id),
+//             treeIdAsClassName = this.shared.setIdToClassName(tree.id);
+
 //             // if (tree.action.type === 'api') {
 //             //     codeAction += `${treeIdAsPropertyName}Tree = () => {fetch('${tree.action.url}', {method: 'GET',headers: {'Content-type': 'application/json','Access-Control-Allow-Origin': '*',},}).then((data) => {data.json().then((keys) => {return keys;})});}`;
 //             // }
@@ -94,7 +94,7 @@
 //             array.forEach((element: TreeElementInterface) => {
 //                 if (element.nodes.type === RequestTypeEnum.Object) {
 //                     const objectArray = element.nodes.object as Array<TreeNodeObjectInterface>;
-                    
+
 //                     codeTreeObject += this.shared.objectTransform(objectArray, ['name', 'children'], ['name', 'children']);
 //                     console.log(codeTreeObject);
 //                 }
@@ -103,11 +103,11 @@
 //             codeTree += `${treeIdAsPropertyName}TreeControl = new NestedTreeControl<${treeIdAsClassName}Node>(node => node.children);`;
 //             codeTree += `${treeIdAsPropertyName}DataSource = new MatTreeNestedDataSource<${treeIdAsClassName}Node>();`;
 //             codeTree += `${treeIdAsPropertyName}HasChild = (_: number, ${treeIdAsClassName}Node: ${treeIdAsClassName}Node) => !!${treeIdAsClassName}Node.children && ${treeIdAsClassName}Node.children.length > 0;`;
-            
+
 //             codeConstructor += `) {`;
 //             codeConstructor += `this.${treeIdAsPropertyName}DataSource.data = ${codeTreeObject}`;
 //             codeConstructor += `}`;
-    
+
 //             codeTypescript += `import { Component } from '@angular/core'; import {NestedTreeControl} from '@angular/cdk/tree'; import {MatTreeNestedDataSource} from '@angular/material/tree';`;
 //             codeTypescript += `interface ${treeIdAsClassName}Node {name: string, children?: ${treeIdAsClassName}Node[];}`;
 //             codeTypescript += `@Component({selector: 'app-${tree.id}', templateUrl: './${tree.id}.component.html', styleUrls: ['./${tree.id}.component.css']})`;
@@ -117,7 +117,7 @@
 //             codeTypescript += codeAction;
 //             codeTypescript += `}`;
 //         });
-    
+
 //         return codeTypescript;
 //     }
 
