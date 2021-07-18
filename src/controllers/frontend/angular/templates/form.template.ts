@@ -1,25 +1,66 @@
 import {
   ButtonInterface,
   FormButtonTypeEnum,
+  FormElementInterface,
   FormInterface,
   InputInterface,
-  OptgroupInterface,
-  OptionInterface,
   SelectInterface,
 } from '../../../../../interfaces/frontend';
-import { SharedFunctions } from '../../angular/shared-functions';
-import { FormAngular } from '../form';
-import { FormDirective } from './form.directive';
+import { TextTransformation } from '../../../../utils/text.transformation';
 
 export class FormTemplate {
-  formTemplate = new FormAngular();
-  sharedFunctions = new SharedFunctions();
+  setFormSkeleton(form: FormInterface, formPropertyName: string): string {
+    let formTemplate = '';
+    formTemplate += `<mat-card><form id="${form.id}" [formGroup]="${formPropertyName}Form" (ngSubmit)="${formPropertyName}Submit()">`;
+    if (form.title)
+      formTemplate += `<mat-card-header><mat-card-title>${form.title}</mat-card-title>`;
+    if (form.subtitle)
+      formTemplate += `<mat-card-subtitle>${form.subtitle}</mat-card-subtitle>`;
+    if (form.title) formTemplate += `</mat-card-header>`;
 
-  setArray = (array: FormInterface) => {
-    const arrayPropertyName = this.sharedFunctions.setIdToPropertyName(
-      array.id,
-    );
-    const arrayClassName = this.sharedFunctions.setIdToClassName(array.id);
+    formTemplate += this.setFormInputs(form);
+
+    formTemplate += `</form></mat-card>`;
+
+    return formTemplate;
+  }
+
+  setFormInputs(form: FormInterface): string {
+    let codeHtml = '';
+    form.elements.forEach((element: FormElementInterface) => {
+      const input = element.input;
+      const select = element.select;
+      const tabs = element.tabs;
+      const array = element.array;
+      const button = element.button;
+
+      if (input) codeHtml += this.setInput(input);
+      if (select) codeHtml += this.setSelect(select);
+      if (tabs) codeHtml += this.setTab(tabs);
+      if (array) codeHtml += this.setArray(array);
+      if (button) codeHtml += this.setButton(button);
+    });
+
+    form.actions?.forEach((element: FormElementInterface) => {
+      const input = element.input;
+      const select = element.select;
+      const tabs = element.tabs;
+      const array = element.array;
+      const button = element.button;
+
+      if (input) codeHtml += this.setInput(input);
+      if (select) codeHtml += this.setSelect(select);
+      if (tabs) codeHtml += this.setTab(tabs);
+      if (array) codeHtml += this.setArray(array);
+      if (button) codeHtml += this.setButton(button);
+    });
+
+    return codeHtml;
+  }
+
+  setArray(array: FormInterface): string {
+    const arrayPropertyName = TextTransformation.setIdToPropertyName(array.id);
+    const arrayClassName = TextTransformation.setIdToClassName(array.id);
     const add = `add${arrayClassName}`;
     const remove = `remove${arrayClassName}`;
 
@@ -30,7 +71,7 @@ export class FormTemplate {
                         ${array.label} {{1 + i}}
                     </mat-card-header>
                     <mat-card-content>
-                        ${this.formTemplate.setFormInputs(array)}
+                        ${this.setFormInputs(array)}
                     </mat-card-content>
                     <mat-card-actions>
                         <button mat-button type="button" color="warn" (click)="${remove}(i)">
@@ -49,9 +90,9 @@ export class FormTemplate {
         </mat-card>`;
 
     return codeArray;
-  };
+  }
 
-  setInput = (input: InputInterface) => {
+  setInput(input: InputInterface): string {
     const placeholder = input.placeholder
       ? `placeholder="${input.placeholder}"`
       : '';
@@ -63,9 +104,9 @@ export class FormTemplate {
         </mat-form-field>`;
 
     return codeInput;
-  };
+  }
 
-  setSelect = (select: SelectInterface) => {
+  setSelect(select: SelectInterface): string {
     const multiple = select.isMultiple ? 'multiple' : '';
     const required = select.isRequired ? 'required' : '';
 
@@ -79,22 +120,18 @@ export class FormTemplate {
         </mat-form-field>`;
 
     return codeSelect;
-  };
+  }
 
-  setOptgroup = (optgroup: OptgroupInterface) => {};
-
-  setOptions = (options: OptionInterface) => {};
-
-  setSlide = (slide: InputInterface) => {
+  setSlide(slide: InputInterface): string {
     let codeSlide = `<mat-form-field>`;
     codeSlide += `<mat-label>${slide.label}</mat-label>`;
     codeSlide += `<mat-slide-toggle formControlName="${slide.name}">${slide.label}</mat-slide-toggle>`;
     codeSlide += `</mat-form-field>`;
 
     return codeSlide;
-  };
+  }
 
-  setButton = (button: ButtonInterface) => {
+  setButton(button: ButtonInterface): string {
     let color = '';
     const dialogAction = '';
     const label =
@@ -102,7 +139,6 @@ export class FormTemplate {
         ? `{{isAddModule ? 'Criar' : 'Editar'}}`
         : button.label;
     let codeButton = '';
-    // dialogAction = (form.dialog?.template) ? `mat-dialog-close` : '';
 
     if (button.type === FormButtonTypeEnum.Button) color = '';
     if (button.type === FormButtonTypeEnum.Submit)
@@ -118,17 +154,17 @@ export class FormTemplate {
       codeButton += `</mat-card-actions>`;
 
     return codeButton;
-  };
+  }
 
-  setTab = (tabs: Array<FormInterface>) => {
+  setTab(tabs: Array<FormInterface>): string {
     let codeTab = `<mat-tab-group>`;
     tabs.forEach((tab: FormInterface) => {
       codeTab += `<mat-tab label="${tab.label}" id="${tab.id}">
-                ${this.formTemplate.setFormInputs(tab)}
+                ${this.setFormInputs(tab)}
             </mat-tab>`;
     });
     codeTab += `</mat-tab-group>`;
 
     return codeTab;
-  };
+  }
 }

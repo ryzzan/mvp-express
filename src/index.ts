@@ -1,15 +1,21 @@
-import { BuildedCode, ObjectToCode } from '../interfaces/frontend';
+import {
+  BuildedCode,
+  MainConfiguration,
+  ObjectToCode,
+} from '../interfaces/frontend';
 import { FrontendCode } from './controllers/frontend';
 
 export class Main {
-  frontendCode = new FrontendCode();
+  frontendCode;
 
-  async setObjectToCode(
-    object: ObjectToCode,
-  ): Promise<BuildedCode | undefined | string> {
+  constructor(configs: MainConfiguration) {
+    this.frontendCode = new FrontendCode(configs);
+  }
+
+  setObjectToCode(object: ObjectToCode): BuildedCode | undefined | string {
     if (object.frontendFramework) {
       try {
-        return await this.frontendCode.setFrontendCode(object);
+        return this.frontendCode.setFrontendCode(object);
       } catch (error) {
         return error;
       }

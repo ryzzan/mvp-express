@@ -31,7 +31,7 @@ export interface FormInterface {
   title?: string;
   subtitle?: string;
   attributes?: FormAttributeEnum;
-  service: ServiceInterface;
+  service?: ServiceInterface;
 }
 export interface ServiceInterface {
   baseUrl: string;
@@ -498,6 +498,7 @@ export enum ActionVerbEnum {
 export enum ComponentCodeType {
   Controller = 'controller',
   Template = 'template',
+  Service = 'service',
 }
 
 export interface CreateProjectComponentPathAndFile {
