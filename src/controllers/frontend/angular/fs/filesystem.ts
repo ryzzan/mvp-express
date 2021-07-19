@@ -1,18 +1,22 @@
 import * as fs from 'fs';
 import * as chp from 'child_process';
-import { ComponentCodeType } from '../../../../../interfaces/frontend';
-import { SharedFunctions } from '../shared-functions';
+import { ComponentCodeType, CreateProjectComponentPathAndFile } from '../../../../../interfaces/frontend';
+import { TextTransformation } from '../../../../utils/text.transformation';
 
 export class FileSystem {
-    sharedFunction = new SharedFunctions;
-    
-    createProjectComponentPathAndFile = async (projectPath: string, componentPath: string, componentCode: string, componentCodeType: ComponentCodeType, isNest?: boolean) => {
+  async createProjectComponentPathAndFile({
+    projectPath,
+    componentPath,
+    componentCode,
+    componentCodeType,
+    isNest,
+  }: CreateProjectComponentPathAndFile): Promise<void> {
         const projectFolder = projectPath.split(/[\/]+/).pop(),
         splitProjectFolder = projectPath.split(/[\/]+/),
         projectFolderParent = splitProjectFolder.slice(0, splitProjectFolder.length - 1).join('/'),
         projectAndComponentPath = `${projectPath}/src/app/components/${componentPath}`,
         nodeModulePath = `${projectPath}/node_modules`,
-        componentPathAsClass = this.sharedFunction.setIdToClassName(componentPath);
+        componentPathAsClass = TextTransformation.setIdToClassName(componentPath);
 
         try {
             fs.readdirSync(projectPath);
@@ -93,6 +97,8 @@ export class FileSystem {
             componentFilePath = `${projectPath}/src/app/components/${componentPath}/${componentPath}.component.ts`;
         if (componentCodeType === ComponentCodeType.Template) 
             componentFilePath = `${projectPath}/src/app/components/${componentPath}/${componentPath}.component.html`;
+        if (componentCodeType === ComponentCodeType.Service) 
+            componentFilePath = `${projectPath}/src/app/components/${componentPath}/${componentPath}.service.ts`;
 
         try {
             const file = fs.readFileSync(componentFilePath);
