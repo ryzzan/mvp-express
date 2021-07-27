@@ -4,30 +4,39 @@ import {
   FormElementInterface,
   FormInterface,
   InputInterface,
+  ObjectToCode,
   SelectInterface,
 } from '../../../../../interfaces/frontend';
 import { TextTransformation } from '../../../../utils/text.transformation';
 
 export class FormTemplate {
-  setFormSkeleton(form: FormInterface, formPropertyName: string): string {
+  setFormSkeleton(form: FormInterface, objectToCode: ObjectToCode): string {
+    const formId = `${objectToCode.module}Form`;
+    const builderName = TextTransformation.kebabfy(formId);
+    const propertyName = TextTransformation.setIdToPropertyName(formId);
     let formTemplate = '';
-    formTemplate += `<mat-card><form id="${form.id}" [formGroup]="${formPropertyName}Form" (ngSubmit)="${formPropertyName}Submit()">`;
+
+    formTemplate += `<mat-card><form id="${builderName}" [formGroup]="${propertyName}Form" (ngSubmit)="${propertyName}Submit()">`;
     if (form.title)
       formTemplate += `<mat-card-header><mat-card-title>${form.title}</mat-card-title>`;
     if (form.subtitle)
       formTemplate += `<mat-card-subtitle>${form.subtitle}</mat-card-subtitle>`;
     if (form.title) formTemplate += `</mat-card-header>`;
 
-    formTemplate += this.setFormInputs(form);
+    formTemplate += this.setFormInputs(form, objectToCode);
 
     formTemplate += `</form></mat-card>`;
 
     return formTemplate;
   }
 
-  setFormInputs(form: FormInterface): string {
+  setFormInputs(form: FormInterface, objectToCode: ObjectToCode): string {
     let codeHtml = '';
-    form.elements.forEach((element: FormElementInterface) => {
+    let array: Array<FormElementInterface> = [];
+    if (form.elements) array = form.elements;
+    if (form.actions) array = form.elements;
+    
+    array.forEach((element: FormElementInterface) => {
       const input = element.input;
       const select = element.select;
       const tabs = element.tabs;
@@ -36,31 +45,18 @@ export class FormTemplate {
 
       if (input) codeHtml += this.setInput(input);
       if (select) codeHtml += this.setSelect(select);
-      if (tabs) codeHtml += this.setTab(tabs);
-      if (array) codeHtml += this.setArray(array);
-      if (button) codeHtml += this.setButton(button);
-    });
-
-    form.actions?.forEach((element: FormElementInterface) => {
-      const input = element.input;
-      const select = element.select;
-      const tabs = element.tabs;
-      const array = element.array;
-      const button = element.button;
-
-      if (input) codeHtml += this.setInput(input);
-      if (select) codeHtml += this.setSelect(select);
-      if (tabs) codeHtml += this.setTab(tabs);
-      if (array) codeHtml += this.setArray(array);
+      if (tabs) codeHtml += this.setTab(tabs, objectToCode);
+      if (array) codeHtml += this.setArray(array, objectToCode);
       if (button) codeHtml += this.setButton(button);
     });
 
     return codeHtml;
   }
 
-  setArray(array: FormInterface): string {
-    const arrayPropertyName = TextTransformation.setIdToPropertyName(array.id);
-    const arrayClassName = TextTransformation.setIdToClassName(array.id);
+  setArray(array: FormInterface, objectToCode: ObjectToCode): string {
+    const arrayId = `${objectToCode.module}Form`;
+    const arrayPropertyName = TextTransformation.setIdToPropertyName(arrayId);
+    const arrayClassName = TextTransformation.setIdToClassName(arrayId);
     const add = `add${arrayClassName}`;
     const remove = `remove${arrayClassName}`;
 
@@ -71,7 +67,7 @@ export class FormTemplate {
                         ${array.label} {{1 + i}}
                     </mat-card-header>
                     <mat-card-content>
-                        ${this.setFormInputs(array)}
+                        ${this.setFormInputs(array, objectToCode)}
                     </mat-card-content>
                     <mat-card-actions>
                         <button mat-button type="button" color="warn" (click)="${remove}(i)">
@@ -156,11 +152,13 @@ export class FormTemplate {
     return codeButton;
   }
 
-  setTab(tabs: Array<FormInterface>): string {
+  setTab(tabs: Array<FormInterface>, objectToCode: ObjectToCode): string {
+    const tabId = `${objectToCode.module}Form`;
+    const builderName = TextTransformation.kebabfy(tabId);
     let codeTab = `<mat-tab-group>`;
     tabs.forEach((tab: FormInterface) => {
-      codeTab += `<mat-tab label="${tab.label}" id="${tab.id}">
-                ${this.setFormInputs(tab)}
+      codeTab += `<mat-tab label="${tab.label}" id="${builderName}">
+                ${this.setFormInputs(tab, objectToCode)}
             </mat-tab>`;
     });
     codeTab += `</mat-tab-group>`;

@@ -1,3 +1,4 @@
+import { ObjectToCode } from '../../../../interfaces/frontend';
 import { TextTransformation } from '../../../utils/text.transformation';
 import { Directive as IDirective } from './directives/directives.interface';
 
@@ -9,7 +10,7 @@ export class Directive {
     this.customDirective = customDirective;
   }
 
-  setComponentSkeleton(projectName: string): string {
+  setComponentSkeleton(projectName: string, objectToCode: ObjectToCode): string {
     let componentSkeleton = `
       import { Component, OnInit } from '@angular/core';
       %IMPORTS%
@@ -34,14 +35,14 @@ export class Directive {
       }
     `;
     componentSkeleton =
-      this.replaceTextTransformationToString(componentSkeleton);
+      this.replaceTextTransformationToString(componentSkeleton, objectToCode);
     return componentSkeleton;
   }
 
-  private replaceTextTransformationToString(template: string): string {
-    template = this.customDirective.injectVariables(template);
+  private replaceTextTransformationToString(template: string, objectToCode: ObjectToCode): string {
+    template = this.customDirective.injectVariables(template, objectToCode);
     template = this.customDirective.injectDependencies(template);
-    template = this.customDirective.injectConstructor(template);
+    template = this.customDirective.injectConstructor(template, objectToCode);
     template = this.customDirective.injectActions(template);
     template = this.customDirective.injectImports(template);
     template = TextTransformation.replaceKebabfyFunctionToString(template);

@@ -10,8 +10,8 @@ export const LOCATION_TABLE: ObjectToCode = {
   module: 'location-table',
   title: 'Regiões',
   frontendFramework: FrontendFrameworkEnum.Angular,
+  projectPath: '/home/ryzzan/Projescts/Lopes/admin',
   table: {
-    id: 'location-table',
     title: 'Regiões',
     data: {
       type: RequestTypeEnum.Object,
@@ -41,16 +41,16 @@ export const LOCATION_TABLE: ObjectToCode = {
               },
               label: 'Editar',
             },
-            {
-              action: {
-                type: RequestTypeEnum.Dialog,
-              },
-              label: 'Remover',
-              dialog: {
-                templateFolder: 'remove-confirmation-dialog',
-                id: 'remove-confirmation-dialog',
-              },
-            },
+            // {
+            //   action: {
+            //     type: RequestTypeEnum.Dialog,
+            //   },
+            //   label: 'Remover',
+            //   dialog: {
+            //     templateFolder: 'remove-confirmation-dialog',
+            //     id: 'remove-confirmation-dialog',
+            //   },
+            // },
           ],
         },
       },
@@ -89,7 +89,6 @@ export const LOCATION_TABLE: ObjectToCode = {
     ],
     actions: {
       label: 'Pesquisa de usuário',
-      id: 'user-search',
       elements: [
         {
           input: {

@@ -10,8 +10,8 @@ export const USER_TABLE: ObjectToCode = {
   frontendFramework: FrontendFrameworkEnum.Angular,
   module: 'user-table',
   title: 'Usuários',
+  projectPath: '/home/ryzzan/Projescts/Lopes/admin',
   table: {
-    id: 'user-table',
     title: 'Usuários',
     data: {
       type: RequestTypeEnum.Object,
@@ -70,16 +70,16 @@ export const USER_TABLE: ObjectToCode = {
           type: 'menu',
           icon: 'more_vert',
           menu: [
-            {
-              action: {
-                type: RequestTypeEnum.Dialog,
-              },
-              label: 'Remover',
-              dialog: {
-                templateFolder: 'remove-confirmation-dialog',
-                id: 'remove-confirmation-dialog',
-              },
-            },
+            // {
+            //   action: {
+            //     type: RequestTypeEnum.Dialog,
+            //   },
+            //   label: 'Remover',
+            //   dialog: {
+            //     templateFolder: 'remove-confirmation-dialog',
+            //     id: 'remove-confirmation-dialog',
+            //   },
+            // },
           ],
         },
       },
@@ -116,7 +116,6 @@ export const USER_TABLE: ObjectToCode = {
     ],
     actions: {
       label: 'Pesquisa de usuário',
-      id: 'user-search',
       elements: [
         {
           input: {

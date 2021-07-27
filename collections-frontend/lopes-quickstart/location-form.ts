@@ -6,11 +6,11 @@ import {
 } from '../../interfaces/frontend';
 
 export const LOCATION_FORM: ObjectToCode = {
-  module: 'location-form',
+  module: 'location',
   title: 'Região',
   frontendFramework: FrontendFrameworkEnum.Angular,
+  projectPath: '/home/ryzzan/Projescts/Lopes/admin',
   form: {
-    id: 'location-form',
     label: 'Região',
     title: 'Região',
     elements: [

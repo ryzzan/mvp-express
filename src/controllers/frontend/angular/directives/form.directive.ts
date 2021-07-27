@@ -1,6 +1,14 @@
-import { FormElementInterface } from '../../../../../interfaces/frontend';
-import { TextTransformation } from '../../../../utils/text.transformation';
-import { Directive, FormMetaObject } from './directives.interface';
+import {
+  FormElementInterface,
+  ObjectToCode
+} from '../../../../../interfaces/frontend';
+import {
+  TextTransformation
+} from '../../../../utils/text.transformation';
+import {
+  Directive,
+  FormMetaObject
+} from './directives.interface';
 
 export default class FormDirective implements Directive {
   formMetaObject: FormMetaObject;
@@ -12,18 +20,18 @@ export default class FormDirective implements Directive {
     this.formMetaObject = formMetaObject;
     this.elements = elements;
   }
-  injectVariables(template: string): string {
+  injectVariables(template: string, objectToCode: ObjectToCode): string {
     const variablesTemplate = `
       ${this.formMetaObject.propertyName}Id: string;
       isAddModule: boolean;
       ${this.formMetaObject.propertyName}Form: FormGroup;
-      ${this.setForm(this.elements)}
+      ${this.setForm(this.elements, objectToCode)}
     `;
     return template.replace('%VARIABLES%', variablesTemplate);
   }
   injectImports(template: string): string {
     const importsTemplate = `
-      import { FormBuilder, FormGroup } from '@angular/forms';
+      import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
       import { ActivatedRoute } from '@angular/router';
       import { %pascalfy(${this.formMetaObject.propertyName})%Service } from './${this.formMetaObject.builderName}.service';
     `;
@@ -35,13 +43,12 @@ export default class FormDirective implements Directive {
     return template.replace('%DEPENDENCIES%', dependenciesTemplate);
   }
 
-  injectConstructor(template: string): string {
-    const { propertyName } = this.formMetaObject;
+  injectConstructor(template: string, objectToCode: ObjectToCode): string {
     const defaultConstructor = `
-      this.${propertyName}Id = this._activatedRoute.snapshot.params['id'];
-      this.isAddModule = !this.${propertyName}Id;
-      this.${propertyName}Form = this._formBuilder.group({${this.setFormBuilder(
-      this.elements,
+      this.${this.formMetaObject.propertyName}Id = this._activatedRoute.snapshot.params['id'];
+      this.isAddModule = !this.${this.formMetaObject.propertyName}Id;
+      this.${this.formMetaObject.propertyName}Form = this._formBuilder.group({${this.setFormBuilder(
+      this.elements, objectToCode
     )}});      
     `;
     return template.replace('%CONSTRUCTOR_CODE%', defaultConstructor);
@@ -58,26 +65,31 @@ export default class FormDirective implements Directive {
     return template.replace('%ACTIONS%', actionsTemplate);
   }
 
-  private setFormBuilder(elements: Array<FormElementInterface>): string {
+  private setFormBuilder(elements: Array < FormElementInterface > , objectToCode: ObjectToCode): string {
     let codeElements = '';
 
-    codeElements += this.setFormBuilderElements(elements);
+    codeElements += this.setFormBuilderElements(elements, objectToCode);
 
     return codeElements;
   }
 
   private setFormBuilderElements(
-    elements: Array<FormElementInterface>,
+    elements: Array < FormElementInterface > ,
+    objectToCode: ObjectToCode
   ): string {
+    const arrayId = `${objectToCode.module}Form`;
     let codeElement = '';
+    
     elements.forEach(object => {
       for (const key in object) {
         if (Object.prototype.hasOwnProperty.call(object, key)) {
           if (key === 'tabs') {
             const tabs = object[key];
             if (tabs) {
-              tabs.forEach(({ elements }) => {
-                codeElement += this.setFormBuilder(elements);
+              tabs.forEach(({
+                elements
+              }) => {
+                codeElement += this.setFormBuilder(elements, objectToCode);
               });
             }
           }
@@ -86,10 +98,10 @@ export default class FormDirective implements Directive {
             const array = object[key];
             if (array) {
               const arrayPropertyName = TextTransformation.setIdToPropertyName(
-                array.id,
+                arrayId,
               );
 
-              codeElement += `${arrayPropertyName}: this.${this.formMetaObject.propertyName}Builder.array([]),`;
+              codeElement += `${arrayPropertyName}: this._formBuilder.array([]),`;
             }
           }
 
@@ -131,23 +143,26 @@ export default class FormDirective implements Directive {
     });
     return codeValidator;
   }
-  private setForm(elements: Array<FormElementInterface>): string {
+  private setForm(elements: Array<FormElementInterface>, objectToCode: ObjectToCode): string {
     let codeElements = '';
-    codeElements += this.setFormElements(elements);
+    codeElements += this.setFormElements(elements, objectToCode);
 
     return codeElements;
   }
-  private setFormElements(elements: Array<FormElementInterface>): string {
+  private setFormElements(elements: Array <FormElementInterface>, objectToCode: ObjectToCode): string {
     let codeElement = '';
-
+    const arrayId = `${objectToCode.module}Form`;
+    
     elements.forEach(object => {
       for (const key in object) {
         if (Object.prototype.hasOwnProperty.call(object, key)) {
           if (key === 'tabs') {
             const tabs = object[key];
             if (tabs) {
-              tabs.forEach(({ elements }) => {
-                codeElement += this.setForm(elements);
+              tabs.forEach(({
+                elements
+              }) => {
+                codeElement += this.setForm(elements, objectToCode);
               });
             }
           }
@@ -156,32 +171,30 @@ export default class FormDirective implements Directive {
             const array = object[key];
             if (array) {
               const arrayClassName = TextTransformation.setIdToClassName(
-                array.id,
+                arrayId,
               );
               const arrayPropertyName = TextTransformation.setIdToPropertyName(
-                array.id,
+                arrayId,
               );
 
               const add = `add${arrayClassName}`;
               const remove = `remove${arrayClassName}`;
               const newArray = `new${arrayClassName}`;
 
-              codeElement += this.setForm(array.elements);
+              codeElement += this.setForm(array.elements, objectToCode);
 
               codeElement += `${add}() {this.${arrayPropertyName}.push(this.${newArray}())}`;
               codeElement += `get ${arrayPropertyName}(): FormArray {return this.${this.formMetaObject.propertyName}Form.get('${arrayPropertyName}') as FormArray};`;
-              codeElement += `${newArray}(): FormGroup { return this.${this.formMetaObject.propertyName}Builder.group({`;
-              codeElement += this.setFormBuilderElements(array.elements);
+              codeElement += `${newArray}(): FormGroup { return this._formBuilder.group({`;
+              codeElement += this.setFormBuilderElements(array.elements, objectToCode);
               codeElement += `})};`;
               codeElement += `${remove}(i:number) {this.${arrayPropertyName}.removeAt(i)}`;
             }
           }
 
-          if (key === 'input') {
-          }
+          if (key === 'input') {}
 
-          if (key === 'select') {
-          }
+          if (key === 'select') {}
 
           /** Select objects */
           if (object.select?.optionsObject) {

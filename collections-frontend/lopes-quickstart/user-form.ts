@@ -6,13 +6,13 @@ import {
 } from '../../interfaces/frontend';
 
 export const USER_FORM: ObjectToCode = {
-  module: 'user-form',
+  module: 'user',
   title: 'Usuário',
   frontendFramework: FrontendFrameworkEnum.Angular,
+  projectPath: '/home/ryzzan/Projescts/Lopes/admin',
   comments: "What is 'expirationDate' about?",
   form: {
     label: 'Usuário',
-    id: 'user-form',
     title: 'Usuário',
     elements: [
       {
@@ -135,12 +135,10 @@ export const USER_FORM: ObjectToCode = {
                 },
               },
             ],
-            id: 'user-main',
             label: 'Dados pessoais',
           },
           {
             elements: [{}],
-            id: 'user-group',
             label: 'Grupos associados',
           },
         ],

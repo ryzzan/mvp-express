@@ -1,12 +1,10 @@
 import { Main } from './index';
-import { PROJECT_TABLE } from '../collections-frontend/mvp-express/project-table';
-import { PROJECT_FORM } from '../collections-frontend/mvp-express/project-form';
-import { PROJECT } from '../collections-frontend/mvp-express/project';
+import { PERSON_TABLE } from '../collections-frontend/autentikigo/person-table';
+import { PERSON_FORM } from '../collections-frontend/autentikigo/person-form';
 import { ObjectToCode } from '../interfaces/frontend';
 
 const main = new Main({ exportInAExistentProject: true }), 
-object: ObjectToCode = PROJECT_TABLE,
-array = [PROJECT_FORM, PROJECT_TABLE, PROJECT];
+array = [PERSON_FORM, PERSON_TABLE];
 
 array.forEach(object => {
     console.log(main.setObjectToCode(object));    

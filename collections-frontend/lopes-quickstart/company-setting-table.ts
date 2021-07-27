@@ -10,8 +10,8 @@ export const COMPANY_SETTING_TABLE: ObjectToCode = {
   module: 'company-setting-table',
   title: 'Empresas',
   frontendFramework: FrontendFrameworkEnum.Angular,
+  projectPath: '/home/ryzzan/Projescts/Lopes/admin',
   table: {
-    id: 'company-setting-table',
     title: 'Empresas',
     data: {
       type: RequestTypeEnum.Object,
@@ -98,7 +98,6 @@ export const COMPANY_SETTING_TABLE: ObjectToCode = {
     ],
     actions: {
       label: 'Pesquisa de empresa',
-      id: 'company-search',
       elements: [
         {
           input: {

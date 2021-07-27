@@ -1,4 +1,5 @@
 import {
+  BackendFrameworkEnum,
   FormButtonTypeEnum,
   FormInputTypeEnum,
   FrontendFrameworkEnum,
@@ -7,12 +8,12 @@ import {
 } from '../../interfaces/frontend';
 
 export const PROJECT_FORM: ObjectToCode = {
-  module: 'projectForm',
+  module: 'project',
   title: 'Projeto',
   frontendFramework: FrontendFrameworkEnum.Angular,
-  projectPath: '/home/ryzzan/Projects/Kunlatek//mvp-test',
+  backendFramework: BackendFrameworkEnum.Nest,
+  projectPath: '/home/ryzzan/Projects/Kunlatek/mvp-test',
   form: {
-    id: 'projectForm',
     label: 'Projeto',
     title: 'Projeto',
     elements: [
@@ -78,7 +79,7 @@ export const PROJECT_FORM: ObjectToCode = {
     ],
     service: {
       baseUrl: 'localhost',
-      endPoint: 'form',
+      endPoint: 'project',
       methods: [
         ServiceFunctionsEnum.Get,
         ServiceFunctionsEnum.Delete,

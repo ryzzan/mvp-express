@@ -3,16 +3,16 @@ export interface MainConfiguration {
 }
 
 export interface ObjectToCode {
-    backendFramework?: BackendFrameworkEnum;
-    frontendFramework?: FrontendFrameworkEnum;
-    module: string;
-    title: string;
-    projectPath: string;
-    comments?: string;
-    form?: FormInterface;
-    table?: TableInterface;
-    tree?: TreeInterface;
-    nest?: NestInterface;
+  frontendFramework: FrontendFrameworkEnum;
+  backendFramework?: BackendFrameworkEnum;
+  module: string;
+  title: string;
+  projectPath: string;
+  comments?: string;
+  form?: FormInterface;
+  table?: TableInterface;
+  tree?: TreeInterface;
+  nest?: NestInterface;
 };
 
 export interface BuildedCode {
@@ -27,10 +27,9 @@ export interface BuildedCode {
  */
 
 export interface FormInterface {
-  elements: Array<FormElementInterface>;
-  id: string;
+  elements: Array < FormElementInterface > ;
   label: string;
-  actions?: Array<FormElementInterface>;
+  actions?: Array < FormElementInterface > ;
   title?: string;
   subtitle?: string;
   attributes?: FormAttributeEnum;
@@ -39,7 +38,7 @@ export interface FormInterface {
 export interface ServiceInterface {
   baseUrl: string;
   endPoint: string;
-  methods: Array<ServiceFunctionsEnum>;
+  methods: Array < ServiceFunctionsEnum > ;
 }
 export interface FormElementInterface {
   array?: FormInterface;
@@ -54,7 +53,7 @@ export interface FormElementInterface {
   output?: OutputInterface;
   select?: SelectInterface;
   slide?: InputInterface;
-  tabs?: Array<FormInterface>;
+  tabs?: Array < FormInterface > ;
   textarea?: TextareaInterface;
 }
 
@@ -116,7 +115,7 @@ export interface InputInterface {
   size?: number;
   src?: string; // Specifies the URL of the image to use as a submit button (only for type="image")
   step?: number | any; // Specifies the interval between legal numbers in an input field
-  validators?: Array<string>;
+  validators?: Array < string > ;
   value?: string;
   width?: number;
 }
@@ -129,7 +128,7 @@ export interface LegendInterface {}
 
 export interface OptgroupInterface {
   label: string;
-  options?: Array<OptionInterface>;
+  options?: Array < OptionInterface > ;
   isDisabled?: boolean;
 }
 
@@ -147,11 +146,11 @@ export interface SelectInterface {
   name: string;
   label: string;
   condition?: string;
-  optgroups?: Array<OptgroupInterface>;
-  optionsObject?: Array<OptionInterface>;
+  optgroups?: Array < OptgroupInterface > ;
+  optionsObject?: Array < OptionInterface > ;
   optionsApiEndpoint?: string;
   size?: number;
-  validators?: Array<string>;
+  validators?: Array < string > ;
   isAutofocus?: boolean;
   isDisabled?: boolean;
   isMultiple?: boolean;
@@ -166,11 +165,10 @@ export interface TextareaInterface {}
  */
 
 export interface TableInterface {
-  id: string;
   data: RequestInterface;
-  elements: Array<TableElementInterface>;
+  elements: Array < TableElementInterface > ;
   actions?: FormInterface;
-  object?: Array<unknown>;
+  object?: Array < unknown > ;
   subtitle?: string;
   title?: string;
   service?: ServiceInterface;
@@ -187,13 +185,13 @@ export interface TableElementInterface {
     field?: string;
     icon?: string;
     filter?: FilterInterface;
-    menu?: Array<{
+    menu?: Array < {
       action: RequestInterface;
       label: string;
       dialog?: DialogInterface;
       icon?: string;
       validator?: string;
-    }>;
+    } > ;
     comment?: string;
   };
 }
@@ -210,7 +208,7 @@ export interface RowMenuElementInterface {
  */
 export interface TreeInterface {
   id: string;
-  elements: Array<TreeElementInterface>;
+  elements: Array < TreeElementInterface > ;
 }
 
 export interface TreeElementInterface {
@@ -221,18 +219,18 @@ export interface TreeElementInterface {
 export interface TreeNodeInterface {
   type: RequestTypeEnum;
   url?: string;
-  object?: Array<TreeNodeObjectInterface>;
+  object?: Array < TreeNodeObjectInterface > ;
 }
 
 export interface TreeNodeObjectInterface {
   name: string;
-  children?: Array<TreeNodeObjectInterface>;
-  menu?: Array<{
+  children?: Array < TreeNodeObjectInterface > ;
+  menu?: Array < {
     label: string;
     icon?: string;
     action: RequestInterface;
     validator?: string;
-  }>;
+  } > ;
 }
 
 /**
@@ -263,7 +261,7 @@ export interface FilterWhereInterface {
 
 export interface FilterInterface {
   type: FilterTypeEnum;
-  where?: Array<FilterWhereInterface>;
+  where?: Array < FilterWhereInterface > ;
 }
 
 /**
@@ -284,8 +282,8 @@ export interface DirectiveElements {
  */
 
 export interface NestInterface {
-    id: string;
-    components: Array<string>;
+  id: string;
+  components: Array < string > ;
 }
 
 /**
@@ -294,73 +292,73 @@ export interface NestInterface {
 
 export enum FormAttributeEnum {
   AcceptCharset = 'accept-charset',
-  Action = 'action',
-  Autocomplete = 'autocomplete',
-  Enctype = 'enctype',
-  Method = 'method',
-  Name = 'name',
-  Novalidate = 'novalidate',
-  Rel = 'rel',
-  Target = 'target',
+    Action = 'action',
+    Autocomplete = 'autocomplete',
+    Enctype = 'enctype',
+    Method = 'method',
+    Name = 'name',
+    Novalidate = 'novalidate',
+    Rel = 'rel',
+    Target = 'target',
 }
 
 export enum FormInputTypeEnum {
   Button = 'button',
-  Checkbox = 'checkbox',
-  Color = 'color',
-  Date = 'date',
-  DatetimeLocal = 'datetime-local',
-  Email = 'email',
-  File = 'file',
-  Hidden = 'hidden',
-  Image = 'image',
-  Month = 'month',
-  Number = 'number',
-  Password = 'password',
-  Radio = 'radio',
-  Range = 'range',
-  Reset = 'reset',
-  Search = 'search',
-  Submit = 'submit',
-  Tel = 'tel',
-  Text = 'text',
-  Time = 'time',
-  Url = 'url',
-  Week = 'week',
+    Checkbox = 'checkbox',
+    Color = 'color',
+    Date = 'date',
+    DatetimeLocal = 'datetime-local',
+    Email = 'email',
+    File = 'file',
+    Hidden = 'hidden',
+    Image = 'image',
+    Month = 'month',
+    Number = 'number',
+    Password = 'password',
+    Radio = 'radio',
+    Range = 'range',
+    Reset = 'reset',
+    Search = 'search',
+    Submit = 'submit',
+    Tel = 'tel',
+    Text = 'text',
+    Time = 'time',
+    Url = 'url',
+    Week = 'week',
 }
 
 export enum FormButtonTypeEnum {
   Button = 'button',
-  Reset = 'reset',
-  Submit = 'submit',
-  Delete = 'delete',
+    Reset = 'reset',
+    Submit = 'submit',
+    Delete = 'delete',
 }
 
 export enum FormEncTypeEnum {
   Application = 'application/x-www-form-urlencoded',
-  Mutipart = 'multipart/form-data',
-  Text = 'text/plain',
+    Mutipart = 'multipart/form-data',
+    Text = 'text/plain',
 }
 
 export enum FormMethodEnum {
   Get = 'get',
-  Post = 'post',
+    Post = 'post',
 }
 
 export enum FormTargetEnum {
   Blank = '_blank',
-  Self = '_self',
-  Parent = '_parent',
-  Top = '_top',
+    Self = '_self',
+    Parent = '_parent',
+    Top = '_top',
 }
 
 export enum ServiceFunctionsEnum {
   Get = 'get',
-  Find = 'find',
-  Save = 'save',
-  Update = 'update',
-  Delete = 'delete',
-  SoftDelete = 'softDelete',
+    Find = 'find',
+    Save = 'save',
+    Update = 'update',
+    Delete = 'delete',
+    SoftDelete = 'softDelete',
 }
 
 /**
@@ -371,75 +369,75 @@ export enum EventEnum {
    * Window events
    */
   OnAfterPrint = 'onafterprint',
-  OnBeforePrint = 'onbeforeprint',
-  OnBeforeUnload = 'onbeforeunload',
-  OnError = 'onerror',
-  OnHashChange = 'onhashchange',
-  OnLoad = 'onload',
-  OnMessage = 'onmessage',
-  OnOffline = 'onoffline',
-  OnOnline = 'ononline',
-  OnPageHide = 'onpagehide',
-  OnPageShow = 'onpageshow',
-  OnPopState = 'onpopstate',
-  OnResize = 'onresize',
-  OnStorage = 'onstorage',
-  OnUnload = 'onunload',
-  /**
-   * Form events
-   */
-  OnBlur = 'onblur', // Fires the moment that the element loses focus
-  OnChange = 'onchange', // Fires the moment when the value of the element is changed
-  OnContextMenu = 'oncontextmenu', // Script to be run when a context menu is triggered
-  OnFocus = 'onfocus', // Fires the moment when the element gets focus
-  OnInput = 'oninput', // Script to be run when an element gets user input
-  OnInvalid = 'oninvalid', // Script to be run when an element is invalid
-  onReset = 'onreset', // Fires when the Reset button in a form is clicked
-  OnSearch = 'onsearch', // Fires when the user writes something in a search field (for <input="search">)
-  OnSelect = 'onselect', // Fires after some text has been selected in an element
-  OnSubmit = 'onsubmit', // Fires when a form is submitted
-  /**
-   * Keyboard events
-   */
-  OnKeyDown = 'onkeydown',
-  OnKeyPress = 'onkeypress',
-  OnKeyUp = 'onkeyup',
-  /**
-   * Mouse events
-   */
-  OnClick = 'onclick',
-  OnDoubleClick = 'ondblclick',
-  OnMouseDown = 'onmousedown',
-  OnMouseMove = 'onmousemove',
-  OnMouseOut = 'onmouseout',
-  OnMouseOver = 'onmouseover',
-  OnMouseUp = 'onmouseup',
-  OnWheel = 'onwheel',
-  /**
-   * Drag events
-   */
-  OnDrag = 'ondrag',
-  OnDragEnd = 'ondragend',
-  OnDragEnter = 'ondragenter',
-  OnDragLeave = 'ondragleave',
-  OnDragOver = 'ondragover',
-  OnDragStart = 'ondragstart',
-  OnDrop = 'ondrop',
-  OnScroll = 'onscroll',
-  /**
-   * Clipoard events
-   */
-  OnCopy = 'oncopy',
-  OnCut = 'oncut',
-  OnPaste = 'onpaste',
-  /**
-   * Media events
-   */
-  // TODO
-  /**
-   * Micellaneous events
-   */
-  OnToggle = 'ontoggle',
+    OnBeforePrint = 'onbeforeprint',
+    OnBeforeUnload = 'onbeforeunload',
+    OnError = 'onerror',
+    OnHashChange = 'onhashchange',
+    OnLoad = 'onload',
+    OnMessage = 'onmessage',
+    OnOffline = 'onoffline',
+    OnOnline = 'ononline',
+    OnPageHide = 'onpagehide',
+    OnPageShow = 'onpageshow',
+    OnPopState = 'onpopstate',
+    OnResize = 'onresize',
+    OnStorage = 'onstorage',
+    OnUnload = 'onunload',
+    /**
+     * Form events
+     */
+    OnBlur = 'onblur', // Fires the moment that the element loses focus
+    OnChange = 'onchange', // Fires the moment when the value of the element is changed
+    OnContextMenu = 'oncontextmenu', // Script to be run when a context menu is triggered
+    OnFocus = 'onfocus', // Fires the moment when the element gets focus
+    OnInput = 'oninput', // Script to be run when an element gets user input
+    OnInvalid = 'oninvalid', // Script to be run when an element is invalid
+    onReset = 'onreset', // Fires when the Reset button in a form is clicked
+    OnSearch = 'onsearch', // Fires when the user writes something in a search field (for <input="search">)
+    OnSelect = 'onselect', // Fires after some text has been selected in an element
+    OnSubmit = 'onsubmit', // Fires when a form is submitted
+    /**
+     * Keyboard events
+     */
+    OnKeyDown = 'onkeydown',
+    OnKeyPress = 'onkeypress',
+    OnKeyUp = 'onkeyup',
+    /**
+     * Mouse events
+     */
+    OnClick = 'onclick',
+    OnDoubleClick = 'ondblclick',
+    OnMouseDown = 'onmousedown',
+    OnMouseMove = 'onmousemove',
+    OnMouseOut = 'onmouseout',
+    OnMouseOver = 'onmouseover',
+    OnMouseUp = 'onmouseup',
+    OnWheel = 'onwheel',
+    /**
+     * Drag events
+     */
+    OnDrag = 'ondrag',
+    OnDragEnd = 'ondragend',
+    OnDragEnter = 'ondragenter',
+    OnDragLeave = 'ondragleave',
+    OnDragOver = 'ondragover',
+    OnDragStart = 'ondragstart',
+    OnDrop = 'ondrop',
+    OnScroll = 'onscroll',
+    /**
+     * Clipoard events
+     */
+    OnCopy = 'oncopy',
+    OnCut = 'oncut',
+    OnPaste = 'onpaste',
+    /**
+     * Media events
+     */
+    // TODO
+    /**
+     * Micellaneous events
+     */
+    OnToggle = 'ontoggle',
 }
 
 /**
@@ -448,25 +446,25 @@ export enum EventEnum {
 
 export enum FilterTypeEnum {
   Api = 'API',
-  Object = 'OBJECT',
+    Object = 'OBJECT',
 }
 
 export enum FilterComparisonOperatorEnum {
   Equal = 'eq',
-  Greater = 'gt',
-  GreaterOrEqual = 'gte',
-  InArray = 'in',
-  Less = 'lt',
-  LessOrEqual = 'lte',
-  NotEqual = 'ne',
-  NotInArray = 'nin',
+    Greater = 'gt',
+    GreaterOrEqual = 'gte',
+    InArray = 'in',
+    Less = 'lt',
+    LessOrEqual = 'lte',
+    NotEqual = 'ne',
+    NotInArray = 'nin',
 }
 
 export enum FilterLogicalOperatorEnum {
   And = 'and',
-  Not = 'not',
-  Nor = 'nor',
-  Or = 'or',
+    Not = 'not',
+    Nor = 'nor',
+    Or = 'or',
 }
 
 /**
@@ -474,18 +472,18 @@ export enum FilterLogicalOperatorEnum {
  */
 export enum BackendFrameworkEnum {
   Loopback = 'LOOPBACK',
-  Nest = 'NEST',
-  Fastify = 'FASTIFY',
-  Express = 'EXPRESS',
-  Springboot = 'SPRINGBOOT',
+    Nest = 'NEST',
+    Fastify = 'FASTIFY',
+    Express = 'EXPRESS',
+    Springboot = 'SPRINGBOOT',
 }
 
 export enum FrontendFrameworkEnum {
   Angular = 'ANGULAR',
-  Pure = 'PURE',
-  React = 'REACT',
-  Svelte = 'SVELTE',
-  Vue = 'VUE',
+    Pure = 'PURE',
+    React = 'REACT',
+    Svelte = 'SVELTE',
+    Vue = 'VUE',
 }
 
 /**
@@ -493,17 +491,17 @@ export enum FrontendFrameworkEnum {
  */
 export enum RequestTypeEnum {
   Api = 'API',
-  Object = 'OBJECT',
-  Link = 'LINK',
-  Dialog = 'DIALOG',
+    Object = 'OBJECT',
+    Link = 'LINK',
+    Dialog = 'DIALOG',
 }
 
 export enum ActionVerbEnum {
   Post = 'POST',
-  Get = 'GET',
-  Patch = 'PATCH',
-  Put = 'PUT',
-  Delete = 'DELETE',
+    Get = 'GET',
+    Patch = 'PATCH',
+    Put = 'PUT',
+    Delete = 'DELETE',
 }
 
 /**
@@ -517,12 +515,11 @@ export enum ComponentCodeType {
 
 export interface CreateProjectComponentPathAndFile {
   projectPath: string;
-  componentPath: string;
   componentCode: string;
   componentCodeType: ComponentCodeType;
-  isNest?: boolean;
+  objectToCode: ObjectToCode
 }
-export type ProjectComponentPathAndFile = Omit<
+export type ProjectComponentPathAndFile = Omit <
   CreateProjectComponentPathAndFile,
   'projectPath'
 >;

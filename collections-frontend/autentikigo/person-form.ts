@@ -2,15 +2,16 @@ import {
   FormInputTypeEnum,
   FrontendFrameworkEnum,
   ObjectToCode,
-} from '../interfaces/frontend';
+  ServiceFunctionsEnum,
+} from '../../interfaces/frontend';
 
 export const PERSON_FORM: ObjectToCode = {
-  module: 'person-form',
+  module: 'person',
   title: 'Pessoas',
   frontendFramework: FrontendFrameworkEnum.Angular,
+  projectPath: '/home/ryzzan/Projects/Kunlatek/test',
   form: {
     label: 'Pessoa',
-    id: 'person-form',
     elements: [
       {
         tabs: [
@@ -61,7 +62,6 @@ export const PERSON_FORM: ObjectToCode = {
                 },
               },
             ],
-            id: 'person-main',
             label: 'Dados principais',
           },
           {
@@ -111,16 +111,25 @@ export const PERSON_FORM: ObjectToCode = {
                     },
                   ],
                   label: 'Contato',
-                  id: 'person-contact-array',
                 },
               },
             ],
-            id: 'person-contact',
             label: 'Contatos',
           },
         ],
       },
     ],
     actions: [{}],
+    service: {
+      baseUrl: 'localhost:3000',
+      endPoint: 'people',
+      methods: [
+        ServiceFunctionsEnum.Get,
+        ServiceFunctionsEnum.Delete,
+        ServiceFunctionsEnum.Save,
+        ServiceFunctionsEnum.Update,
+        ServiceFunctionsEnum.Find,
+      ],
+    },
   },
 };

@@ -1,4 +1,5 @@
 import {
+  ObjectToCode,
   RequestTypeEnum,
   TableElementInterface,
   TableInterface,
@@ -7,23 +8,26 @@ import { TextTransformation } from '../../../../utils/text.transformation';
 import { FormTemplate } from './form.template';
 
 export class TableTemplate {
-  setTableHtml(table: TableInterface): string {
+  setTableHtml(table: TableInterface, objectToCode: ObjectToCode): string {
+    const tableId = `${objectToCode.module}Table`;
+    const formId = `${objectToCode.module}Table`;
+    const builderName = TextTransformation.kebabfy(formId);
     let codeHtml = '';
     let rowMenu = '';
     let codeTable = '';
     let codeTableForm = '';
     const array = table.elements;
     const tableIdAsPropertyName = TextTransformation.setIdToPropertyName(
-      table.id,
+      tableId,
     );
-    const tableIdAsClassName = TextTransformation.setIdToClassName(table.id);
+    const tableIdAsClassName = TextTransformation.setIdToClassName(tableId);
     const formTemplate = new FormTemplate();
     /**
      * Form over table
      */
     if (table.actions) {
       const form = table.actions;
-      const formPropertyName = TextTransformation.setIdToPropertyName(form?.id);
+      const formPropertyName = TextTransformation.setIdToPropertyName(formId);
       codeTableForm += `<mat-card>
                 <mat-card-header>
                     <mat-card-subtitle>
@@ -31,9 +35,9 @@ export class TableTemplate {
                     </mat-card-subtitle>
                 </mat-card-header>
                 <form id="${
-                  form.id
+                  builderName
                 }" [formGroup]="${formPropertyName}Form" (ngSubmit)="${formPropertyName}Submit()">
-                    ${formTemplate.setFormInputs(table.actions)}
+                    ${formTemplate.setFormInputs(table.actions, objectToCode)}
                 </form>
             </mat-card>`;
     }

@@ -3,14 +3,14 @@ import {
   FrontendFrameworkEnum,
   ObjectToCode,
   RequestTypeEnum,
-} from '../interfaces/frontend';
+} from '../../interfaces/frontend';
 
 export const PERSON_TABLE: ObjectToCode = {
   frontendFramework: FrontendFrameworkEnum.Angular,
-  module: 'person-table',
+  module: 'person',
   title: 'Pessoas',
+  projectPath: '/home/ryzzan/Projects/Kunlatek/test',
   table: {
-    id: 'person-table',
     title: 'Usuários',
     data: {
       type: RequestTypeEnum.Object,
@@ -76,16 +76,16 @@ export const PERSON_TABLE: ObjectToCode = {
               },
               label: 'Bloquear',
             },
-            {
-              action: {
-                type: RequestTypeEnum.Dialog,
-              },
-              label: 'Remover',
-              dialog: {
-                templateFolder: 'remove-confirmation-dialog',
-                id: 'remove-confirmation-dialog',
-              },
-            },
+            // {
+            //   action: {
+            //     type: RequestTypeEnum.Dialog,
+            //   },
+            //   label: 'Remover',
+            //   dialog: {
+            //     templateFolder: 'remove-confirmation-dialog',
+            //     id: 'remove-confirmation-dialog',
+            //   },
+            // },
           ],
         },
       },
@@ -123,7 +123,6 @@ export const PERSON_TABLE: ObjectToCode = {
     ],
     actions: {
       label: 'Pesquisa de pessoas',
-      id: 'person-search',
       elements: [
         {
           input: {
