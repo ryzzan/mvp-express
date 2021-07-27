@@ -65,7 +65,7 @@ export default class FormDirective implements Directive {
     return template.replace('%ACTIONS%', actionsTemplate);
   }
 
-  private setFormBuilder(elements: Array < FormElementInterface > , objectToCode: ObjectToCode): string {
+  setFormBuilder(elements: Array < FormElementInterface > , objectToCode: ObjectToCode): string {
     let codeElements = '';
 
     codeElements += this.setFormBuilderElements(elements, objectToCode);
@@ -143,7 +143,7 @@ export default class FormDirective implements Directive {
     });
     return codeValidator;
   }
-  private setForm(elements: Array<FormElementInterface>, objectToCode: ObjectToCode): string {
+  setForm(elements: Array<FormElementInterface>, objectToCode: ObjectToCode): string {
     let codeElements = '';
     codeElements += this.setFormElements(elements, objectToCode);
 

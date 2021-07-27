@@ -3,6 +3,7 @@ import {
   FrontendFrameworkEnum,
   ObjectToCode,
   RequestTypeEnum,
+  ServiceFunctionsEnum,
 } from '../../interfaces/frontend';
 
 export const PERSON_TABLE: ObjectToCode = {
@@ -88,37 +89,6 @@ export const PERSON_TABLE: ObjectToCode = {
             // },
           ],
         },
-      },
-    ],
-    object: [
-      {
-        name: 'Agenor de Miranda Araújo Neto',
-        birthday: '04/04/1958',
-        gender: 'Masculino',
-        email: 'cazuza@email.com',
-        preferences: 'Filmes e Séries, Amizade, Solidariedade, Humor, Música',
-      },
-      {
-        name: 'Aroldo Alves Sobrinho',
-        birthday: '17/02/1953',
-        gender: 'Masculino',
-        email: 'peninha@email.com',
-        preferences: 'Negócios, Amizade, Games, Música',
-      },
-      {
-        name: 'Larissa de Macedo Machado',
-        birthday: '30/03/1993',
-        gender: 'Feminino',
-        email: 'anitta@email.com',
-        preferences:
-          'Negócios, Filmes e Séries, Amizade, Startup, Humor, Música',
-      },
-      {
-        name: 'Renato Manfredini Júnior',
-        birthday: '27/03/1960',
-        gender: 'Masculino',
-        email: 'russo@email.com',
-        preferences: 'Idiomas, Filmes e Séries, Leitura, Humor, Música',
       },
     ],
     actions: {
@@ -214,6 +184,17 @@ export const PERSON_TABLE: ObjectToCode = {
           },
         },
       ],
+    },
+    service: {
+      baseUrl: 'localhost:3000',
+      endPoint: 'people',
+      methods: [
+        ServiceFunctionsEnum.Get,
+        ServiceFunctionsEnum.Delete,
+        ServiceFunctionsEnum.Save,
+        ServiceFunctionsEnum.Update,
+        ServiceFunctionsEnum.Find,
+      ]
     },
   },
 };

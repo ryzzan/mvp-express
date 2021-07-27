@@ -110,7 +110,7 @@ export class CodeToAngular {
     const builderName = TextTransformation.kebabfy(tableId);
     const className = TextTransformation.setIdToClassName(tableId);
     const propertyName = TextTransformation.setIdToPropertyName(tableId);
-    const formDirective = new TableDirective(
+    const tableDirective = new TableDirective(
       {
         builderName,
         className,
@@ -122,7 +122,7 @@ export class CodeToAngular {
     const tableTemplate = new TableTemplate();
     template = tableTemplate.setTableHtml(table, objectToCode);
 
-    this.directive = new Directive(formDirective);
+    this.directive = new Directive(tableDirective);
     directive = this.directive.setComponentSkeleton(tableId, objectToCode);
 
     if (table.service) {

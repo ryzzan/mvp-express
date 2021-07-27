@@ -1,9 +1,11 @@
 import {
   DialogInterface,
+  ObjectToCode,
   TableElementInterface,
 } from '../../../../../interfaces/frontend';
 import { TextTransformation } from '../../../../utils/text.transformation';
 import { Directive, FormMetaObject } from './directives.interface';
+import FormDirective from './form.directive';
 
 export default class TableDirective implements Directive {
   formMetaObject: FormMetaObject;
@@ -16,16 +18,22 @@ export default class TableDirective implements Directive {
     this.formMetaObject = formMetaObject;
     this.elements = elements;
   }
-  injectVariables(template: string): string {
-    const variablesTemplate = `
+  injectVariables(template: string, objectToCode: ObjectToCode): string {
+    let variablesTemplate = `
       ${this.setTableObject()}
-      ${this.formMetaObject.propertyName}DataSource = [];      
+      ${this.formMetaObject.propertyName}DataSource: any = [];      
     `;
+
+    if (objectToCode.table?.actions) {
+      const formDirective = new FormDirective(this.formMetaObject, objectToCode.table.actions.elements);
+      variablesTemplate += `${this.formMetaObject.propertyName}Form: FormGroup;
+      ${formDirective.setForm(objectToCode.table.actions.elements, objectToCode)}`
+    }
     return template.replace('%VARIABLES%', variablesTemplate);
   }
   injectImports(template: string): string {
     let importsTemplate = `
-      import { FormBuilder, FormGroup } from '@angular/forms';
+      import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
       import { ActivatedRoute } from '@angular/router';
       import { MatDialog } from '@angular/material/dialog';
       import { %pascalfy(${this.formMetaObject.propertyName})%Service } from './${this.formMetaObject.builderName}.service';
@@ -38,22 +46,36 @@ export default class TableDirective implements Directive {
   }
 
   injectDependencies(template: string): string {
-    const dependenciesTemplate = `private _dialog: MatDialog, private _${this.formMetaObject.propertyName}Service: %pascalfy(${this.formMetaObject.propertyName})%Service`;
+    let dependenciesTemplate = `private _formBuilder: FormBuilder, private _dialog: MatDialog, private _${this.formMetaObject.propertyName}Service: %pascalfy(${this.formMetaObject.propertyName})%Service`;
     return template.replace('%DEPENDENCIES%', dependenciesTemplate);
   }
 
-  injectConstructor(template: string): string {
-    const defaultConstructor = `
-      this._${this.formMetaObject.propertyName}Service.get().then((result) => {
+  injectConstructor(template: string, objectToCode: ObjectToCode): string {
+    let defaultConstructor = `
+      this._${this.formMetaObject.propertyName}Service.getAll().then((result) => {
         this.${this.formMetaObject.propertyName}DataSource = result
       }).catch(err => console.log(err))
     `;
+
+    if (objectToCode.table?.actions) {
+      const formDirective = new FormDirective(this.formMetaObject, objectToCode.table.actions.elements);
+      defaultConstructor += `
+      this.${this.formMetaObject.propertyName}Form = this._formBuilder.group({${formDirective.setFormBuilder(
+        objectToCode.table.actions.elements, objectToCode
+      )}});`;
+    }
+
     return template.replace('%CONSTRUCTOR_CODE%', defaultConstructor);
   }
 
   injectActions(template: string): string {
     const actionsTemplate = `
       ${this.setTableElements()}
+      ${this.formMetaObject.propertyName}Submit() {
+        this._${this.formMetaObject.propertyName}Service.save(this.${this.formMetaObject.propertyName}Form).then((res) => {
+
+        }).catch((err) => console.log(err));
+      }
     `;
     return template.replace('%ACTIONS%', actionsTemplate);
   }
